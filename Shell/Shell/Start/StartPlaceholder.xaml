@@ -1,0 +1,702 @@
+﻿<UserControl xmlns:my="using:Microsoft.UI.Xaml.Controls"  x:Class="ShellApp.Shell.Start.StartPlaceholder"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="using:ShellApp.Shell.Start"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" Height="680" Width="680">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Shell/ShellResources.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <Storyboard x:Name="OpenStartAnimation">
+                <DoubleAnimation Storyboard.TargetName="translateTransform"
+                                 Storyboard.TargetProperty="Y"
+                                 From="600"
+                                 To="0"
+                                 Duration="0:0:0.325">
+                    <DoubleAnimation.EasingFunction>
+                        <ExponentialEase Exponent="7"
+                                         EasingMode="EaseOut" />
+                    </DoubleAnimation.EasingFunction>
+                </DoubleAnimation>
+            </Storyboard>
+            <Storyboard x:Name="CloseStartAnimation">
+                <DoubleAnimation Storyboard.TargetName="translateTransform"
+                                 Storyboard.TargetProperty="Y"
+                                 From="0"
+                                 To="600"
+                                 Duration="0:0:0.305">
+                    <DoubleAnimation.EasingFunction>
+                        <ExponentialEase EasingMode="EaseIn"
+                                         Exponent="8" />
+                    </DoubleAnimation.EasingFunction>
+                </DoubleAnimation>
+            </Storyboard>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <UserControl.RenderTransform>
+        <TranslateTransform x:Name="translateTransform" />
+    </UserControl.RenderTransform>
+
+    
+    
+    <Grid Background="{ThemeResource ShellAcrylicBrush}"
+          BorderBrush="{ThemeResource SurfaceStrokeColorDefaultBrush}"
+          BorderThickness="1,1,1,1"
+          CornerRadius="10"
+          Translation="0,0,128"
+          Width="650"
+          Height="650"
+          HorizontalAlignment="Center"
+          VerticalAlignment="Center">
+
+        <Grid.Shadow>
+            <ThemeShadow />
+        </Grid.Shadow>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="44" />
+            <ColumnDefinition Width="254" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="0">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            
+
+            <Button HorizontalAlignment="Stretch"
+                    Height="34"
+                    FontFamily="Segoe Fluent Icons"
+                    FontSize="16"
+                    Padding="0"
+                    Content="&#xE700;"
+                    CornerRadius="5"
+                    Background="Transparent"
+                    BorderBrush="Transparent" Width="34" Margin="5,5,5,5" />
+
+            <StackPanel Grid.Row="1"
+                        Orientation="Vertical"
+                        VerticalAlignment="Bottom">
+
+                <Button HorizontalAlignment="Stretch"
+                        Height="34"
+                        Padding="0"
+                        CornerRadius="5"
+                        Background="Transparent"
+                        BorderBrush="Transparent" Margin="5,5,5,5">
+                    <my:PersonPicture Height="24" />
+                    <Button.Flyout>
+                        <MenuFlyout x:Name="profileFlyout">
+
+
+
+                        </MenuFlyout>
+                    </Button.Flyout>
+                </Button>
+
+                <Button HorizontalAlignment="Stretch"
+                        Height="34"
+                        FontFamily="Segoe Fluent Icons"
+                        FontSize="16"
+                        Content="&#xE8A5;"
+                        Padding="0"
+                        CornerRadius="5"
+                        Background="Transparent"
+                        BorderBrush="Transparent" Width="34" Margin="5,5,5,5" />
+
+                <Button HorizontalAlignment="
+                            Stretch"
+                        Height="34"
+                        FontFamily="Segoe Fluent Icons"
+                        FontSize="16"
+                        Content="&#xE91B;"
+                        Padding="0"
+                        CornerRadius="5"
+                        Background="Transparent"
+                        BorderBrush="Transparent" Margin="5,5,5,0" />
+
+                <Button HorizontalAlignment="
+                            Stretch"
+                        Height="34"
+                        FontFamily="Segoe Fluent Icons"
+                        FontSize="16"
+                        Content="&#xE713;"
+                        Padding="0"
+                        CornerRadius="5"
+                        Background="Transparent"
+                        BorderBrush="Transparent" Margin="5,5,5,5" />
+
+                <Button HorizontalAlignment="Stretch"
+                        Height="34"
+                        FontFamily="Segoe Fluent Icons"
+                        FontSize="16"
+                        Content="&#xE7E8;"
+                        Padding="0"
+                        CornerRadius="5"
+                        Background="Transparent"
+                        BorderBrush="Transparent" Margin="5,5,5,5">
+                    <Button.Flyout>
+                        <MenuFlyout x:Name="PowerFlyout">
+
+                        </MenuFlyout>
+                    </Button.Flyout>
+                </Button>
+
+
+            </StackPanel>
+
+        </Grid>
+
+
+        <ScrollViewer x:Name="AppsScroll" Grid.Column="1">
+            <StackPanel Grid.Column="1"
+                    Padding="8,55,0,0"
+                    Orientation="Vertical"
+                    Spacing="16">
+
+            <TextBlock Text="Suggested"
+                       Style="{StaticResource BodyStrongTextBlockStyle}" />
+
+            <StackPanel Orientation="Vertical"
+                        Spacing="8">
+                <Grid ColumnSpacing="8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Image Source="/Assets/StoreLogo.png"
+                           Width="24"
+                           Height="24"
+                           Grid.Column="0" />
+                    <TextBlock Text="PackageName"
+                               VerticalAlignment="Center"
+                               Grid.Column="1" />
+                </Grid>
+                <Grid ColumnSpacing="8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Image Source="/Assets/StoreLogo.png"
+                           Width="24"
+                           Height="24"
+                           Grid.Column="0" />
+                    <TextBlock Text="PackageName"
+                               VerticalAlignment="Center"
+                               Grid.Column="1" />
+                </Grid>
+                <Grid ColumnSpacing="8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Image Source="/Assets/StoreLogo.png"
+                           Width="24"
+                           Height="24"
+                           Grid.Column="0" />
+                    <TextBlock Text="PackageName"
+                               VerticalAlignment="Center"
+                               Grid.Column="1" />
+                </Grid>
+            </StackPanel>
+
+
+            <Border BorderBrush="{ThemeResource TextFillColorPrimaryBrush}"
+                    BorderThickness="0"
+                    Width="28"
+                    Height="28"
+                    CornerRadius="4"
+                    HorizontalAlignment="Left">
+
+                <TextBlock Text="A"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           FontWeight="SemiBold"
+                           FontSize="16"
+                           FontFamily="Segoe UI Variable Display" />
+            </Border>
+
+            <StackPanel Orientation="Vertical"
+                        Spacing="8">
+                <Grid ColumnSpacing="8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Image Source="/Assets/StoreLogo.png"
+                           Width="24"
+                           Height="24"
+                           Grid.Column="0" />
+                    <TextBlock Text="PackageName"
+                               VerticalAlignment="Center"
+                               Grid.Column="1" />
+                </Grid>
+                <Grid ColumnSpacing="8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Image Source="/Assets/StoreLogo.png"
+                           Width="24"
+                           Height="24"
+                           Grid.Column="0" />
+                    <TextBlock Text="PackageName"
+                               VerticalAlignment="Center"
+                               Grid.Column="1" />
+                </Grid>
+                <Grid ColumnSpacing="8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Image Source="/Assets/StoreLogo.png"
+                           Width="24"
+                           Height="24"
+                           Grid.Column="0" />
+                    <TextBlock Text="PackageName"
+                               VerticalAlignment="Center"
+                               Grid.Column="1" />
+                </Grid>
+            </StackPanel>
+
+            <Border BorderBrush="{ThemeResource TextFillColorPrimaryBrush}"
+                    BorderThickness="0"
+                    Width="28"
+                    Height="28"
+                    CornerRadius="4"
+                    HorizontalAlignment="Left">
+
+                <TextBlock Text="B"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           FontWeight="SemiBold"
+                           FontFamily="Segoe UI Variable Display"
+                           FontSize="16" />
+            </Border>
+            <StackPanel Orientation="Vertical"
+                        Spacing="8">
+                <Grid ColumnSpacing="8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Image Source="/Assets/StoreLogo.png"
+                           Width="24"
+                           Height="24"
+                           Grid.Column="0" />
+                    <TextBlock Text="PackageName"
+                               VerticalAlignment="Center"
+                               Grid.Column="1" />
+                </Grid>
+                <Grid ColumnSpacing="8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Image Source="/Assets/StoreLogo.png"
+                           Width="24"
+                           Height="24"
+                           Grid.Column="0" />
+                    <TextBlock Text="PackageName"
+                               VerticalAlignment="Center"
+                               Grid.Column="1" />
+                </Grid>
+                <Grid ColumnSpacing="8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Image Source="/Assets/StoreLogo.png"
+                           Width="24"
+                           Height="24"
+                           Grid.Column="0" />
+                    <TextBlock Text="PackageName"
+                               VerticalAlignment="Center"
+                               Grid.Column="1" />
+                </Grid>
+            </StackPanel>
+            <Border BorderBrush="{ThemeResource TextFillColorPrimaryBrush}"
+                    BorderThickness="0"
+                    Width="28"
+                    Height="28"
+                    CornerRadius="4"
+                    HorizontalAlignment="Left">
+
+                <TextBlock Text="C"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           FontWeight="SemiBold"
+                           FontFamily="Segoe UI Variable Display"
+                           FontSize="16" />
+            </Border>
+            <StackPanel Orientation="Vertical"
+                        Spacing="8">
+                <Grid ColumnSpacing="8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Image Source="/Assets/StoreLogo.png"
+                           Width="24"
+                           Height="24"
+                           Grid.Column="0" />
+                    <TextBlock Text="Lixkote"
+                               VerticalAlignment="Center"
+                               Grid.Column="1" />
+                </Grid>
+                <Grid ColumnSpacing="8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Image Source="/Assets/StoreLogo.png"
+                           Width="24"
+                           Height="24"
+                           Grid.Column="0" />
+                    <TextBlock Text="PackageName"
+                               VerticalAlignment="Center"
+                               Grid.Column="1" />
+                </Grid>
+                <Grid ColumnSpacing="8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Image Source="/Assets/StoreLogo.png"
+                           Width="24"
+                           Height="24"
+                           Grid.Column="0" />
+                    <TextBlock Text="PackageName"
+                               VerticalAlignment="Center"
+                               Grid.Column="1" />
+                </Grid>
+            </StackPanel>
+                <Border BorderBrush="{ThemeResource TextFillColorPrimaryBrush}"
+                    BorderThickness="0"
+                    Width="28"
+                    Height="28"
+                    CornerRadius="4"
+                    HorizontalAlignment="Left">
+
+                    <TextBlock Text="D"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           FontWeight="SemiBold"
+                           FontFamily="Segoe UI Variable Display"
+                           FontSize="16" />
+                </Border>
+                <StackPanel Orientation="Vertical"
+                        Spacing="8">
+                    <Grid ColumnSpacing="8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Image Source="/Assets/StoreLogo.png"
+                           Width="24"
+                           Height="24"
+                           Grid.Column="0" />
+                        <TextBlock Text="Lixkote"
+                               VerticalAlignment="Center"
+                               Grid.Column="1" />
+                    </Grid>
+                    <Grid ColumnSpacing="8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Image Source="/Assets/StoreLogo.png"
+                           Width="24"
+                           Height="24"
+                           Grid.Column="0" />
+                        <TextBlock Text="PackageName"
+                               VerticalAlignment="Center"
+                               Grid.Column="1" />
+                    </Grid>
+                    <Grid ColumnSpacing="8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Image Source="/Assets/StoreLogo.png"
+                           Width="24"
+                           Height="24"
+                           Grid.Column="0" />
+                        <TextBlock Text="PackageName"
+                               VerticalAlignment="Center"
+                               Grid.Column="1" />
+                    </Grid>
+                </StackPanel>
+
+
+
+            </StackPanel>
+        </ScrollViewer>
+
+        <StackPanel Grid.Column="2"
+                    Padding="27,55,27,0"
+                    Spacing="32"
+                    Orientation="Vertical">
+
+            <Grid Height="Auto"
+                  VerticalAlignment="Top"
+                  RowSpacing="16">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <TextBlock Text="Useful more or less"
+                           Style="{StaticResource BodyStrongTextBlockStyle}"
+                           Grid.Row="0" />
+                <Grid Grid.Row="1"
+                      RowSpacing="4"
+                      ColumnSpacing="4">
+
+                    <Grid.Resources>
+                        <Style TargetType="Button"
+                               BasedOn="{StaticResource DefaultButtonStyle}">
+                            <Setter Property="Padding"
+                                    Value="0" />
+                            <Setter Property="CornerRadius"
+                                    Value="2" />
+                            <Setter Property="HorizontalAlignment"
+                                    Value="Stretch" />
+                            <Setter Property="VerticalAlignment"
+                                    Value="Stretch" />
+                        </Style>
+                    </Grid.Resources>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="96" />
+                        <RowDefinition Height="96" />
+                    </Grid.RowDefinitions>
+
+                    <Button Grid.Column="0" CornerRadius="5">
+                        <Grid Width="96" Height="96">
+                            <Image Source="/Assets/Teams.png"
+                               Width="32"
+                               Height="32" />
+                            <TextBlock Text="Teams"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Bottom"
+                                           FontSize="12" Margin="6,0,0,6" />
+                        </Grid>
+                    </Button>
+
+                    <Button Grid.Column="1" CornerRadius="5">
+                        <Grid Width="96" Height="96">
+                            <Image Source="/Assets/Notepad.png"
+                               Width="32"
+                               Height="32" />
+                            <TextBlock Text="Notepad"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Bottom"
+                                           FontSize="12" Margin="6,0,0,6" />
+                        </Grid>
+                    </Button>
+
+                    <Button
+                            Grid.Column="2" CornerRadius="5">
+                        <Grid Width="96" Height="96">
+                            <Image Source="/Assets/Edge.png"
+                               Width="32"
+                               Height="32" />
+                            <TextBlock Text="Edge"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Bottom"
+                                           FontSize="12" Margin="6,0,0,6" />
+                        </Grid>
+                    </Button>
+
+                    <Grid HorizontalAlignment="Stretch"
+                          VerticalAlignment="Stretch"
+                          Grid.Row="1"
+                          RowSpacing="4"
+                          ColumnSpacing="4">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="46" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+
+                        <Button Grid.Row="0"
+                                Grid.Column="0" CornerRadius="5">
+                            <Image Source="/Assets/Word.png"
+                                   Width="28"
+                                   Height="28" />
+                        </Button>
+
+
+                        <Button Grid.Row="0"
+                                Grid.Column="1" CornerRadius="5">
+                            <Image Source="/Assets/PowerPoint.png"
+                                   Width="28"
+                                   Height="28"/>
+                        </Button>
+
+
+                        <Button Grid.Row="1"
+                                Grid.Column="0" CornerRadius="5">
+                            <Image Source="/Assets/Excel.png"
+                                   Width="28"
+                                   Height="28" />
+                        </Button>
+
+
+                        <Button Grid.Row="1"
+                                Grid.Column="1" CornerRadius="5">
+                            <Image Source="/Assets/OneNote.png"
+                                   Width="28"
+                                   Height="28" />
+                        </Button>
+
+                    </Grid>
+
+                </Grid>
+            </Grid>
+
+            <Grid Height="Auto"
+                  VerticalAlignment="Top"
+                  RowSpacing="16">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <TextBlock Text="Media"
+                           Style="{StaticResource BodyStrongTextBlockStyle}"
+                           Grid.Row="0" />
+                <Grid Grid.Row="1"
+                      RowSpacing="4"
+                      ColumnSpacing="4">
+
+                    <Grid.Resources>
+                        <Style TargetType="Button"
+                               BasedOn="{StaticResource DefaultButtonStyle}">
+                            <Setter Property="Padding"
+                                    Value="0" />
+                            <Setter Property="HorizontalAlignment"
+                                    Value="Stretch" />
+                            <Setter Property="VerticalAlignment"
+                                    Value="Stretch" />
+                        </Style>
+                    </Grid.Resources>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="96" />
+                        <RowDefinition Height="96" />
+                    </Grid.RowDefinitions>
+
+                    <Button Grid.Column="0"
+                            Grid.ColumnSpan="2"
+                            HorizontalContentAlignment="Stretch"
+                            VerticalContentAlignment="Stretch">
+
+                        <Grid CornerRadius="4">
+                            <Image Source="/Assets/Tahna.jpg"
+                                   Stretch="UniformToFill"
+                                   Margin="0,-15,0,0" />
+                            <Grid Padding="10"
+                                  HorizontalAlignment="Stretch"
+                                  VerticalAlignment="Stretch"
+                                  RequestedTheme="Light">
+
+                                <TextBlock Text="Photos"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Bottom"
+                                           FontSize="12" Margin="-3,0,0,-5" />
+                            </Grid>
+                        </Grid>
+                    </Button>
+
+                    <Button Grid.Column="2">
+                        <Grid Width="96" Height="96">
+                            <Image Source="/Assets/Figma.png"
+                               Width="32"
+                               Height="32" />
+                            <TextBlock Text="Figma"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Bottom"
+                                           FontSize="12" Margin="6,0,0,6" />
+                        </Grid>
+                    </Button>
+
+
+                    <Button HorizontalContentAlignment="Stretch"
+                            VerticalContentAlignment="Stretch"
+                            Grid.ColumnSpan="2" Grid.Row="1">
+
+                        <Grid CornerRadius="3">
+                            <Rectangle Fill="{ThemeResource SmokeFillColorDefaultBrush}"
+                                       Canvas.ZIndex="2" />
+                            <Image Source="/Assets/Sedona.png"
+                                   Stretch="UniformToFill" />
+                            <Grid Padding="10"
+                                  HorizontalAlignment="Stretch"
+                                  VerticalAlignment="Stretch"
+                                  RequestedTheme="Dark"
+                                  Canvas.ZIndex="3">
+
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Text="Sedona, Arizona"
+                                               FontSize="12"
+                                               FontWeight="SemiBold"
+                                               TextWrapping="Wrap" />
+                                    <TextBlock Text="Mostly cloudly"
+                                               TextWrapping="Wrap"
+                                               FontSize="12"
+                                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                                </StackPanel>
+
+                                <TextBlock Text="Weather"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Bottom"
+                                           FontSize="12"  Margin="-3,0,0,-5" />
+
+                                <TextBlock Text="87°"
+                                           HorizontalAlignment="Right"
+                                           VerticalAlignment="Bottom"
+                                           Style="{StaticResource SubtitleTextBlockStyle}" />
+
+
+                            </Grid>
+                        </Grid>
+
+
+
+                    </Button>
+
+
+                </Grid>
+            </Grid>
+
+
+        </StackPanel>
+
+    </Grid>
+
+</UserControl>

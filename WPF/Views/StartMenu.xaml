@@ -1,0 +1,55 @@
+﻿<Window x:Name="startmenubasewindow" x:Class="WPF.Views.StartMenu"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:e="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:xamlhost="clr-namespace:Microsoft.Toolkit.Wpf.UI.XamlHost;assembly=Microsoft.Toolkit.Wpf.UI.XamlHost"
+        xmlns:local="clr-namespace:WPF.Views"
+        mc:Ignorable="d"
+        Title="StartMenu"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        ResizeMode="NoResize"
+        ShowInTaskbar="False"
+        Topmost="True"
+        Width="680"
+        Height="680" Activated="Window_Activated" Deactivated="Menu_Deactivated">
+
+    <Window.RenderTransform>
+        <TranslateTransform x:Name="translateTransform" />
+    </Window.RenderTransform>
+    <Window.Resources>
+        <ResourceDictionary>
+            <TranslateTransform x:Key="h_animation" x:Name="translateTransformalt" />
+            <Storyboard x:Key="openstartanim" x:Name="OpenStartAnimation">
+                <DoubleAnimation 
+                     Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
+                     Storyboard.Target="{Binding ElementName=startmenubasewindow}"        
+                     From="670"
+                     To="0"
+                     Duration="0:0:0.225">
+                    <DoubleAnimation.EasingFunction>
+                        <e:ExponentialEase Exponent="7"
+                               EasingMode="EaseIn" />
+                    </DoubleAnimation.EasingFunction>
+                </DoubleAnimation>
+            </Storyboard>
+            <Storyboard x:Key="closestartanim" x:Name="CloseStartAnimation">
+                <DoubleAnimation 
+                     Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
+                     Storyboard.Target="{Binding ElementName=startmenubasewindow}"        
+                     From="0"
+                     To="670"
+                     Duration="0:0:0.225">
+                    <DoubleAnimation.EasingFunction>
+                        <e:ExponentialEase Exponent="8"
+                               EasingMode="EaseOut" />
+                    </DoubleAnimation.EasingFunction>
+                </DoubleAnimation>
+            </Storyboard>
+        </ResourceDictionary>
+    </Window.Resources>
+    <xamlhost:WindowsXamlHost InitialTypeName="ShellApp.Shell.Start.StartPlaceholder" />
+</Window>
