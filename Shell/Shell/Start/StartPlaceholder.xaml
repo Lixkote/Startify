@@ -4,7 +4,7 @@
              xmlns:local="using:ShellApp.Shell.Start"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" Height="680" Width="680">
+             mc:Ignorable="d" Height="700" Width="700">
 
     <UserControl.Resources>
         <ResourceDictionary>
@@ -51,8 +51,8 @@
           Translation="0,0,128"
           Width="650"
           Height="650"
-          HorizontalAlignment="Center"
-          VerticalAlignment="Center">
+          HorizontalAlignment="Left"
+          VerticalAlignment="Bottom" Margin="10,0,0,10">
 
         <Grid.Shadow>
             <ThemeShadow />
@@ -72,10 +72,11 @@
             </Grid.RowDefinitions>
             
 
-            <Button HorizontalAlignment="Stretch"
+            <Button x:Name="ExpandButton" HorizontalAlignment="Stretch"
                     Height="34"
                     FontFamily="Segoe Fluent Icons"
                     FontSize="16"
+                    Style="{StaticResource leftmenubuttonstyle}"
                     Padding="0"
                     Content="&#xE700;"
                     CornerRadius="5"
@@ -86,44 +87,62 @@
                         Orientation="Vertical"
                         VerticalAlignment="Bottom">
 
-                <Button HorizontalAlignment="Stretch"
+                <Button x:Name="UserAV_Button" HorizontalAlignment="Stretch"
                         Height="34"
                         Padding="0"
+                        Style="{StaticResource leftmenubuttonstyle}"
                         CornerRadius="5"
                         Background="Transparent"
                         BorderBrush="Transparent" Margin="5,5,5,5">
-                    <my:PersonPicture Height="24" />
+                    <Grid CornerRadius="1000">
+                        <Image x:Name="UserAV" Height="20" Source="/Assets/user-32.png" Width="20" />
+                    </Grid>
                     <Button.Flyout>
-                        <MenuFlyout x:Name="profileFlyout">
-
-
-
+                        <MenuFlyout>
+                            <MenuFlyoutItem Text="Change account settings">
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon Glyph=""/>
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                            <MenuFlyoutItem  Text="Lock">
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon Glyph=""/>
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                            <MenuFlyoutItem  Text="Sign out">
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon Glyph=""/>
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
                         </MenuFlyout>
                     </Button.Flyout>
                 </Button>
 
-                <Button HorizontalAlignment="Stretch"
+                <Button x:Name="DocumentsButton" HorizontalAlignment="Stretch"
                         Height="34"
                         FontFamily="Segoe Fluent Icons"
+                        Style="{StaticResource leftmenubuttonstyle}"
                         FontSize="16"
                         Content="&#xE8A5;"
                         Padding="0"
                         CornerRadius="5"
                         Background="Transparent"
-                        BorderBrush="Transparent" Width="34" Margin="5,5,5,5" />
+                        BorderBrush="Transparent" Width="34" Margin="5,5,5,5" Click="DocumentsButton_Click" />
 
-                <Button HorizontalAlignment="
+                <Button x:Name="ImagesButton" HorizontalAlignment="
                             Stretch"
                         Height="34"
+                        Style="{StaticResource leftmenubuttonstyle}"
                         FontFamily="Segoe Fluent Icons"
                         FontSize="16"
                         Content="&#xE91B;"
+                        
                         Padding="0"
                         CornerRadius="5"
                         Background="Transparent"
-                        BorderBrush="Transparent" Margin="5,5,5,0" />
+                        BorderBrush="Transparent" Margin="5,5,5,0" Click="ImagesButton_Click" />
 
-                <Button HorizontalAlignment="
+                <Button Style="{StaticResource leftmenubuttonstyle}" x:Name="SettingsButton" HorizontalAlignment="
                             Stretch"
                         Height="34"
                         FontFamily="Segoe Fluent Icons"
@@ -132,21 +151,42 @@
                         Padding="0"
                         CornerRadius="5"
                         Background="Transparent"
-                        BorderBrush="Transparent" Margin="5,5,5,5" />
+                        BorderBrush="Transparent" Margin="5,5,5,5" Click="SettingsButton_Click" />
 
-                <Button HorizontalAlignment="Stretch"
+                <Button x:Name="PowerButton" HorizontalAlignment="Stretch"
                         Height="34"
+                        Style="{StaticResource leftmenubuttonstyle}"
                         FontFamily="Segoe Fluent Icons"
                         FontSize="16"
                         Content="&#xE7E8;"
                         Padding="0"
                         CornerRadius="5"
                         Background="Transparent"
-                        BorderBrush="Transparent" Margin="5,5,5,5">
+                        BorderBrush="Transparent" Margin="5,5,5,5" Click="PowerButton_Click">
                     <Button.Flyout>
-                        <MenuFlyout x:Name="PowerFlyout">
-
+                        <MenuFlyout>
+                            <MenuFlyoutItem x:Name="HibernateMenuButton" Text="Hibernate" Click="HibernateMenuButton_Click">
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon Glyph=""/>
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                            <MenuFlyoutItem x:Name="SleepMenuButton" Text="Sleep" Click="SleepMenuButton_Click">
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon Glyph=""/>
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                            <MenuFlyoutItem x:Name="PowerMenuButton" Text="Power" Click="PowerMenuButton_Click">
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon Glyph=""/>
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                            <MenuFlyoutItem x:Name="RestartMenuButton" Text="Restart" Click="RestartMenuButton_Click">
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon Glyph=""/>
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
                         </MenuFlyout>
+
                     </Button.Flyout>
                 </Button>
 
@@ -158,7 +198,7 @@
 
         <ScrollViewer x:Name="AppsScroll" Grid.Column="1">
             <StackPanel Grid.Column="1"
-                    Padding="8,55,0,0"
+                    Padding="8,29.5,0,0"
                     Orientation="Vertical"
                     Spacing="16">
 
@@ -442,7 +482,7 @@
         </ScrollViewer>
 
         <StackPanel Grid.Column="2"
-                    Padding="27,55,27,0"
+                    Padding="27,30,27,0"
                     Spacing="32"
                     Orientation="Vertical">
 

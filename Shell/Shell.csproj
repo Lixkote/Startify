@@ -159,6 +159,7 @@
     <Content Include="Assets\Teams.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\user-32.png" />
     <Content Include="Assets\Word.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
