@@ -8,7 +8,9 @@
 
     <UserControl.Resources>
         <ResourceDictionary>
+            
             <ResourceDictionary.MergedDictionaries>
+
                 <ResourceDictionary Source="/Shell/ShellResources.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <Storyboard x:Name="OpenStartAnimation">
@@ -450,7 +452,27 @@
 
 
         </StackPanel>
-        <ListView x:Name="AllAppsListView" ItemsSource="" Grid.Column="1"/>
+        <ListView  Style="{StaticResource AppListStyle}" CanDragItems="True" x:Name="AllAppsListView" ItemsSource="" Grid.Column="1" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <ListView.ItemTemplate>
+                <DataTemplate> 
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="{Binding Icon}" x:Name="AppListFolder" Width="24" Height="24" Stretch="Fill" HorizontalAlignment="Left" />
+                        <TextBlock Text="{Binding Title}" Margin="10,0,0,0"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            <ListView.GroupStyle>
+                <GroupStyle >
+                    <GroupStyle.HeaderTemplate>
+                        <DataTemplate>
+                            <Border >
+                                <TextBlock Text="very j groups not addded yet" Style="{StaticResource BodyStrongTextBlockStyle}"/>
+                            </Border>
+                        </DataTemplate>
+                    </GroupStyle.HeaderTemplate>
+                </GroupStyle>
+            </ListView.GroupStyle>
+        </ListView>
 
     </Grid>
 

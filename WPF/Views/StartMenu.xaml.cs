@@ -4,13 +4,16 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Security.Policy;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
+using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using WPF.Helpers;
+using static System.Windows.Forms.LinkLabel;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace WPF.Views
@@ -81,6 +84,9 @@ namespace WPF.Views
             // Set the ItemsSource property of the ListView element to Programs
             allAppsListView.ItemsSource = Programs;
 
+            
+
+
 
 
 
@@ -97,8 +103,8 @@ namespace WPF.Views
                     Programs.Add(new StartMenuLink
                     {
                         Title = System.IO.Path.GetFileNameWithoutExtension(f),
-                        Icon = IconHelper.GetFileIcon(f),
-                        Link = f
+                        Link = f,
+                        Icon = new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri(uriString: IconHelper.GetFileIcon(f)))
                     });
                 }
             }
@@ -122,7 +128,7 @@ namespace WPF.Views
                         Links = new ObservableCollection<StartMenuLink>(),
                         Directories = new ObservableCollection<StartMenuDirectory>(),
                         Link = d,
-                        Icon = IconHelper.GetFolderIcon(d)
+                        Icon = new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///Assets/UnplatedFolder.png"))
                     };
                 }
 
@@ -135,8 +141,8 @@ namespace WPF.Views
                         folderEntry.Links.Add(new StartMenuLink
                         {
                             Title = System.IO.Path.GetFileNameWithoutExtension(f),
-                            Icon = IconHelper.GetFileIcon(f),
-                            Link = f
+                            Link = f,
+                            Icon = new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri(uriString: IconHelper.GetFileIcon(f)))
                         });
                     }
                 }

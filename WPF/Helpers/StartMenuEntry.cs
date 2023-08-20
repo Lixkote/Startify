@@ -16,8 +16,8 @@ namespace WPF.Helpers
     {
         public string Alph { get { return Title[0].ToString(); } }
         public string Title { get; set; }
-        public ImageSource Icon { get; set; }
-
+        public Windows.UI.Xaml.Media.Imaging.BitmapImage Icon { get; set; }
+        public string Iconalt { get; set; }
     }
     internal class StartMenuDirectory : StartMenuLink
     {
@@ -31,9 +31,7 @@ namespace WPF.Helpers
         public bool AllowOpenLocation { get; set; }
     }
 
-
-
-    public enum ResultType
+public enum ResultType
     {
         Files,
         Apps

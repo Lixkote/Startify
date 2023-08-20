@@ -12,6 +12,7 @@ using System.IO;
 using System.Xml.Linq;
 using System.Text;
 using System.Drawing.Drawing2D;
+using WPF.Helpers;
 
 namespace WPF.Helpers
 {
@@ -53,36 +54,70 @@ namespace WPF.Helpers
                 return icn.ToBitmap().ToBitmapImage();
         }
         static Dictionary<string, ImageSource> _iconCache = new Dictionary<string, ImageSource>();
+        static Dictionary<string, System.Uri> _iconCachea = new Dictionary<string, System.Uri>();
         static string[] _exlcudedIcons = new string[] { ".exe", ".lnk", ".url", ".appref-ms" };
         [DllImport("Comctl32.dll")]
         public static extern IntPtr ImageList_GetIcon(IntPtr himl, int i, uint flags);
-        public static ImageSource GetFileIcon(string file)
+        public static string GetFileIcon(string file)
         {
             try
             {
                 string extension = System.IO.Path.GetExtension(file);
-                if (!_exlcudedIcons.Contains(extension) && _iconCache.ContainsKey(extension))
                 {
-                    return _iconCache[extension];
-                }
-                SHFILEINFO fileInfo = new SHFILEINFO();
-                IntPtr list = SHGetFileInfo(
-                    file,
-                    0,
-                    ref fileInfo,
-                    (uint)Marshal.SizeOf(fileInfo),
-                    SHGFI_SYSICONINDEX);
+                    // Check if the .lnk file exists
+                    if (!File.Exists(file))
+                    {
+                        throw new FileNotFoundException("The .lnk file does not exist.");
+                    }
 
-                var iconHandle = ImageList_GetIcon(list, fileInfo.iIcon, ILD_NORMAL);
+                    // Get the target file path from the .lnk file using IWshRuntimeLibrary
+                    // Reference: [1](https://stackoverflow.com/questions/1127647/convert-system-drawing-icon-to-system-media-imagesource)
+                    IWshRuntimeLibrary.WshShell shell = new IWshRuntimeLibrary.WshShell();
+                    IWshRuntimeLibrary.IWshShortcut shortcut = (IWshRuntimeLibrary.IWshShortcut)shell.CreateShortcut(file);
+                    string targetFilePath = shortcut.TargetPath;
 
-                using (Icon icn = System.Drawing.Icon.FromHandle(iconHandle))
-                {
-                    var result = icn.ToBitmap().ToBitmapImage();
-                    _iconCache[extension] = result;
-                    return result;
+                    // Check if the target file exists
+                    if (!File.Exists(targetFilePath))
+                    {
+                        throw new FileNotFoundException("The target file does not exist.");
+                    }
+
+                    // Extract the icon from the target file using System.Drawing.Icon
+                    // Reference: [2](https://stackoverflow.com/questions/3204883/wpf-imagesource-binding-with-custom-converter)
+                    Icon icon = Icon.ExtractAssociatedIcon(targetFilePath);
+
+                    // Convert the icon to a BitmapSource using System.Windows.Interop.Imaging
+                    // Reference: [3](https://stackoverflow.com/questions/2969821/display-icon-in-wpf-image)
+                    BitmapSource bitmapSource = Imaging.CreateBitmapSourceFromHIcon(
+                        icon.Handle,
+                        Int32Rect.Empty,
+                        BitmapSizeOptions.FromEmptyOptions());
+
+                    // Create a PngBitmapEncoder and add the BitmapSource to its frames
+                    PngBitmapEncoder encoder = new PngBitmapEncoder();
+                    encoder.Frames.Add(BitmapFrame.Create(bitmapSource));
+
+                    // Generate a unique file name for the icon file based on the .lnk file name
+                    string fileName = Path.GetFileNameWithoutExtension(file) + ".png";
+                    string filePath = Path.Combine("C:\\ProgramData\\Startify\\IconTemp", fileName);
+
+                    // Save the icon file to the destination folder using a FileStream
+                    using (FileStream stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        encoder.Save(stream);
+                    }
+
+                    string escapedFilePath = Uri.EscapeDataString(filePath);
+
+                    // Return the URI of the icon file as a string
+                    return "file:///" + escapedFilePath;
                 }
             }
-            catch { return null; }
+            catch
+            {
+                string none = "ms-appx:///Assets/placeholder.png";
+                return none; 
+            }
         }
 
         [DllImport("shell32.dll", EntryPoint = "#261",
