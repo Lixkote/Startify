@@ -58,5 +58,104 @@ namespace WPF.Views
             Hide();
         }
 
+        ObservableCollection<StartMenuEntry> Programs = new ObservableCollection<StartMenuEntry>();
+        ObservableCollection<StartMenuLink> Results = new ObservableCollection<StartMenuLink>();
+
+        private void StartMenuIsland_Loaded(object sender, RoutedEventArgs e)
+        {
+            // this hides hibernation button if it should be hiddeen
+            // put the hibernation hidding code here... //
+            // this is responsible for filling the xaml listview with programs and shit
+            string programs = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonStartMenu), "Programs");
+            GetPrograms(programs);
+            programs = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.StartMenu), "Programs");
+            GetPrograms(programs);
+            Programs = new ObservableCollection<StartMenuEntry>(Programs.OrderBy(x => x.Title));
+
+            // Get the StartPlaceholder object from the WindowsXamlHost element
+            var startPlaceholder = StartMenuIslandh.Child as ShellApp.Shell.Start.StartPlaceholder;
+
+            // Find the ListView element by its name
+            var allAppsListView = startPlaceholder.FindName("AllAppsListView") as Windows.UI.Xaml.Controls.ListView;
+
+            // Set the ItemsSource property of the ListView element to Programs
+            allAppsListView.ItemsSource = Programs;
+
+
+
+
+
+        }
+
+
+        private void GetPrograms(string directory)
+        {
+            foreach (string f in Directory.GetFiles(directory))
+            {
+                if (System.IO.Path.GetExtension(f) != ".ini")
+                {
+                    Programs.Add(new StartMenuLink
+                    {
+                        Title = System.IO.Path.GetFileNameWithoutExtension(f),
+                        Icon = IconHelper.GetFileIcon(f),
+                        Link = f
+                    });
+                }
+            }
+            GetProgramsRecurse(directory);
+        }
+        private void GetProgramsRecurse(string directory, StartMenuDirectory parent = null)
+        {
+            bool hasParent = parent != null;
+            foreach (string d in Directory.GetDirectories(directory))
+            {
+                StartMenuDirectory folderEntry = null;
+                if (!hasParent)
+                {
+                    folderEntry = Programs.FirstOrDefault(x => x.Title == new DirectoryInfo(d).Name) as StartMenuDirectory;
+                }
+                if (folderEntry == null)
+                {
+                    folderEntry = new StartMenuDirectory
+                    {
+                        Title = new DirectoryInfo(d).Name,
+                        Links = new ObservableCollection<StartMenuLink>(),
+                        Directories = new ObservableCollection<StartMenuDirectory>(),
+                        Link = d,
+                        Icon = IconHelper.GetFolderIcon(d)
+                    };
+                }
+
+                GetProgramsRecurse(d, folderEntry);
+                foreach (string f in Directory.GetFiles(d))
+                {
+                    folderEntry.HasChildren = true;
+                    if (System.IO.Path.GetExtension(f) != ".ini")
+                    {
+                        folderEntry.Links.Add(new StartMenuLink
+                        {
+                            Title = System.IO.Path.GetFileNameWithoutExtension(f),
+                            Icon = IconHelper.GetFileIcon(f),
+                            Link = f
+                        });
+                    }
+                }
+
+                if (!hasParent)
+                {
+                    if (!Programs.Contains(folderEntry))
+                    {
+                        Programs.Add(folderEntry);
+                    }
+                }
+                else
+                {
+                    parent.Directories.Add(folderEntry);
+                }
+            }
+        }
+
+
+
     }
 }

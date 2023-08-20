@@ -51,5 +51,5 @@
             </Storyboard>
         </ResourceDictionary>
     </Window.Resources>
-    <xamlhost:WindowsXamlHost InitialTypeName="ShellApp.Shell.Start.StartPlaceholder" />
+    <xamlhost:WindowsXamlHost x:Name="StartMenuIslandh" InitialTypeName="ShellApp.Shell.Start.StartPlaceholder" Loaded="StartMenuIsland_Loaded"/>
 </Window>
