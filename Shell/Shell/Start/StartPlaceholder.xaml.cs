@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Windows.ApplicationModel.Contacts;
 using Windows.Storage;
@@ -48,11 +49,6 @@ namespace ShellApp.Shell.Start
 
         }
 
-        private void PowerButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
-        {
-
-        }
-
         private async void SettingsButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             await Windows.System.Launcher.LaunchUriAsync(new Uri("ms-settings:"));
@@ -74,26 +70,6 @@ namespace ShellApp.Shell.Start
 
             // Launch the folder in the default file explorer app
             await Launcher.LaunchFolderAsync(docsFolder);
-        }
-
-        private void HibernateMenuButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
-        {
-            //Nothing here as i need to bind this action from WPF part of the app
-        }
-
-        private void SleepMenuButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
-        {
-            //Nothing here as i need to bind this action from WPF part of the app
-        }
-
-        private void PowerMenuButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
-        {
-            ShutdownManager.BeginShutdown(ShutdownKind.Shutdown, TimeSpan.Zero);
-        }
-
-        private void RestartMenuButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
-        {
-            ShutdownManager.BeginShutdown(ShutdownKind.Restart, TimeSpan.Zero);
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using Microsoft.Toolkit.Wpf.UI.XamlHost;
+﻿using IWshRuntimeLibrary;
+using Microsoft.Toolkit.Wpf.UI.XamlHost;
+using Microsoft.Win32;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -10,6 +12,7 @@ using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
+using Windows.System;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using WPF.Helpers;
@@ -66,9 +69,7 @@ namespace WPF.Views
 
         private void StartMenuIsland_Loaded(object sender, RoutedEventArgs e)
         {
-            // this hides hibernation button if it should be hiddeen
-            // put the hibernation hidding code here... //
-            // this is responsible for filling the xaml listview with programs and shit
+            // this is responsible for filling the xaml listview with programs and folders
             string programs = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonStartMenu), "Programs");
             GetPrograms(programs);
             programs = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.StartMenu), "Programs");
@@ -83,14 +84,90 @@ namespace WPF.Views
 
             // Set the ItemsSource property of the ListView element to Programs
             allAppsListView.ItemsSource = Programs;
-
-            
-
-
+            // Assign it to the ItemClick property of your UWP ListView control
+            allAppsListView.ItemClick += launchhandler;
 
 
+            //////////////////////////////////////////////////////////////////////////////////
+            /// Set power button actions and hibernate item visibility.
+            //////////////////////////////////////////////////////////////////////////////////
+
+            // Find the buttons by its name
+            var hibernate = startPlaceholder.FindName("HibernateMenuButton") as Windows.UI.Xaml.Controls.MenuFlyoutItem;
+            var sleep = startPlaceholder.FindName("SleepMenuButton") as Windows.UI.Xaml.Controls.MenuFlyoutItem;
+            var restart = startPlaceholder.FindName("RestartMenuButton") as Windows.UI.Xaml.Controls.MenuFlyoutItem;
+            var power = startPlaceholder.FindName("PowerMenuButton") as Windows.UI.Xaml.Controls.MenuFlyoutItem;
+
+            // Determine if Hibernate button should be shown.
+
+            // Open the registry key for power settings
+            RegistryKey powerKey = Registry.LocalMachine.OpenSubKey("SYSTEM\\CurrentControlSet\\Control\\Power");
+
+            // Get the value of HibernateEnabled
+            int hibernateValue = (int)powerKey.GetValue("HibernateEnabledDefault");
+
+            // very epic check 
+            if (hibernateValue == 1)
+            {
+                hibernate.Visibility = Windows.UI.Xaml.Visibility.Visible;
+            }
+            else
+            {
+                hibernate.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+            }
+            hibernate.Click += async (sender, e) => await HibernateAsync();
+            sleep.Click += async (sender, e) => await SleepAsync();
+            power.Click += async (sender, e) => await ShutdownAsync();
+            restart.Click += async (sender, e) => await RestartAsync();
 
 
+
+
+        }
+
+        private void launchhandler(object sender, ItemClickEventArgs e)
+        {
+            StartMenuEntry clickedItem = e.ClickedItem as StartMenuEntry;
+            // Get the index of the clicked item in the ObservableCollection
+            int index = Programs.IndexOf(clickedItem);
+
+            // Get the path of the clicked item from the ObservableCollection
+            string path = Programs[index].Path;
+
+            // Do something with the index and path
+            this.Hide();
+            Process.Start(new ProcessStartInfo(path) { UseShellExecute = true });
+        }
+
+
+        private async Task HibernateAsync()
+        {
+            System.Windows.Forms.Application.SetSuspendState(System.Windows.Forms.PowerState.Hibernate, true, true);
+        }
+
+        private async Task SleepAsync()
+        {
+            System.Windows.Forms.Application.SetSuspendState(System.Windows.Forms.PowerState.Suspend, true, true);
+        }
+        private async Task ShutdownAsync()
+        {
+            System.Diagnostics.Process.Start("shutdown.exe", "-s -t 0");
+        }
+        private async Task RestartAsync()
+        {
+            System.Diagnostics.Process.Start("shutdown.exe", "-r -t 0");
+        }
+
+        public static bool IsHibernateEnabled()
+        {
+            // Open the registry key for power settings
+            RegistryKey powerKey = Registry.LocalMachine.OpenSubKey("SYSTEM\\CurrentControlSet\\Control\\Power");
+
+            // Get the value of HibernateEnabled
+            int hibernateValue = (int)powerKey.GetValue("HibernateEnabled");
+
+            // Return true if HibernateEnabled is 1, false otherwise
+            return hibernateValue == 1;
         }
 
 
@@ -104,6 +181,7 @@ namespace WPF.Views
                     {
                         Title = System.IO.Path.GetFileNameWithoutExtension(f),
                         Link = f,
+                        Path = System.IO.Path.GetFullPath(f),
                         Icon = new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri(uriString: IconHelper.GetFileIcon(f)))
                     });
                 }
@@ -125,6 +203,7 @@ namespace WPF.Views
                     folderEntry = new StartMenuDirectory
                     {
                         Title = new DirectoryInfo(d).Name,
+                        Path = System.IO.Path.GetFullPath(d),
                         Links = new ObservableCollection<StartMenuLink>(),
                         Directories = new ObservableCollection<StartMenuDirectory>(),
                         Link = d,

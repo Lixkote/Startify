@@ -9,6 +9,8 @@
     <Platforms>AnyCPU;x64</Platforms>
     <StartupObject>WPF.Program</StartupObject>
     <UseWindowsForms>True</UseWindowsForms>
+    <ApplicationIcon>startify.ico</ApplicationIcon>
+    <AssemblyName>StartifyMain</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
@@ -21,6 +23,10 @@
       <Isolated>false</Isolated>
       <EmbedInteropTypes>true</EmbedInteropTypes>
     </COMReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="startify.ico" />
   </ItemGroup>
 
   <ItemGroup>

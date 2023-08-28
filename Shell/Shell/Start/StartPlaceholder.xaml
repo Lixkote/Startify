@@ -164,25 +164,25 @@
                         Padding="0"
                         CornerRadius="5"
                         Background="Transparent"
-                        BorderBrush="Transparent" Margin="5,5,5,5" Click="PowerButton_Click">
+                        BorderBrush="Transparent" Margin="5,5,5,5">
                     <Button.Flyout>
                         <MenuFlyout>
-                            <MenuFlyoutItem x:Name="HibernateMenuButton" Text="Hibernate" Click="HibernateMenuButton_Click">
+                            <MenuFlyoutItem x:Name="HibernateMenuButton" Text="Hibernate">
                                 <MenuFlyoutItem.Icon>
-                                    <FontIcon Glyph=""/>
+                                    <FontIcon Glyph=""/>
                                 </MenuFlyoutItem.Icon>
                             </MenuFlyoutItem>
-                            <MenuFlyoutItem x:Name="SleepMenuButton" Text="Sleep" Click="SleepMenuButton_Click">
+                            <MenuFlyoutItem x:Name="SleepMenuButton" Text="Sleep">
                                 <MenuFlyoutItem.Icon>
                                     <FontIcon Glyph=""/>
                                 </MenuFlyoutItem.Icon>
                             </MenuFlyoutItem>
-                            <MenuFlyoutItem x:Name="PowerMenuButton" Text="Power" Click="PowerMenuButton_Click">
+                            <MenuFlyoutItem x:Name="PowerMenuButton" Text="Power">
                                 <MenuFlyoutItem.Icon>
                                     <FontIcon Glyph=""/>
                                 </MenuFlyoutItem.Icon>
                             </MenuFlyoutItem>
-                            <MenuFlyoutItem x:Name="RestartMenuButton" Text="Restart" Click="RestartMenuButton_Click">
+                            <MenuFlyoutItem x:Name="RestartMenuButton" Text="Restart">
                                 <MenuFlyoutItem.Icon>
                                     <FontIcon Glyph=""/>
                                 </MenuFlyoutItem.Icon>
@@ -209,9 +209,9 @@
                     <RowDefinition />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <TextBlock Text="Useful more or less"
-                           Style="{StaticResource BodyStrongTextBlockStyle}"
-                           Grid.Row="0" />
+                <TextBox Text="Very J"
+                           
+                           Grid.Row="0" Background="{x:Null}" BorderBrush="{x:Null}" HorizontalContentAlignment="Left" Padding="3,4,6,6" FontFamily="Segoe UI Variable Display Light" FontSize="14" FontWeight="Bold" />
                 <Grid Grid.Row="1"
                       RowSpacing="4"
                       ColumnSpacing="4">
@@ -337,9 +337,9 @@
                     <RowDefinition />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <TextBlock Text="Media"
-                           Style="{StaticResource BodyStrongTextBlockStyle}"
-                           Grid.Row="0" />
+                <TextBox Text="Tiles not work yet."
+           
+           Grid.Row="0" Background="{x:Null}" BorderBrush="{x:Null}" HorizontalContentAlignment="Left" Padding="3,4,6,6" FontFamily="Segoe UI Variable Small Semibold" FontSize="14" FontWeight="Bold" />
                 <Grid Grid.Row="1"
                       RowSpacing="4"
                       ColumnSpacing="4">
@@ -452,7 +452,7 @@
 
 
         </StackPanel>
-        <ListView  Style="{StaticResource AppListStyle}" CanDragItems="True" x:Name="AllAppsListView" ItemsSource="" Grid.Column="1" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+        <ListView Style="{StaticResource AppListStyle}" CanDragItems="True" IsItemClickEnabled="True" x:Name="AllAppsListView" ItemsSource="" Grid.Column="1" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
             <ListView.ItemTemplate>
                 <DataTemplate> 
                     <StackPanel Orientation="Horizontal">

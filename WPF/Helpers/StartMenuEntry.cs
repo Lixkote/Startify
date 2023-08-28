@@ -16,6 +16,7 @@ namespace WPF.Helpers
     {
         public string Alph { get { return Title[0].ToString(); } }
         public string Title { get; set; }
+        public string Path { get; set; }
         public Windows.UI.Xaml.Media.Imaging.BitmapImage Icon { get; set; }
         public string Iconalt { get; set; }
     }
