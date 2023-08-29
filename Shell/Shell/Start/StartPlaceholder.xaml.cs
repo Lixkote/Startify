@@ -70,6 +70,7 @@ namespace ShellApp.Shell.Start
 
             // Launch the folder in the default file explorer app
             await Launcher.LaunchFolderAsync(docsFolder);
+
         }
     }
 }

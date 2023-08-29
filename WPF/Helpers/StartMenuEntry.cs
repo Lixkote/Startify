@@ -17,6 +17,7 @@ namespace WPF.Helpers
         public string Alph { get { return Title[0].ToString(); } }
         public string Title { get; set; }
         public string Path { get; set; }
+        public string PathUWP { get; set; }
         public Windows.UI.Xaml.Media.Imaging.BitmapImage Icon { get; set; }
         public string Iconalt { get; set; }
     }
@@ -32,7 +33,15 @@ namespace WPF.Helpers
         public bool AllowOpenLocation { get; set; }
     }
 
-public enum ResultType
+    public class GroupInfoList : List<object>
+    {
+        public GroupInfoList(IEnumerable<object> items) : base(items)
+        {
+        }
+        public object Key { get; set; }
+    }
+
+    public enum ResultType
     {
         Files,
         Apps

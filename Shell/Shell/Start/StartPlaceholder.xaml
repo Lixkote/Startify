@@ -2,12 +2,14 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="using:ShellApp.Shell.Start"
+             xmlns:data="using:System.Linq.Expressions"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" Height="700" Width="700">
 
     <UserControl.Resources>
-        <ResourceDictionary>
+        <CollectionViewSource x:Name="cvs" x:Key="cvs" IsSourceGrouped="True" />
+        <ResourceDictionary x:Key="h">
             
             <ResourceDictionary.MergedDictionaries>
 
@@ -452,7 +454,7 @@
 
 
         </StackPanel>
-        <ListView Style="{StaticResource AppListStyle}" CanDragItems="True" IsItemClickEnabled="True" x:Name="AllAppsListView" ItemsSource="" Grid.Column="1" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+        <ListView ItemContainerStyle="{StaticResource ListViewItemContainerStyle1}" x:FieldModifier="public" CanDragItems="True" IsItemClickEnabled="True" x:Name="AllAppsListView" ItemsSource="{Binding Source={StaticResource cvs}}" Grid.Column="1" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="0,20,0,0">
             <ListView.ItemTemplate>
                 <DataTemplate> 
                     <StackPanel Orientation="Horizontal">
@@ -461,17 +463,43 @@
                     </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
-            <ListView.GroupStyle>
-                <GroupStyle >
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <ItemsStackPanel AreStickyGroupHeadersEnabled="True"/>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+            <ItemsControl.GroupStyle>
+                <GroupStyle>
                     <GroupStyle.HeaderTemplate>
                         <DataTemplate>
-                            <Border >
-                                <TextBlock Text="very j groups not addded yet" Style="{StaticResource BodyStrongTextBlockStyle}"/>
-                            </Border>
+                            <TextBlock Text="{Binding Key}"
+                           FontSize="14"
+                           FontFamily="Segoe UI Variable Display" VerticalAlignment="Stretch" HorizontalAlignment="Left" Margin="12,0,0,0"/>
                         </DataTemplate>
                     </GroupStyle.HeaderTemplate>
+                    <GroupStyle.HeaderContainerStyle>
+                        <Style TargetType="ListViewHeaderItem">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListViewHeaderItem">
+                                        <ContentPresenter
+                                            x:Name="ContentPresenter"
+                                            Background="Transparent"
+                                            Margin="0"
+                                            HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                            VerticalContentAlignment="Stretch"
+                                            Content="{TemplateBinding Content}"
+                                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                                            ContentTransitions="{TemplateBinding ContentTransitions}" Height="24" />
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </GroupStyle.HeaderContainerStyle>
+
+
                 </GroupStyle>
-            </ListView.GroupStyle>
+            </ItemsControl.GroupStyle>
         </ListView>
 
     </Grid>

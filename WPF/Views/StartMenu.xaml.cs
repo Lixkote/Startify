@@ -1,7 +1,9 @@
 ﻿using IWshRuntimeLibrary;
 using Microsoft.Toolkit.Wpf.UI.XamlHost;
 using Microsoft.Win32;
+using ShellApp;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
@@ -9,9 +11,13 @@ using System.Linq;
 using System.Security.Policy;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
+using Windows.ApplicationModel;
+using Windows.ApplicationModel.Core;
+using Windows.Management.Deployment;
 using Windows.System;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
@@ -67,6 +73,8 @@ namespace WPF.Views
         ObservableCollection<StartMenuEntry> Programs = new ObservableCollection<StartMenuEntry>();
         ObservableCollection<StartMenuLink> Results = new ObservableCollection<StartMenuLink>();
 
+
+
         private void StartMenuIsland_Loaded(object sender, RoutedEventArgs e)
         {
             // this is responsible for filling the xaml listview with programs and folders
@@ -76,16 +84,33 @@ namespace WPF.Views
             GetPrograms(programs);
             Programs = new ObservableCollection<StartMenuEntry>(Programs.OrderBy(x => x.Title));
 
+
+            //Get the installed UWP apps and display them on the xaml App list
+            GetUWPApps();
+
             // Get the StartPlaceholder object from the WindowsXamlHost element
             var startPlaceholder = StartMenuIslandh.Child as ShellApp.Shell.Start.StartPlaceholder;
 
             // Find the ListView element by its name
             var allAppsListView = startPlaceholder.FindName("AllAppsListView") as Windows.UI.Xaml.Controls.ListView;
 
+            // Find the CollectionViewSource element by its name
+            var cvs = startPlaceholder.FindName("cvs") as Windows.UI.Xaml.Data.CollectionViewSource;
+
             // Set the ItemsSource property of the ListView element to Programs
-            allAppsListView.ItemsSource = Programs;
+            // allAppsListView.ItemsSource = Programs;
             // Assign it to the ItemClick property of your UWP ListView control
             allAppsListView.ItemClick += launchhandler;
+
+            var groups = from p in Programs
+                         orderby p.Alph
+                         group p by char.IsDigit(p.Alph[0]) ? "#" : p.Alph into g
+                         select g;
+
+            cvs.Source = groups;
+
+
+
 
 
             //////////////////////////////////////////////////////////////////////////////////
@@ -125,7 +150,20 @@ namespace WPF.Views
 
         }
 
-        private void launchhandler(object sender, ItemClickEventArgs e)
+
+        static async Task<AppListEntry> GetAppByPackageFamilyNameAsync(string packageFamilyName)
+        {
+            var pkgManager = new PackageManager();
+            var pkg = pkgManager.FindPackagesForUser("", packageFamilyName).FirstOrDefault();
+
+            if (pkg == null) return null;
+
+            var apps = await pkg.GetAppListEntriesAsync();
+            var firstApp = apps.FirstOrDefault();
+            return firstApp;
+        }
+
+        private async void launchhandler(object sender, ItemClickEventArgs e)
         {
             StartMenuEntry clickedItem = e.ClickedItem as StartMenuEntry;
             // Get the index of the clicked item in the ObservableCollection
@@ -133,10 +171,26 @@ namespace WPF.Views
 
             // Get the path of the clicked item from the ObservableCollection
             string path = Programs[index].Path;
+            string pathuwp = Programs[index].PathUWP;
 
             // Do something with the index and path
             this.Hide();
-            Process.Start(new ProcessStartInfo(path) { UseShellExecute = true });
+            if (path != null)
+            {
+                Process.Start(new ProcessStartInfo(path) { UseShellExecute = true });
+            }
+            if (pathuwp != null)
+            {
+                var app = await GetAppByPackageFamilyNameAsync(pathuwp);
+                if (app != null) 
+                { 
+                    await app.LaunchAsync(); 
+                }
+                else
+                {
+                    System.Windows.MessageBox.Show("This UWP app couldn't be launched.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
         }
 
 
@@ -188,6 +242,60 @@ namespace WPF.Views
             }
             GetProgramsRecurse(directory);
         }
+
+
+
+    private void GetUWPApps()
+    {
+        // Create a PackageManager object
+        PackageManager packageManager = new PackageManager();
+
+        // Get the user SID
+        string userSid = System.Security.Principal.WindowsIdentity.GetCurrent().User.Value;
+
+        // Get the packages for the current user
+        var packages = packageManager.FindPackagesForUser(userSid);
+
+        // Create a HashSet to store the added package names
+        HashSet<string> addedPackages = new HashSet<string>();
+
+        // Loop through the packages and add them to the Apps collection
+        foreach (var package in packages)
+        {
+            if (package.IsFramework == false && package.IsResourcePackage == false && package.IsOptional == false && package.IsBundle == false)
+            {
+            // Get the app list entries for the package
+            var appListEntries = package.GetAppListEntriesAsync().GetAwaiter().GetResult();
+
+            // Loop through the app list entries and find the default one
+            foreach (var appListEntry in appListEntries)
+            {
+                if (appListEntry != null)
+                {
+                    string packageName = package.Id.Name;
+                    {
+                        // Check if the package name has already been added to the Apps collection
+                        if (!addedPackages.Contains(packageName))
+                        {
+                                // Add the package name to the HashSet
+                                addedPackages.Add(packageName);
+
+                                // Add the app entry to the Programs collection
+                                Programs.Add(new StartMenuLink()
+                                {
+                                    Title = appListEntry.DisplayInfo.DisplayName,
+                                    Icon = new Windows.UI.Xaml.Media.Imaging.BitmapImage(package.Logo),
+                                    PathUWP = package.Id.FamilyName
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
         private void GetProgramsRecurse(string directory, StartMenuDirectory parent = null)
         {
             bool hasParent = parent != null;
