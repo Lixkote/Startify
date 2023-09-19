@@ -111,8 +111,6 @@ namespace WPF.Helpers
             return CallNextHookEx(_mouseHook, code, wParam, lParam);
         }
 
-        private bool isWinKeyDown = false;
-
         int KeyEvents(int code, IntPtr wParam, IntPtr lParam)
         {
             if (code < 0)
@@ -121,37 +119,14 @@ namespace WPF.Helpers
             if (code == this.HC_ACTION)
             {
                 KBDLLHOOKSTRUCT objKeyInfo = (KBDLLHOOKSTRUCT)Marshal.PtrToStructure(lParam, typeof(KBDLLHOOKSTRUCT));
-
-                const int WM_KEYDOWN = 0x0100;
-                const int WM_KEYUP = 0x0101;
-
-                if (wParam == (IntPtr)WM_KEYDOWN)
+                if (wParam == (IntPtr)256 && (objKeyInfo.key == Keys.RWin || objKeyInfo.key == Keys.LWin))
                 {
-                    if (objKeyInfo.key == Keys.RWin || objKeyInfo.key == Keys.LWin)
-                    {
-                        // Windows key is pressed down
-                        isWinKeyDown = true;
-                    }
-                }
-                else if (wParam == (IntPtr)WM_KEYUP)
-                {
-                    if (objKeyInfo.key == Keys.RWin || objKeyInfo.key == Keys.LWin)
-                    {
-                        if (isWinKeyDown)
-                        {
-                            // Windows key was pressed once and released
-                            StartTriggered(this, null);
-                            isWinKeyDown = false;
-                            return 1;
-                        }
-                    }
+                    StartTriggered(this, null);
+                    return 1;
                 }
             }
-
             return CallNextHookEx(_mouseHook, code, wParam, lParam);
         }
-
-
 
         public void Close()
         {
