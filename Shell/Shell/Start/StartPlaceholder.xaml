@@ -22,7 +22,7 @@
 
                 <ResourceDictionary Source="/Shell/ShellResources.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            <Storyboard x:Name="OpenStartAnimation">
+            <Storyboard x:Name="openstartanimation">
                 <DoubleAnimation Storyboard.TargetName="translateTransform"
                                  Storyboard.TargetProperty="Y"
                                  From="600"
@@ -34,7 +34,7 @@
                     </DoubleAnimation.EasingFunction>
                 </DoubleAnimation>
             </Storyboard>
-            <Storyboard x:Name="CloseStartAnimation">
+            <Storyboard x:Name="closestartanimation">
                 <DoubleAnimation Storyboard.TargetName="translateTransform"
                                  Storyboard.TargetProperty="Y"
                                  From="0"

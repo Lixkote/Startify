@@ -27,7 +27,7 @@
                 <DoubleAnimation 
                      Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
                      Storyboard.Target="{Binding ElementName=startmenubasewindow}"        
-                     From="670"
+                     From="700"
                      To="0"
                      Duration="0:0:0.225">
                     <DoubleAnimation.EasingFunction>
@@ -41,7 +41,7 @@
                      Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
                      Storyboard.Target="{Binding ElementName=startmenubasewindow}"        
                      From="0"
-                     To="670"
+                     To="700"
                      Duration="0:0:0.225">
                     <DoubleAnimation.EasingFunction>
                         <e:ExponentialEase Exponent="8"

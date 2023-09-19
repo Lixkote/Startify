@@ -42,6 +42,9 @@ namespace WPF.Views
             var desktopWorkingArea = SystemParameters.WorkArea;
             Left = 0;
             Top = desktopWorkingArea.Bottom - Height;
+            // Subscribe to the AnimationStarted event
+            // Get the StartPlaceholder object from the WindowsXamlHost element
+            var startPlaceholder = StartMenuIslandh.Child as ShellApp.Shell.Start.StartPlaceholder;
         }
 
         void OnStartTriggered(object sender, EventArgs e)
@@ -51,6 +54,9 @@ namespace WPF.Views
             if (Visibility == Visibility.Visible)
             {
                 Show();
+                // Get the StartPlaceholder object from the WindowsXamlHost element
+                var startPlaceholder = StartMenuIslandh.Child as ShellApp.Shell.Start.StartPlaceholder;
+                startPlaceholder.StartOpenStartAnimation();
                 //Storyboard closestartanim = (Storyboard)FindResource("openstartanim");
                 //closestartanim.Begin();
             }
@@ -60,6 +66,8 @@ namespace WPF.Views
         {
             Screen screen = Screen.FromPoint(System.Windows.Forms.Control.MousePosition);
             this.Left = screen.WorkingArea.Left;
+            var startPlaceholder = StartMenuIslandh.Child as ShellApp.Shell.Start.StartPlaceholder;
+            startPlaceholder.StartOpenStartAnimation();
         }
 
         private void Menu_Deactivated(object sender, EventArgs e)
@@ -67,6 +75,8 @@ namespace WPF.Views
             // Get the storyboard from the resources
             //Storyboard closestartanim = (Storyboard)FindResource("closestartanim");
             //closestartanim.Begin();
+            var startPlaceholder = StartMenuIslandh.Child as ShellApp.Shell.Start.StartPlaceholder;
+            startPlaceholder.StartCloseStartAnimation();
             Visibility = Visibility.Hidden;
             Hide();
         }

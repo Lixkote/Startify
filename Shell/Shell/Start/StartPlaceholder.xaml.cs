@@ -22,12 +22,23 @@ namespace ShellApp.Shell.Start
     /// </summary>
     public sealed partial class StartPlaceholder : UserControl
     {
-        public static Storyboard openstartanimation { get; set; }
-        public static Storyboard closestartanimation { get; set; }
+        public event EventHandler AnimationStarted;
         public StartPlaceholder()
         {
             this.InitializeComponent();
             this.Loaded += Start_Loaded;
+        }
+
+        public void StartCloseStartAnimation()
+        {
+            closestartanimation.Begin();
+            AnimationStarted?.Invoke(this, EventArgs.Empty);
+        }
+
+        public void StartOpenStartAnimation()
+        {
+            openstartanimation.Begin();
+            AnimationStarted?.Invoke(this, EventArgs.Empty);
         }
 
         private async void Start_Loaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
