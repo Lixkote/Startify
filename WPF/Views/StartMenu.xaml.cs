@@ -38,6 +38,7 @@ namespace WPF.Views
             InitializeComponent();
             _listener = new StartMenuListener();
             _listener.StartTriggered += OnStartTriggered;
+            _listener.FindAndActivateWindow();
             var desktopWorkingArea = SystemParameters.WorkArea;
             Left = 0;
             Top = desktopWorkingArea.Bottom - Height;

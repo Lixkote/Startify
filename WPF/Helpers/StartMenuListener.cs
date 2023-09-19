@@ -29,19 +29,58 @@ namespace WPF.Helpers
         IntPtr _mouseHook = IntPtr.Zero;
         IntPtr _keyHook = IntPtr.Zero;
 
-        private enum SW
+        // Define the ShowWindowCommand enum
+        enum ShowWindowCommand
         {
-            SW_HIDE = 0,
-            SW_SHOWNORMAL = 1,
-            SW_SHOWMINIMIZED = 2,
-            SW_SHOWMAXIMIZED = 3,
-            SW_SHOWNOACTIVATE = 4,
-            SW_RESTORE = 9,
-            SW_SHOWDEFAULT = 10,
+            Hide = 0,
+            Normal = 1,
+            Minimized = 2,
+            Maximized = 3,
+            // Other values omitted for brevity
         }
-
+        public const int SW_RESTORE = 2;
 
         public event EventHandler<EventArgs> StartTriggered;
+
+        public static IntPtr FindWindowByCaptionAndClass(string caption, string className)
+        {
+            IntPtr shellTrayWnd = FindWindowExA(IntPtr.Zero, IntPtr.Zero, "Shell_TrayWnd", null);
+
+            if (shellTrayWnd != IntPtr.Zero)
+            {
+                IntPtr startButton = FindWindowExA(shellTrayWnd, IntPtr.Zero, className, caption);
+
+                if (startButton != IntPtr.Zero)
+                {
+                    // You've found the window; you can now interact with it using its handle.
+                    return startButton;
+                }
+            }
+
+            return IntPtr.Zero; // Window not found
+        }
+
+        public void FindAndActivateWindow()
+        {
+            string caption = "Start";
+            string className = "Start";
+
+            IntPtr windowHandle = FindWindowByCaptionAndClass(caption, className);
+
+            if (windowHandle != IntPtr.Zero)
+            {
+                // Unhide the window (restore it)
+                ShowWindow(windowHandle, SW_RESTORE);
+
+                // Bring the window to the foreground
+                SetForegroundWindow(windowHandle);
+            }
+            else
+            {
+                MessageBox.Show("Error hooking Windows 11's Start Button :C");
+            }
+        }
+
 
         public int MouseEvents(int code, IntPtr wParam, IntPtr lParam)
         {
@@ -63,9 +102,6 @@ namespace WPF.Helpers
 
                     if (win32ClassName == "Start")
                     {
-                        // Show the hidden "Start" window
-                        ShowWindow(win, (int)SW.SW_SHOWNORMAL);
-
                         // Trigger your event
                         StartTriggered(this, null);
                         return 1;
@@ -100,6 +136,18 @@ namespace WPF.Helpers
             }
         }
         public delegate int HookProc(int code, IntPtr wParam, IntPtr lParam);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        public static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool SetForegroundWindow(IntPtr hWnd);
+
+
+        [DllImport("user32.dll", CharSet = CharSet.Ansi, SetLastError = true)]
+        public static extern IntPtr FindWindowExA(IntPtr hwndParent, IntPtr hwndChildAfter, string lpszClass, string lpszWindow);
+
 
         [DllImport("user32.dll")]
         private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
