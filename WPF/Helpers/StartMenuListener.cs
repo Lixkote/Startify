@@ -29,14 +29,26 @@ namespace WPF.Helpers
         IntPtr _mouseHook = IntPtr.Zero;
         IntPtr _keyHook = IntPtr.Zero;
 
+        private enum SW
+        {
+            SW_HIDE = 0,
+            SW_SHOWNORMAL = 1,
+            SW_SHOWMINIMIZED = 2,
+            SW_SHOWMAXIMIZED = 3,
+            SW_SHOWNOACTIVATE = 4,
+            SW_RESTORE = 9,
+            SW_SHOWDEFAULT = 10,
+        }
+
+
         public event EventHandler<EventArgs> StartTriggered;
 
-        int MouseEvents(int code, IntPtr wParam, IntPtr lParam)
+        public int MouseEvents(int code, IntPtr wParam, IntPtr lParam)
         {
             if (code < 0)
                 return CallNextHookEx(_mouseHook, code, wParam, lParam);
 
-            if (code == this.HC_ACTION)
+            if (code == HC_ACTION)
             {
                 if (wParam.ToInt32() == (uint)WM.WM_LBUTTONDOWN)
                 {
@@ -44,8 +56,17 @@ namespace WPF.Helpers
                     ms = (MSLLHOOKSTRUCT)Marshal.PtrToStructure(lParam, typeof(MSLLHOOKSTRUCT));
                     IntPtr win = WindowFromPoint(ms.pt);
                     string title = GetWindowTextRaw(win);
-                    if (title == "Start")
+
+                    StringBuilder className = new StringBuilder(256);
+                    GetClassName(win, className, className.Capacity);
+                    string win32ClassName = className.ToString();
+
+                    if (win32ClassName == "Start")
                     {
+                        // Show the hidden "Start" window
+                        ShowWindow(win, (int)SW.SW_SHOWNORMAL);
+
+                        // Trigger your event
                         StartTriggered(this, null);
                         return 1;
                     }
@@ -53,6 +74,7 @@ namespace WPF.Helpers
             }
             return CallNextHookEx(_mouseHook, code, wParam, lParam);
         }
+
         int KeyEvents(int code, IntPtr wParam, IntPtr lParam)
         {
             if (code < 0)
@@ -78,6 +100,12 @@ namespace WPF.Helpers
             }
         }
         public delegate int HookProc(int code, IntPtr wParam, IntPtr lParam);
+
+        [DllImport("user32.dll")]
+        private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+        [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+        static extern int GetClassName(IntPtr hWnd, StringBuilder lpClassName, int nMaxCount);
 
         [System.Runtime.InteropServices.DllImport("user32.dll", EntryPoint = "SetWindowsHookEx", SetLastError = true)]
         public static extern IntPtr SetWindowsHookEx(int idHook, HookProc lpfn, IntPtr hMod, uint dwThreadId);
