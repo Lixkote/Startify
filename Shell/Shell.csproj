@@ -146,9 +146,11 @@
     <Content Include="Assets\LargeTile.scale-150.png" />
     <Content Include="Assets\LargeTile.scale-200.png" />
     <Content Include="Assets\LargeTile.scale-400.png" />
+    <Content Include="Assets\neon.jpg" />
     <Content Include="Assets\Notepad.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\nothing.jpg" />
     <Content Include="Assets\OneNote.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

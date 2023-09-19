@@ -6,7 +6,10 @@ using Windows.ApplicationModel.Contacts;
 using Windows.Storage;
 using Windows.Storage.Streams;
 using Windows.System;
+using Windows.UI.ViewManagement;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Media.Imaging;
 
@@ -45,6 +48,28 @@ namespace ShellApp.Shell.Start
                 // Set the source of the BitmapImage from the stream
                 await bitmapImage.SetSourceAsync(imageStream);
                 UserAV.Source = bitmapImage;
+            }
+            // Get the current theme of the app
+            var currentTheme = Application.Current.RequestedTheme;
+            if (IsColorizationEnabled.Text == "1" && currentTheme == ApplicationTheme.Dark)
+            {
+                try
+                {
+                    // Get the current system accent color
+                    var uiSettings = new UISettings();
+                    var accentColor = uiSettings.GetColorValue(UIColorType.AccentDark2);
+
+                    // Set the TintColor and FallbackColor of the AcrylicBrush to the system accent color
+                    ((AcrylicBrush)Resources["halal"]).TintColor = accentColor;
+                    ((AcrylicBrush)Resources["halal"]).FallbackColor = accentColor;
+
+                    // Set the background of the startbackground element to the modified AcrylicBrush
+                    startbackground.Background = (AcrylicBrush)Resources["halal"];
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("Error applying accent color" + ex.Message);
+                }
             }
 
         }

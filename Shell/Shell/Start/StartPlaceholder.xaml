@@ -3,11 +3,18 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="using:ShellApp.Shell.Start"
              xmlns:data="using:System.Linq.Expressions"
+             xmlns:media="using:Windows.UI.Xaml.Media"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" Height="700" Width="700">
 
     <UserControl.Resources>
+        <media:AcrylicBrush x:Key="halal"
+                        BackgroundSource="Backdrop"
+                        TintOpacity="0.5"
+                        TintLuminosityOpacity="0.96"
+                        TintColor="Transparent"
+                        FallbackColor="Transparent" />
         <CollectionViewSource x:Name="cvs" x:Key="cvs" IsSourceGrouped="True" />
         <ResourceDictionary x:Key="h">
             
@@ -48,7 +55,7 @@
 
     
     
-    <Grid Background="{ThemeResource ShellAcrylicBrush}"
+    <Grid x:Name="startbackground" Background="{ThemeResource ShellAcrylicBrush}"
           BorderBrush="{ThemeResource SurfaceStrokeColorDefaultBrush}"
           BorderThickness="1,1,1,1"
           CornerRadius="10"
@@ -211,7 +218,7 @@
                     <RowDefinition />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <TextBox Text="Very J"
+                <TextBox Text="Personal"
                            
                            Grid.Row="0" Background="{x:Null}" BorderBrush="{x:Null}" HorizontalContentAlignment="Left" Padding="3,4,6,6" FontFamily="Segoe UI Variable Display Light" FontSize="14" FontWeight="Bold" />
                 <Grid Grid.Row="1"
@@ -339,7 +346,7 @@
                     <RowDefinition />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <TextBox Text="Tiles not work yet."
+                <TextBox Text="Multimedia"
            
            Grid.Row="0" Background="{x:Null}" BorderBrush="{x:Null}" HorizontalContentAlignment="Left" Padding="3,4,6,6" FontFamily="Segoe UI Variable Small Semibold" FontSize="14" FontWeight="Bold" />
                 <Grid Grid.Row="1"
@@ -375,13 +382,13 @@
                             VerticalContentAlignment="Stretch">
 
                         <Grid CornerRadius="4">
-                            <Image Source="/Assets/Tahna.jpg"
+                            <Image Source="/Assets/nothing.jpg"
                                    Stretch="UniformToFill"
                                    Margin="0,-15,0,0" />
                             <Grid Padding="10"
                                   HorizontalAlignment="Stretch"
                                   VerticalAlignment="Stretch"
-                                  RequestedTheme="Light">
+                                  RequestedTheme="Dark">
 
                                 <TextBlock Text="Photos"
                                            HorizontalAlignment="Left"
@@ -501,6 +508,7 @@
                 </GroupStyle>
             </ItemsControl.GroupStyle>
         </ListView>
+        <TextBlock x:Name="IsColorizationEnabled" Visibility="Visible" Grid.Column="2" HorizontalAlignment="Left" Margin="376,108,0,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
 
     </Grid>
 

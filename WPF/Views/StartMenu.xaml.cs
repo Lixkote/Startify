@@ -147,8 +147,12 @@ namespace WPF.Views
             restart.Click += async (sender, e) => await RestartAsync();
 
 
+            //Colorization dishery
+            var colorization = startPlaceholder.FindName("IsColorizationEnabled") as Windows.UI.Xaml.Controls.TextBlock;
+            RegistryKey themekey = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize");
 
-
+            int themevalue = (int)themekey.GetValue("ColorPrevalence");
+            colorization.Text = themevalue.ToString();
         }
 
 
