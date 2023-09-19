@@ -38,7 +38,7 @@ namespace WPF.Helpers
             Maximized = 3,
             // Other values omitted for brevity
         }
-        public const int SW_RESTORE = 2;
+        public const int restorewin = 1;
 
         public event EventHandler<EventArgs> StartTriggered;
 
@@ -70,7 +70,7 @@ namespace WPF.Helpers
             if (windowHandle != IntPtr.Zero)
             {
                 // Unhide the window (restore it)
-                ShowWindow(windowHandle, SW_RESTORE);
+                ShowWindow(windowHandle, restorewin);
 
                 // Bring the window to the foreground
                 SetForegroundWindow(windowHandle);
