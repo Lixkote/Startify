@@ -10,6 +10,9 @@
                                 TintLuminosityOpacity="0.9"
                                 TintColor="#FFF3F3F3"
                                 FallbackColor="#FFEEEEEE" />
+            <media:AcrylicBrush x:Key="CustomAcrylicInAppLuminosity" BackgroundSource="Backdrop"
+            TintOpacity="0.8" TintLuminosityOpacity="0" TintColor="SkyBlue" FallbackColor="SkyBlue" />
+
         </ResourceDictionary>
         <ResourceDictionary x:Key="Dark">
 
@@ -19,6 +22,9 @@
                                 TintLuminosityOpacity="0.96"
                                 TintColor="#FF202020"
                                 FallbackColor="#FF1C1C1C" />
+            <media:AcrylicBrush x:Key="CustomAcrylicInAppLuminosity" BackgroundSource="Backdrop"
+            TintOpacity="0.8" TintLuminosityOpacity="0" TintColor="SkyBlue" FallbackColor="SkyBlue" />
+
 
         </ResourceDictionary>
 

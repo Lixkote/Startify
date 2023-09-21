@@ -11,6 +11,8 @@
              mc:Ignorable="d" Height="700" Width="700">
 
     <UserControl.Resources>
+        <media:AcrylicBrush x:Key="CustomAcrylicInAppLuminosity" BackgroundSource="Backdrop"
+            TintOpacity="0.8" TintLuminosityOpacity="0" TintColor="Transparent" FallbackColor="PaleVioletRed" />
         <DataTemplate x:Key="AppD">
             <StackPanel Orientation="Horizontal">
                 <Image Source="{Binding Icon}" x:Name="AppListFolder" Width="24" Height="24" Stretch="Fill" HorizontalAlignment="Left" />
@@ -450,7 +452,7 @@
                             VerticalContentAlignment="Stretch">
 
                         <Grid CornerRadius="4">
-                            <Image Source="/Assets/nothing.jpg"
+                            <Image Source="/Assets/glassmorph.jpg"
                                    Stretch="UniformToFill"
                                    Margin="0,-15,0,0" />
                             <Grid Padding="10"

@@ -83,6 +83,8 @@ namespace ShellApp.Shell.Start
                     Debug.WriteLine("Error applying accent color" + ex.Message);
                 }
             }
+            // Cool acrylic demo
+            startbackground.Background = (AcrylicBrush)Resources["CustomAcrylicInAppLuminosity"];
 
         }
 
