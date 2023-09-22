@@ -2,6 +2,7 @@
 using Microsoft.Toolkit.Wpf.UI.XamlHost;
 using Microsoft.Win32;
 using ShellApp;
+using ShellApp.Shell.Start;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,6 +12,7 @@ using System.Linq;
 using System.Security.Policy;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Forms;
 using System.Windows.Input;
@@ -82,6 +84,7 @@ namespace WPF.Views
         }
 
         ObservableCollection<StartMenuEntry> Programs = new ObservableCollection<StartMenuEntry>();
+        ObservableCollection<StartMenuLink> Links = new ObservableCollection<StartMenuLink>();
         ObservableCollection<StartMenuLink> Results = new ObservableCollection<StartMenuLink>();
 
 
@@ -105,6 +108,9 @@ namespace WPF.Views
             // Find the ListView element by its name
             var allAppsListView = startPlaceholder.FindName("AllAppsListView") as Windows.UI.Xaml.Controls.ListView;
 
+            // Find the smaller ListView element by its name
+            var allAppsListViewFolder = startPlaceholder.FindName("DirectoryChildContainer") as Windows.UI.Xaml.Controls.ListView;
+
             // Find the CollectionViewSource element by its name
             var cvs = startPlaceholder.FindName("cvs") as Windows.UI.Xaml.Data.CollectionViewSource;
 
@@ -120,8 +126,7 @@ namespace WPF.Views
 
             cvs.Source = groups;
 
-
-
+            allAppsListView.Loaded += applistloaded;
 
 
             //////////////////////////////////////////////////////////////////////////////////
@@ -165,19 +170,31 @@ namespace WPF.Views
             colorization.Text = themevalue.ToString();
         }
 
-
-        static async Task<AppListEntry> GetAppByPackageFamilyNameAsync(string packageFamilyName)
+        private void applistloaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-            var pkgManager = new PackageManager();
-            var pkg = pkgManager.FindPackagesForUser("", packageFamilyName).FirstOrDefault();
+            try
+            {
+                // Get the StartPlaceholder object from the WindowsXamlHost element
+                var startPlaceholder = StartMenuIslandh.Child as ShellApp.Shell.Start.StartPlaceholder;
+                // Find the ListView element by its name
+                startPlaceholder.DirectoryChildClicked += launchhandleralt;
+            }
+            catch (Exception ex) 
+            {
+                System.Windows.MessageBox.Show(ex.ToString());
+            }
 
-            if (pkg == null) return null;
-
-            var apps = await pkg.GetAppListEntriesAsync();
-            var firstApp = apps.FirstOrDefault();
-            return firstApp;
         }
 
+        private async void launchhandleralt(object sender, ItemClickEventArgs e)
+        {
+            StartMenuLink clickedItem = e.ClickedItem as StartMenuLink;
+            // Get the index of the clicked item in the ObservableCollection
+            int index = Links.IndexOf(clickedItem);
+
+            System.Windows.MessageBox.Show("Not yet implemented :/");
+            
+        }
         private async void launchhandler(object sender, ItemClickEventArgs e)
         {
             StartMenuEntry clickedItem = e.ClickedItem as StartMenuEntry;
@@ -197,15 +214,26 @@ namespace WPF.Views
             if (pathuwp != null)
             {
                 var app = await GetAppByPackageFamilyNameAsync(pathuwp);
-                if (app != null) 
-                { 
-                    await app.LaunchAsync(); 
+                if (app != null)
+                {
+                    await app.LaunchAsync();
                 }
                 else
                 {
                     System.Windows.MessageBox.Show("This UWP app couldn't be launched.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
+        }
+        static async Task<AppListEntry> GetAppByPackageFamilyNameAsync(string packageFamilyName)
+        {
+            var pkgManager = new PackageManager();
+            var pkg = pkgManager.FindPackagesForUser("", packageFamilyName).FirstOrDefault();
+
+            if (pkg == null) return null;
+
+            var apps = await pkg.GetAppListEntriesAsync();
+            var firstApp = apps.FirstOrDefault();
+            return firstApp;
         }
 
 

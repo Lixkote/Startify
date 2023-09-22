@@ -11,69 +11,165 @@
              mc:Ignorable="d" Height="700" Width="700">
 
     <UserControl.Resources>
+        <ControlTemplate x:Key="ExpanderTemplate1" TargetType="muxc:Expander">
+            <Grid MaxWidth="{TemplateBinding MaxWidth}" MinWidth="{TemplateBinding MinWidth}">
+                <Grid.RowDefinitions>
+                    <RowDefinition x:Name="Row0" Height="Auto"/>
+                    <RowDefinition x:Name="Row1" Height="*"/>
+                </Grid.RowDefinitions>
+                <VisualStateManager.VisualStateGroups>
+                    <VisualStateGroup x:Name="ExpandStates">
+                        <VisualState x:Name="ExpandUp">
+                            <Storyboard>
+                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ExpanderContent" Storyboard.TargetProperty="Visibility">
+                                    <DiscreteObjectKeyFrame KeyTime="0" Value="Visible"/>
+                                </ObjectAnimationUsingKeyFrames>
+                                <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ExpanderContent" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.TranslateY)">
+                                    <DiscreteDoubleKeyFrame KeyTime="0" Value="{Binding TemplateSettings.ContentHeight, RelativeSource={RelativeSource Mode=TemplatedParent}}"/>
+                                    <SplineDoubleKeyFrame KeyTime="0:0:0.333" KeySpline="0.0, 0.0, 0.0, 1.0" Value="0"/>
+                                </DoubleAnimationUsingKeyFrames>
+                            </Storyboard>
+                        </VisualState>
+                        <VisualState x:Name="CollapseDown">
+                            <Storyboard>
+                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ExpanderContent" Storyboard.TargetProperty="Visibility">
+                                    <DiscreteObjectKeyFrame KeyTime="0:0:0.2" Value="Collapsed"/>
+                                </ObjectAnimationUsingKeyFrames>
+                                <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ExpanderContent" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.TranslateY)">
+                                    <DiscreteDoubleKeyFrame KeyTime="0" Value="0"/>
+                                    <SplineDoubleKeyFrame KeyTime="0:0:0.167" KeySpline="1.0, 1.0, 0.0, 1.0" Value="{Binding TemplateSettings.ContentHeight, RelativeSource={RelativeSource Mode=TemplatedParent}}"/>
+                                </DoubleAnimationUsingKeyFrames>
+                            </Storyboard>
+                        </VisualState>
+                        <VisualState x:Name="ExpandDown">
+                            <Storyboard>
+                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ExpanderContent" Storyboard.TargetProperty="Visibility">
+                                    <DiscreteObjectKeyFrame KeyTime="0" Value="Visible"/>
+                                </ObjectAnimationUsingKeyFrames>
+                                <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ExpanderContent" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.TranslateY)">
+                                    <DiscreteDoubleKeyFrame KeyTime="0" Value="{Binding TemplateSettings.NegativeContentHeight, RelativeSource={RelativeSource Mode=TemplatedParent}}"/>
+                                    <SplineDoubleKeyFrame KeyTime="0:0:0.333" KeySpline="0.0, 0.0, 0.0, 1.0" Value="0"/>
+                                </DoubleAnimationUsingKeyFrames>
+                            </Storyboard>
+                        </VisualState>
+                        <VisualState x:Name="CollapseUp">
+                            <Storyboard>
+                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ExpanderContent" Storyboard.TargetProperty="Visibility">
+                                    <DiscreteObjectKeyFrame KeyTime="0:0:0.167" Value="Collapsed"/>
+                                </ObjectAnimationUsingKeyFrames>
+                                <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ExpanderContent" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.TranslateY)">
+                                    <DiscreteDoubleKeyFrame KeyTime="0" Value="0"/>
+                                    <SplineDoubleKeyFrame KeyTime="0:0:0.167" KeySpline="1.0, 1.0, 0.0, 1.0" Value="{Binding TemplateSettings.NegativeContentHeight, RelativeSource={RelativeSource Mode=TemplatedParent}}"/>
+                                </DoubleAnimationUsingKeyFrames>
+                            </Storyboard>
+                        </VisualState>
+                    </VisualStateGroup>
+                    <VisualStateGroup x:Name="ExpandDirectionStates">
+                        <VisualState x:Name="Down"/>
+                        <VisualState x:Name="Up">
+                            <VisualState.Setters>
+                                <Setter Target="ExpanderHeader.Style" Value="{StaticResource ExpanderHeaderUpStyle}"/>
+                                <Setter Target="ExpanderContent.BorderThickness" Value="{StaticResource ExpanderContentUpBorderThickness}"/>
+                                <Setter Target="ExpanderHeader.(Grid.Row)" Value="1"/>
+                                <Setter Target="ExpanderContentClip.(Grid.Row)" Value="0"/>
+                                <Setter Target="Row0.Height" Value="*"/>
+                                <Setter Target="Row1.Height" Value="Auto"/>
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateManager.VisualStateGroups>
+                <ToggleButton x:Name="ExpanderHeader" AutomationProperties.AutomationId="ExpanderToggleButton" Background="Transparent" BorderBrush="Transparent" BorderThickness="0,0,0,0" ContentTemplate="{TemplateBinding HeaderTemplate}" Content="{TemplateBinding Header}" ContentTemplateSelector="{TemplateBinding HeaderTemplateSelector}" HorizontalContentAlignment="Right" IsChecked="{Binding IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource Mode=TemplatedParent}}" IsEnabled="{TemplateBinding IsEnabled}" MinHeight="{TemplateBinding MinHeight}" Padding="0,0,0,0" Style="{StaticResource ExpanderHeaderDownStyle}" VerticalContentAlignment="{StaticResource ExpanderHeaderVerticalContentAlignment}"/>
+                <Border x:Name="ExpanderContentClip" Grid.Row="1">
+                    <Border x:Name="ExpanderContent" Background="Transparent" BorderBrush="Transparent" BorderThickness="0,0,0,0" HorizontalAlignment="Stretch" MinHeight="{TemplateBinding MinHeight}" Padding="{TemplateBinding Padding}" VerticalAlignment="Stretch" Visibility="Collapsed">
+                        <Border.RenderTransform>
+                            <CompositeTransform/>
+                        </Border.RenderTransform>
+                        <ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                    </Border>
+                </Border>
+            </Grid>
+        </ControlTemplate>
+        <SolidColorBrush x:Key="TransparentButtonTextBrush" Color="#00FFFFFF" />
+        <Style x:Key="TextBaseStyle" TargetType="TextBlock" />
+        <Style x:Key="TextStyle_AppListItemName" TargetType="TextBlock" BasedOn="{StaticResource TextBaseStyle}">
+            <Setter Property="TextAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="TextWrapping" Value="NoWrap" />
+            <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+        </Style>
+        <Style x:Key="AllApps_LogoImage_Style" TargetType="Image">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+        <Style x:Key="AllApps_LogoPlateBorder_Style" TargetType="Border">
+            <Setter Property="UseLayoutRounding" Value="True" />
+        </Style>
         <media:AcrylicBrush x:Key="CustomAcrylicInAppLuminosity" BackgroundSource="Backdrop"
             TintOpacity="0.8" TintLuminosityOpacity="0" TintColor="Transparent" FallbackColor="PaleVioletRed" />
         <DataTemplate x:Key="AppD">
-            <StackPanel Orientation="Horizontal">
-                <Image Source="{Binding Icon}" x:Name="AppListFolder" Width="24" Height="24" Stretch="Fill" HorizontalAlignment="Left" />
-                <TextBlock Text="{Binding Title}" Margin="10,0,0,0"/>
-                <StackPanel.ContextFlyout>
-                    <MenuFlyout>
-                        <MenuFlyoutItem Text="Pin to Startify">
-                            <MenuFlyoutItem.Icon>
-                                <FontIcon Glyph=""/>
-                            </MenuFlyoutItem.Icon>
-                        </MenuFlyoutItem>
-                        <MenuFlyoutSubItem Text="More">
-                            <MenuFlyoutItem Text="Pin to the taskbar">
-                                <MenuFlyoutItem.Icon>
-                                    <FontIcon Glyph=""/>
-                                </MenuFlyoutItem.Icon>
-                            </MenuFlyoutItem>
-                            <MenuFlyoutItem Text="Run as an administrator">
-                                <MenuFlyoutItem.Icon>
-                                    <FontIcon Glyph=""/>
-                                </MenuFlyoutItem.Icon>
-                            </MenuFlyoutItem>
-                            <MenuFlyoutItem Text="Open item location">
-                                <MenuFlyoutItem.Icon>
-                                    <FontIcon Glyph=""/>
-                                </MenuFlyoutItem.Icon>
-                            </MenuFlyoutItem>
-                        </MenuFlyoutSubItem>
-                        <MenuFlyoutItem Text="Uninstall">
-                            <MenuFlyoutItem.Icon>
-                                <FontIcon Glyph=""/>
-                            </MenuFlyoutItem.Icon>
-                        </MenuFlyoutItem>
-
-                    </MenuFlyout>
-                </StackPanel.ContextFlyout>
-            </StackPanel>
+            <Grid Background="#00FFFFFF">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.Children>
+                    <Border x:Name="LogoBackgroundPlate" Grid.RowSpan="4" VerticalAlignment="Top" Style="{StaticResource AllApps_LogoPlateBorder_Style}">
+                        <Border.Child>
+                            <Image x:Name="AppListItemLogo" Source="{Binding Icon}" Style="{StaticResource AllApps_LogoImage_Style}" Width="24" Height="24" Stretch="Fill" />
+                        </Border.Child>
+                    </Border>
+                    <Rectangle x:Name="LogoBorder" Grid.RowSpan="4" VerticalAlignment="Top" Stroke="{ThemeResource TransparentButtonTextBrush}" StrokeThickness="2" />
+                    <TextBlock x:Name="AppDisplayName" Text="{Binding Title}" Grid.Column="1" Grid.Row="1" Style="{StaticResource TextStyle_AppListItemName}" Margin="10,0,0,0" />
+                    <TextBlock x:Name="FolderGlyph"
+                            Grid.Column="3"
+                            Grid.Row="1"
+                            VerticalAlignment="Center"/>
+                </Grid.Children>
+            </Grid>
         </DataTemplate>
         <DataTemplate x:Key="Folder">
-            <StackPanel HorizontalAlignment="Stretch" Padding="0,0,0,0">
-                <ToggleButton x:Name="ChildVisibility" Padding="0,0,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{x:Null}" BorderBrush="{x:Null}" FocusVisualSecondaryBrush="{x:Null}" FocusVisualPrimaryBrush="{x:Null}" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch">
-                    <ToggleButton.Content>
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="{Binding Icon}" x:Name="AppListFolder" Width="24" Height="24" Stretch="Fill" HorizontalAlignment="Left" />
-                            <TextBlock Text="{Binding Title}" Margin="10,0,0,0"/>
-                            <TextBlock FontFamily="Segoe Fluent Icons" Text="" FontSize="12" HorizontalAlignment="Right" FlowDirection="RightToLeft"/>
-                        </StackPanel>
-                    </ToggleButton.Content>
-
-                    <ToggleButton.ContextFlyout>
-                        <MenuFlyout>
-                            <MenuFlyoutItem Text="Startify Settings">
-                                <MenuFlyoutItem.Icon>
-                                    <FontIcon Glyph=""/>
-                                </MenuFlyoutItem.Icon>
-                            </MenuFlyoutItem>
-                        </MenuFlyout>
-                    </ToggleButton.ContextFlyout>
-                </ToggleButton>
-                <ListView  HorizontalAlignment="Stretch" ItemContainerStyle="{StaticResource ListViewItemContainerStyle1}" ItemsSource="{Binding Path=Links}" ItemTemplate="{StaticResource AppD}" x:FieldModifier="public" CanDragItems="True" IsItemClickEnabled="True" x:Name="DirectoryChildContainer" Grid.Column="1" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,0" Visibility="{Binding IsChecked, ElementName=ChildVisibility}">
-                </ListView>
+            <StackPanel HorizontalAlignment="Stretch" Orientation="Vertical" FocusVisualSecondaryBrush="{x:Null}">
+                <muxc:Expander Width="230" Template="{StaticResource ExpanderTemplate1}" Padding="0,0,0,0" x:Name="Expander2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
+                    <muxc:Expander.Header>
+                        <Grid Background="#00FFFFFF" HorizontalAlignment="Stretch" Width="230">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="24"/>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Grid.Children>
+                                <Border x:Name="LogoBackgroundPlate" VerticalAlignment="Center" Style="{StaticResource AllApps_LogoPlateBorder_Style}" Grid.Row="1">
+                                    <Border.Child>
+                                        <Image x:Name="AppListItemLogo" Source="{Binding Icon}" Style="{StaticResource AllApps_LogoImage_Style}" Width="24" Height="24" Stretch="Fill" />
+                                    </Border.Child>
+                                </Border>
+                                <Rectangle x:Name="LogoBorder" VerticalAlignment="Center" Stroke="{ThemeResource TransparentButtonTextBrush}" StrokeThickness="2" />
+                                <TextBlock x:Name="AppDisplayName" Text="{Binding Title}" Grid.Column="1" Grid.Row="1" Style="{StaticResource TextStyle_AppListItemName}" Margin="10,0,2,1" Grid.RowSpan="3" />
+                            </Grid.Children>
+                        </Grid>
+                    </muxc:Expander.Header>
+                    <muxc:Expander.Content>
+                        <ListView ItemClick="DirectoryChildContainer_ItemClick" HorizontalAlignment="Stretch" ItemTemplate="{StaticResource AppD}" ItemContainerStyle="{StaticResource ListViewItemContainerStyle1}" ItemsSource="{Binding Path=Links}" x:FieldModifier="public" CanDragItems="True" IsItemClickEnabled="True" x:Name="DirectoryChildContainer" Grid.Column="1" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,0">
+                        </ListView>
+                    </muxc:Expander.Content>
+                </muxc:Expander>
             </StackPanel>
         </DataTemplate>
         <media:AcrylicBrush x:Key="halal"

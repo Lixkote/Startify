@@ -131,6 +131,9 @@
     <Compile Include="Shell\Start\Tester.xaml.cs">
       <DependentUpon>Tester.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Shell\Start\Tester2.xaml.cs">
+      <DependentUpon>Tester2.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -267,6 +270,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Shell\Start\Tester.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Shell\Start\Tester2.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

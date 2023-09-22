@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.ServiceModel.Channels;
 using Windows.ApplicationModel.Contacts;
 using Windows.Storage;
 using Windows.Storage.Streams;
@@ -13,6 +14,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Media.Imaging;
+using static Shell.Shell.ShellUtils.StartMenuSelector;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -21,14 +23,20 @@ namespace ShellApp.Shell.Start
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class StartPlaceholder : UserControl
+    /// 
+    public partial class StartPlaceholder : UserControl
     {
+        // Declare the event
+        public event EventHandler<ItemClickEventArgs> DirectoryChildClicked;
+
         public event EventHandler AnimationStarted;
         public StartPlaceholder()
         {
             this.InitializeComponent();
             this.Loaded += Start_Loaded;
         }
+
+        private bool IsFolderOpened = false;
 
         public void StartCloseStartAnimation()
         {
@@ -84,7 +92,7 @@ namespace ShellApp.Shell.Start
                 }
             }
             // Cool acrylic demo
-            startbackground.Background = (AcrylicBrush)Resources["CustomAcrylicInAppLuminosity"];
+            // startbackground.Background = (AcrylicBrush)Resources["CustomAcrylicInAppLuminosity"];
 
         }
 
@@ -110,6 +118,12 @@ namespace ShellApp.Shell.Start
             // Launch the folder in the default file explorer app
             await Launcher.LaunchFolderAsync(docsFolder);
 
+        }
+
+        private void DirectoryChildContainer_ItemClick(object sender, Windows.UI.Xaml.Controls.ItemClickEventArgs e)
+        {
+            // Call the OnDirectoryChildClicked method to raise the event
+            DirectoryChildClicked?.Invoke(sender, e);
         }
     }
 }

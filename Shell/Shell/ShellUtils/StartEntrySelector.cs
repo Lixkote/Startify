@@ -13,6 +13,15 @@ namespace Shell.Shell.ShellUtils
     {
         public DataTemplate AppD { get; set; }
         public DataTemplate Folder { get; set; }
+        internal abstract class StartMenuEntry
+        {
+            public string Alph { get { return Title[0].ToString(); } }
+            public string Title { get; set; }
+            public string Path { get; set; }
+            public string PathUWP { get; set; }
+            public Windows.UI.Xaml.Media.Imaging.BitmapImage Icon { get; set; }
+            public string Iconalt { get; set; }
+        }
         protected override DataTemplate SelectTemplateCore(object item)
         {
             if (item.ToString() == "WPF.Helpers.StartMenuLink")
