@@ -142,10 +142,24 @@ namespace WPF.Helpers
             if (code == this.HC_ACTION)
             {
                 KBDLLHOOKSTRUCT objKeyInfo = (KBDLLHOOKSTRUCT)Marshal.PtrToStructure(lParam, typeof(KBDLLHOOKSTRUCT));
-                if (wParam == (IntPtr)0x0101 && (objKeyInfo.key == Keys.RWin || objKeyInfo.key == Keys.LWin) && Control.ModifierKeys == Keys.None)
+                if (wParam == (IntPtr)0x0101 && (objKeyInfo.key == Keys.RWin || objKeyInfo.key == Keys.LWin))
                 {
-                    FindAndCloseW11StartWindow();
-                    StartTriggered(this, null);
+                    // Check if any other key is pressed
+                    bool anyKeyPressed = false;
+                    foreach (Key key in Enum.GetValues(typeof(Key)))
+                    {
+                        if (key != Key.None && key != Key.LWin && key != Key.RWin && Keyboard.IsKeyDown(key))
+                        {
+                            anyKeyPressed = true;
+                            break;
+                        }
+                    }
+                    // Only execute the actions if no other key is pressed
+                    if (!anyKeyPressed)
+                    {
+                        FindAndCloseW11StartWindow();
+                        StartTriggered(this, null);
+                    }
                 }
             }
             return CallNextHookEx(_mouseHook, code, wParam, lParam);
