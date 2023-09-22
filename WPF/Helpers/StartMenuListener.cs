@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Input;
+using System.Threading;
 
 namespace WPF.Helpers
 {
@@ -133,6 +134,8 @@ namespace WPF.Helpers
             }
             return CallNextHookEx(_mouseHook, code, wParam, lParam);
         }
+        Stopwatch stopwatch = new Stopwatch();
+        HashSet<Keys> pressedKeys = new HashSet<Keys>();
 
         int KeyEvents(int code, IntPtr wParam, IntPtr lParam)
         {
@@ -142,21 +145,18 @@ namespace WPF.Helpers
             if (code == this.HC_ACTION)
             {
                 KBDLLHOOKSTRUCT objKeyInfo = (KBDLLHOOKSTRUCT)Marshal.PtrToStructure(lParam, typeof(KBDLLHOOKSTRUCT));
-                if (wParam == (IntPtr)0x0101 && (objKeyInfo.key == Keys.RWin || objKeyInfo.key == Keys.LWin))
+                if (wParam == (IntPtr)0x0100) // Key down
                 {
-                    // Check if any other key is pressed
-                    bool anyKeyPressed = false;
-                    foreach (Key key in Enum.GetValues(typeof(Key)))
+                    pressedKeys.Add(objKeyInfo.key); // Add the key to the set of pressed keys
+                    stopwatch.Restart(); // Restart the stopwatch
+                }
+                else if (wParam == (IntPtr)0x0101) // Key up
+                {
+                    pressedKeys.Remove(objKeyInfo.key); // Remove the key from the set of pressed keys
+                    stopwatch.Stop(); // Stop the stopwatch
+                    if ((objKeyInfo.key == Keys.RWin || objKeyInfo.key == Keys.LWin) && pressedKeys.Count == 0 && stopwatch.ElapsedMilliseconds < 500)
                     {
-                        if (key != Key.None && key != Key.LWin && key != Key.RWin && Keyboard.IsKeyDown(key))
-                        {
-                            anyKeyPressed = true;
-                            break;
-                        }
-                    }
-                    // Only execute the actions if no other key is pressed
-                    if (!anyKeyPressed)
-                    {
+                        // Only execute the actions if no other key is pressed and the elapsed time is less than 500ms
                         FindAndCloseW11StartWindow();
                         StartTriggered(this, null);
                     }
@@ -164,6 +164,7 @@ namespace WPF.Helpers
             }
             return CallNextHookEx(_mouseHook, code, wParam, lParam);
         }
+
 
         public void Close()
         {
