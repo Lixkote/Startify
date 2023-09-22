@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Windows.Input;
 
 namespace WPF.Helpers
 {
@@ -39,6 +40,7 @@ namespace WPF.Helpers
             // Other values omitted for brevity
         }
         public const int restorewin = 1;
+        public const int closewin = 0;
 
         public event EventHandler<EventArgs> StartTriggered;
 
@@ -81,6 +83,27 @@ namespace WPF.Helpers
             }
         }
 
+        public void FindAndCloseW11StartWindow()
+        {
+            string caption = "Start";
+            string className = "Windows.UI.Core.CoreWindow";
+
+            IntPtr windowHandle = FindWindow(className, caption);
+
+            if (windowHandle != IntPtr.Zero)
+            {
+                // Unhide the window (restore it)
+                ShowWindow(windowHandle, closewin);
+
+                // Bring the window to the foreground
+                SetForegroundWindow(windowHandle);
+            }
+            else
+            {
+                MessageBox.Show("Error closing Windows 11's Start Menu :C");
+            }
+        }
+
 
         public int MouseEvents(int code, IntPtr wParam, IntPtr lParam)
         {
@@ -119,10 +142,10 @@ namespace WPF.Helpers
             if (code == this.HC_ACTION)
             {
                 KBDLLHOOKSTRUCT objKeyInfo = (KBDLLHOOKSTRUCT)Marshal.PtrToStructure(lParam, typeof(KBDLLHOOKSTRUCT));
-                if (wParam == (IntPtr)256 && (objKeyInfo.key == Keys.RWin || objKeyInfo.key == Keys.LWin))
+                if (wParam == (IntPtr)0x0101 && (objKeyInfo.key == Keys.RWin || objKeyInfo.key == Keys.LWin) && Control.ModifierKeys == Keys.None)
                 {
+                    FindAndCloseW11StartWindow();
                     StartTriggered(this, null);
-                    return 1;
                 }
             }
             return CallNextHookEx(_mouseHook, code, wParam, lParam);

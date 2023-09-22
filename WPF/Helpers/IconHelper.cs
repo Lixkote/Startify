@@ -97,6 +97,27 @@ namespace WPF.Helpers
                     PngBitmapEncoder encoder = new PngBitmapEncoder();
                     encoder.Frames.Add(BitmapFrame.Create(bitmapSource));
 
+                    // Fix for icons 22.09.2023
+                    string folderPath = @"C:\ProgramData\Startify\IconTemp";
+
+                    if (!Directory.Exists(folderPath))
+                    {
+                        try
+                        {
+                            Directory.CreateDirectory(folderPath);
+                            Console.WriteLine("Folder created successfully.");
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"Error creating folder: {ex.Message}");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Folder already exists.");
+                    }
+
+
                     // Generate a unique file name for the icon file based on the .lnk file name
                     string fileName = Path.GetFileNameWithoutExtension(file) + ".png";
                     string filePath = Path.Combine("C:\\ProgramData\\Startify\\IconTemp", fileName);

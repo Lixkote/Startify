@@ -17,6 +17,7 @@ using System.Windows.Data;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
+using System.Windows.Media.Effects;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Core;
 using Windows.Management.Deployment;
@@ -44,27 +45,20 @@ namespace WPF.Views
             var desktopWorkingArea = SystemParameters.WorkArea;
             Left = 0;
             Top = desktopWorkingArea.Bottom - Height;
-            // Subscribe to the AnimationStarted event
-            // Get the StartPlaceholder object from the WindowsXamlHost element
             var startPlaceholder = StartMenuIslandh.Child as ShellApp.Shell.Start.StartPlaceholder;
+            this.Focus();
         }
 
         void OnStartTriggered(object sender, EventArgs e)
         {
-
             Visibility = Visibility == Visibility.Visible ? Visibility.Hidden : Visibility.Visible;
             if (Visibility == Visibility.Visible)
             {
                 Show();
-                // Get the StartPlaceholder object from the WindowsXamlHost element
-                var startPlaceholder = StartMenuIslandh.Child as ShellApp.Shell.Start.StartPlaceholder;
-                startPlaceholder.StartOpenStartAnimation();
-                //Storyboard closestartanim = (Storyboard)FindResource("openstartanim");
-                //closestartanim.Begin();
+                WindowActivator.ActivateWindow(new System.Windows.Interop.WindowInteropHelper(startmenubasewindow).Handle);
             }
         }
-
-        private void Window_Activated(object sender, EventArgs e)
+        private void StartMenuActivated(object sender, EventArgs e)
         {
             Screen screen = Screen.FromPoint(System.Windows.Forms.Control.MousePosition);
             this.Left = screen.WorkingArea.Left;
@@ -72,11 +66,8 @@ namespace WPF.Views
             startPlaceholder.StartOpenStartAnimation();
         }
 
-        private void Menu_Deactivated(object sender, EventArgs e)
+        private void StartMenuDeactivated(object sender, EventArgs e)
         {
-            // Get the storyboard from the resources
-            //Storyboard closestartanim = (Storyboard)FindResource("closestartanim");
-            //closestartanim.Begin();
             var startPlaceholder = StartMenuIslandh.Child as ShellApp.Shell.Start.StartPlaceholder;
             startPlaceholder.StartCloseStartAnimation();
             Visibility = Visibility.Hidden;
@@ -391,7 +382,9 @@ namespace WPF.Views
             }
         }
 
-
-
+        private void startmenubasewindow_LostFocus(object sender, RoutedEventArgs e)
+        {
+            Hide();
+        }
     }
 }

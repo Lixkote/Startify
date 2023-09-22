@@ -15,7 +15,8 @@
         ShowInTaskbar="False"
         Topmost="True"
         Width="700"
-        Height="700" Activated="Window_Activated" Deactivated="Menu_Deactivated">
+        Visibility="Hidden" 
+        Height="700" Activated="StartMenuActivated" Deactivated="StartMenuDeactivated">
 
     <Window.RenderTransform>
         <TranslateTransform x:Name="translateTransform" />
