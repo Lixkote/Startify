@@ -384,7 +384,7 @@
                     <RowDefinition />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <TextBox Text="Personal"
+                <TextBox Text="More or less useful"
                            
                            Grid.Row="0" Background="{x:Null}" BorderBrush="{x:Null}" HorizontalContentAlignment="Left" Padding="3,4,6,6" FontFamily="Segoe UI Variable Display Light" FontSize="14" FontWeight="Bold" />
                 <Grid Grid.Row="1"
@@ -430,10 +430,10 @@
 
                     <Button Grid.Column="1" CornerRadius="5">
                         <Grid Width="96" Height="96">
-                            <Image Source="/Assets/Notepad.png"
+                            <Image Source="/Assets/ff.png"
                                Width="32"
                                Height="32" />
-                            <TextBlock Text="Notepad"
+                            <TextBlock Text="Firefox"
                                            HorizontalAlignment="Left"
                                            VerticalAlignment="Bottom"
                                            FontSize="12" Margin="6,0,0,6" />
@@ -501,6 +501,17 @@
                         </Button>
 
                     </Grid>
+                    <Button Grid.Column="1" CornerRadius="5" Grid.RowSpan="2" Grid.Row="2" Grid.ColumnSpan="2">
+                        <Grid Width="196" Height="96">
+                            <Image Source="/Assets/rpad.png"
+                                Width="32"
+                                Height="32" />
+                            <TextBlock Text="RectifyPad"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Bottom"
+                                FontSize="12" Margin="6,0,0,6" />
+                        </Grid>
+                    </Button>
 
                 </Grid>
             </Grid>
@@ -512,7 +523,7 @@
                     <RowDefinition />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <TextBox Text="Multimedia"
+                <TextBox Text="Media"
            
            Grid.Row="0" Background="{x:Null}" BorderBrush="{x:Null}" HorizontalContentAlignment="Left" Padding="3,4,6,6" FontFamily="Segoe UI Variable Small Semibold" FontSize="14" FontWeight="Bold" />
                 <Grid Grid.Row="1"
@@ -548,7 +559,7 @@
                             VerticalContentAlignment="Stretch">
 
                         <Grid CornerRadius="4">
-                            <Image Source="/Assets/glassmorph.jpg"
+                            <Image Source="/Assets/img1.jpg"
                                    Stretch="UniformToFill"
                                    Margin="0,-15,0,0" />
                             <Grid Padding="10"
@@ -584,20 +595,21 @@
                         <Grid CornerRadius="3">
                             <Rectangle Fill="{ThemeResource SmokeFillColorDefaultBrush}"
                                        Canvas.ZIndex="2" />
-                            <Image Source="/Assets/Sedona.png"
+                            <Image Source="/Assets/weather.png"
                                    Stretch="UniformToFill" />
                             <Grid Padding="10"
                                   HorizontalAlignment="Stretch"
                                   VerticalAlignment="Stretch"
                                   RequestedTheme="Dark"
                                   Canvas.ZIndex="3">
-
+                                <Image Source="/Assets/HeavyDrizzle.png"
+                                   Stretch="UniformToFill" Width="24" Height="24" HorizontalAlignment="Right" Margin="0,0,0,10" />
                                 <StackPanel Orientation="Vertical">
-                                    <TextBlock Text="Sedona, Arizona"
+                                    <TextBlock Text="Warsaw, Poland"
                                                FontSize="12"
                                                FontWeight="SemiBold"
                                                TextWrapping="Wrap" />
-                                    <TextBlock Text="Mostly cloudly"
+                                    <TextBlock Text="Rains"
                                                TextWrapping="Wrap"
                                                FontSize="12"
                                                Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
@@ -608,7 +620,7 @@
                                            VerticalAlignment="Bottom"
                                            FontSize="12"  Margin="-3,0,0,-5" />
 
-                                <TextBlock Text="87°"
+                                <TextBlock Text="15°C"
                                            HorizontalAlignment="Right"
                                            VerticalAlignment="Bottom"
                                            Style="{StaticResource SubtitleTextBlockStyle}" />

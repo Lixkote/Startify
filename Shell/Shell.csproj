@@ -147,8 +147,12 @@
     <Content Include="Assets\Excel.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\ff.png" />
     <Content Include="Assets\Figma.png" />
     <Content Include="Assets\glassmorph.jpg" />
+    <Content Include="Assets\HeavyDrizzle.png" />
+    <Content Include="Assets\img1.jpg" />
+    <Content Include="Assets\img2.jpg" />
     <Content Include="Assets\LargeTile.scale-100.png" />
     <Content Include="Assets\LargeTile.scale-125.png" />
     <Content Include="Assets\LargeTile.scale-150.png" />
@@ -163,6 +167,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\placeholder.png" />
+    <Content Include="Assets\rpad.png" />
     <Content Include="Assets\SmallTile.scale-100.png" />
     <Content Include="Assets\SmallTile.scale-125.png" />
     <Content Include="Assets\SmallTile.scale-150.png" />
@@ -216,6 +221,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\user-32.png" />
+    <Content Include="Assets\weather.png" />
     <Content Include="Assets\Wide310x150Logo.scale-100.png" />
     <Content Include="Assets\Wide310x150Logo.scale-125.png" />
     <Content Include="Assets\Wide310x150Logo.scale-150.png" />

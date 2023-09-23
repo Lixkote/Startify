@@ -42,11 +42,39 @@ namespace WPF.Views
             _listener = new StartMenuListener();
             _listener.StartTriggered += OnStartTriggered;
             _listener.FindAndActivateWindow();
-            var desktopWorkingArea = SystemParameters.WorkArea;
-            Left = 0;
-            Top = desktopWorkingArea.Bottom - Height;
+            AlignSM();
             var startPlaceholder = StartMenuIslandh.Child as ShellApp.Shell.Start.StartPlaceholder;
             this.Focus();
+        }
+
+        void AlignSM()
+        {
+            //Align the start menu with taskbar alignment (center or left)
+            RegistryKey alignkey = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced");
+
+            int alignvalue = (int)alignkey.GetValue("TaskbarAl");
+            
+            if(alignvalue.ToString() == "0")
+            {
+                var desktopWorkingArea = SystemParameters.WorkArea;
+                Left = 0;
+                Top = desktopWorkingArea.Bottom - Height;
+            }
+            else if (alignvalue.ToString() == "1")
+            {
+                // Calculate the screen center coordinates
+                double screenWidth = SystemParameters.PrimaryScreenWidth;
+                double screenHeight = SystemParameters.PrimaryScreenHeight;
+                var desktopWorkingArea = SystemParameters.WorkArea;
+                double windowWidth = Width;
+                double windowHeight = Height;
+
+                double left = (screenWidth - windowWidth) / 2;
+
+                // Set the window position to the center of the screen
+                Left = left;
+                Top = desktopWorkingArea.Bottom - Height;
+            }
         }
 
         void OnStartTriggered(object sender, EventArgs e)
@@ -60,8 +88,26 @@ namespace WPF.Views
         }
         private void StartMenuActivated(object sender, EventArgs e)
         {
-            Screen screen = Screen.FromPoint(System.Windows.Forms.Control.MousePosition);
-            this.Left = screen.WorkingArea.Left;
+            //Align the start menu with taskbar alignment (center or left)
+            RegistryKey alignkey = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced");
+
+            int alignvalue = (int)alignkey.GetValue("TaskbarAl");
+
+            if (alignvalue.ToString() == "0")
+            {
+                Screen screen = Screen.FromPoint(System.Windows.Forms.Control.MousePosition);
+                this.Left = screen.WorkingArea.Left;
+            }
+            else if (alignvalue.ToString() == "1")
+            {
+                // Calculate the screen center coordinates
+                double screenWidth = SystemParameters.PrimaryScreenWidth;
+                double windowWidth = Width;
+                double left = (screenWidth - windowWidth) / 2;
+
+                // Set the window position to the center of the screen
+                Left = left;
+            }
             var startPlaceholder = StartMenuIslandh.Child as ShellApp.Shell.Start.StartPlaceholder;
             startPlaceholder.StartOpenStartAnimation();
         }
