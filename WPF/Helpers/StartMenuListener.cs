@@ -153,10 +153,9 @@ namespace WPF.Helpers
                 }
                 else if (wParam == (IntPtr)0x0101) // Key up
                 {
-                    pressedKeys.Remove(objKeyInfo.key); // Remove the key from the set of pressed keys
                     stopwatch.Stop(); // Stop the stopwatch
 
-                    if (pressedKeys.Count == 0 && (objKeyInfo.key == Keys.LWin || objKeyInfo.key == Keys.RWin))
+                    if (pressedKeys.Count == 1 && (objKeyInfo.key == Keys.LWin || objKeyInfo.key == Keys.RWin))
                     {
                         // Introduce a small delay (e.g., 100 milliseconds) to ensure the key is held for a minimum time
                         if (stopwatch.ElapsedMilliseconds <= 200)
@@ -180,6 +179,7 @@ namespace WPF.Helpers
                             }
                         }
                     }
+                    pressedKeys.Clear();  // Clear the key list for the next call
                 }
             }
 
