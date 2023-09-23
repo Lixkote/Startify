@@ -145,6 +145,7 @@ namespace WPF.Helpers
             if (code == this.HC_ACTION)
             {
                 KBDLLHOOKSTRUCT objKeyInfo = (KBDLLHOOKSTRUCT)Marshal.PtrToStructure(lParam, typeof(KBDLLHOOKSTRUCT));
+
                 if (wParam == (IntPtr)0x0100) // Key down
                 {
                     pressedKeys.Add(objKeyInfo.key); // Add the key to the set of pressed keys
@@ -155,16 +156,39 @@ namespace WPF.Helpers
                     pressedKeys.Remove(objKeyInfo.key); // Remove the key from the set of pressed keys
                     stopwatch.Stop(); // Stop the stopwatch
 
-                    if (pressedKeys.Count == 0 && objKeyInfo.key == Keys.LWin || objKeyInfo.key == Keys.RWin)
+                    if (pressedKeys.Count == 0 && (objKeyInfo.key == Keys.LWin || objKeyInfo.key == Keys.RWin))
                     {
-                        // Only execute the actions if all keys are released, and the released key is the Windows key
-                        FindAndCloseW11StartWindow();
-                        StartTriggered(this, null);
+                        // Introduce a small delay (e.g., 100 milliseconds) to ensure the key is held for a minimum time
+                        if (stopwatch.ElapsedMilliseconds <= 200)
+                        {
+                            bool anyKeyPressed = false;
+
+                            foreach (Key key in Enum.GetValues(typeof(Key)))
+                            {
+                                if (key != Key.None && key != Key.LWin && key != Key.RWin && Keyboard.IsKeyDown(key))
+                                {
+                                    anyKeyPressed = true;
+                                    break;
+                                }
+                            }
+
+                            // Only execute the actions if no other keys are pressed
+                            if (!anyKeyPressed)
+                            {
+                                FindAndCloseW11StartWindow();
+                                StartTriggered(this, null);
+                            }
+                        }
                     }
                 }
             }
+
             return CallNextHookEx(_mouseHook, code, wParam, lParam);
         }
+
+
+
+
 
 
         public void Close()
