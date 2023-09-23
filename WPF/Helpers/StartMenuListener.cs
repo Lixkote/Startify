@@ -154,9 +154,10 @@ namespace WPF.Helpers
                 {
                     pressedKeys.Remove(objKeyInfo.key); // Remove the key from the set of pressed keys
                     stopwatch.Stop(); // Stop the stopwatch
-                    if ((objKeyInfo.key == Keys.RWin || objKeyInfo.key == Keys.LWin) && pressedKeys.Count == 0 && stopwatch.ElapsedMilliseconds < 500)
+
+                    if (pressedKeys.Count == 0 && objKeyInfo.key == Keys.LWin || objKeyInfo.key == Keys.RWin)
                     {
-                        // Only execute the actions if no other key is pressed and the elapsed time is less than 500ms
+                        // Only execute the actions if all keys are released, and the released key is the Windows key
                         FindAndCloseW11StartWindow();
                         StartTriggered(this, null);
                     }
