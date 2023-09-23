@@ -9,6 +9,7 @@
         mc:Ignorable="d"
         Title="StartMenu"
         WindowStyle="None"
+        PreviewKeyDown="startmenubasewindow_PreviewKeyDown"
         AllowsTransparency="True"
         Background="Transparent"
         ResizeMode="NoResize"

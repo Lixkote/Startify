@@ -9,6 +9,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Security.Policy;
 using System.Threading.Tasks;
 using System.Windows;
@@ -431,6 +432,40 @@ namespace WPF.Views
         private void startmenubasewindow_LostFocus(object sender, RoutedEventArgs e)
         {
             Hide();
+        }
+
+        // Declare the Win32 API functions
+        [DllImport("user32.dll")]
+        static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, int dwExtraInfo);
+
+        [DllImport("user32.dll")]
+        static extern byte MapVirtualKey(byte wCode, int wMap);
+
+        private void startmenubasewindow_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            // Check if the pressed key is a letter (A-Z)
+            if (e.Key >= Key.A && e.Key <= Key.Z)
+            {
+                // Define some constants
+                const int KEYEVENTF_EXTENDEDKEY = 0x1;
+                const int KEYEVENTF_KEYUP = 0x2;
+
+                // Get the virtual key codes for Windows and S keys
+                byte winKey = (byte)KeyInterop.VirtualKeyFromKey(Key.LWin);
+                byte sKey = (byte)KeyInterop.VirtualKeyFromKey(Key.S);
+
+                // Press the Windows key
+                keybd_event(winKey, MapVirtualKey(winKey, 0), KEYEVENTF_EXTENDEDKEY, 0);
+
+                // Press the S key
+                keybd_event(sKey, MapVirtualKey(sKey, 0), KEYEVENTF_EXTENDEDKEY, 0);
+
+                // Release the S key
+                keybd_event(sKey, MapVirtualKey(sKey, 0), KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, 0);
+
+                // Release the Windows key
+                keybd_event(winKey, MapVirtualKey(winKey, 0), KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, 0);
+            }
         }
     }
 }
