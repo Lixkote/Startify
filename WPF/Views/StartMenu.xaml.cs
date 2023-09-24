@@ -228,7 +228,6 @@ namespace WPF.Views
         {
             StartMenuLink clickedItem = e.ClickedItem as StartMenuLink;
             // Get the index of the clicked item in the ObservableCollection
-            int index = Links.IndexOf(clickedItem);
 
             System.Windows.MessageBox.Show("Not yet implemented :/");
             
