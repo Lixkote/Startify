@@ -32,6 +32,7 @@
   <ItemGroup>
     <PackageReference Include="ManagedShell" Version="0.0.200" />
     <PackageReference Include="Microsoft.Toolkit.Wpf.UI.XamlHost" Version="6.1.2" />
+    <PackageReference Include="securifybv.ShellLink" Version="0.1.0" />
   </ItemGroup>
 
   <ItemGroup>

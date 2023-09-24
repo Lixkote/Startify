@@ -13,6 +13,7 @@ using System.Xml.Linq;
 using System.Text;
 using System.Drawing.Drawing2D;
 using WPF.Helpers;
+using ShellLink;
 namespace WPF.Helpers
 {
     internal static class IconHelper
@@ -57,6 +58,7 @@ namespace WPF.Helpers
         static string[] _exlcudedIcons = new string[] { ".exe", ".lnk", ".url", ".appref-ms" };
         [DllImport("Comctl32.dll")]
         public static extern IntPtr ImageList_GetIcon(IntPtr himl, int i, uint flags);
+        static string a = "";
         public static string GetFileIcon(string file)
         {
             string extension = System.IO.Path.GetExtension(file);
@@ -66,27 +68,50 @@ namespace WPF.Helpers
                 {
                     throw new FileNotFoundException("The .lnk file does not exist.");
                 }
-                string targetFilePath = "";
-                IWshRuntimeLibrary.IWshShortcut shortcut = null;
                 // Get the target file path from the .lnk file using IWshRuntimeLibrary
                 // Reference: [1](https://stackoverflow.com/questions/1127647/convert-system-drawing-icon-to-system-media-imagesource)
+
+                Shortcut shortcut1 = Shortcut.ReadFromFile(file);
+
+                string target = "";
+                string rawIconPath = "";
+                int index = shortcut1.IconIndex;
+                if (index == -1) index = 0;
                 try
                 {
-                    IWshRuntimeLibrary.WshShell shell = new IWshRuntimeLibrary.WshShell();
-                    shortcut = (IWshRuntimeLibrary.IWshShortcut)shell.CreateShortcut(file);
-                    targetFilePath = shortcut.TargetPath;
+                    target = new Uri(shortcut1.StringData.RelativePath).AbsolutePath;
+                    if (String.IsNullOrWhiteSpace(target)) target = GetShortcutTargetAlt(file);
                 }
+                catch { target = GetShortcutTargetAlt(file); }
+                try { rawIconPath = shortcut1.StringData.IconLocation; }
                 catch { }
+                string icn = "";
+                Icon icon = null;
 
+                if (!String.IsNullOrWhiteSpace(rawIconPath))
+                {
+                    icn = rawIconPath;
+                    if (icn[0] == '%')
+                    {
+                        string envtmp = rawIconPath.Substring(1, rawIconPath.LastIndexOf("%") - 1);
+                        string env = Environment.GetEnvironmentVariable(envtmp);
+                        string pathtmp = rawIconPath.Substring(rawIconPath.LastIndexOf("%") + 1);
+                        icn = env + pathtmp;
+                    }
+                    icon = Extract(icn, index, true);
+                    if (icon == null)
+                    {
+                        string icn2 = icn.Replace("System32", "SystemResources") + ".mun";
+                        icon = Extract(icn2, index, true);
+                    }
+                }
+                else
+                {
+                    if (File.Exists(target)) icon = Icon.ExtractAssociatedIcon(target);
+                    else icon = Icon.ExtractAssociatedIcon(file);
+                }
                 // Extract the icon from the target file using System.Drawing.Icon
                 // Reference: [2](https://stackoverflow.com/questions/3204883/wpf-imagesource-binding-with-custom-converter)
-                Icon icon = LinkIconParser.GetIcon(shortcut.IconLocation, targetFilePath);
-                if (icon == null)
-                {
-                    if (!File.Exists(targetFilePath)) icon = Icon.ExtractAssociatedIcon(file);
-                    else icon = Icon.ExtractAssociatedIcon(targetFilePath);
-                }
-
                 // Convert the icon to a BitmapSource using System.Windows.Interop.Imaging
                 // Reference: [3](https://stackoverflow.com/questions/2969821/display-icon-in-wpf-image)
                 BitmapSource bitmapSource = Imaging.CreateBitmapSourceFromHIcon(
@@ -323,39 +348,62 @@ namespace WPF.Helpers
             }
             return shieldSource;
         }
-    }
-
-    class LinkIconParser {
-
-        public static string path { get; set; }
-        public static string index { get; set; }
-        public static void ParsePath(string RawIconPath, string Linktarget) {
-
-            if (RawIconPath[0] == ',') { path = Linktarget; index = RawIconPath.Substring(1); }
-            else
-            {
-                index = RawIconPath.Substring(RawIconPath.LastIndexOf(",") + 1);
-                path = RawIconPath.Substring(0, RawIconPath.LastIndexOf(","));
-            }
-            if (path.Length > 0 && path[0] == '%')
-            {
-                string envtmp = path.Substring(1, path.LastIndexOf("%") - 1);
-                string env = Environment.GetEnvironmentVariable(envtmp);
-                string pathtmp = path.Substring(path.LastIndexOf("%") + 1);
-                path = env + pathtmp;
-            }
-            if (index == "-1") index = "0";
-        }
-        public static Icon GetIcon(string RawIconPath, string target)
+        private static string GetShortcutTargetAlt(string file)
         {
-            ParsePath(RawIconPath, target);
-            var a = Extract(path, int.Parse(index), true);
-            if (a == null)
+            try
             {
-                string rspath = path.Replace("System32", "SystemResources") + ".mun";
-                a = Extract(rspath, int.Parse(index), true);
+                if (System.IO.Path.GetExtension(file).ToLower() != ".lnk")
+                {
+                    throw new Exception("Supplied file must be a .LNK file");
+                }
+
+                FileStream fileStream = File.Open(file, FileMode.Open, FileAccess.Read);
+                using (System.IO.BinaryReader fileReader = new BinaryReader(fileStream))
+                {
+                    fileStream.Seek(0x14, SeekOrigin.Begin);     // Seek to flags
+                    uint flags = fileReader.ReadUInt32();        // Read flags
+                    if ((flags & 1) == 1)
+                    {                      // Bit 1 set means we have to
+                                           // skip the shell item ID list
+                        fileStream.Seek(0x4c, SeekOrigin.Begin); // Seek to the end of the header
+                        uint offset = fileReader.ReadUInt16();   // Read the length of the Shell item ID list
+                        fileStream.Seek(offset, SeekOrigin.Current); // Seek past it (to the file locator info)
+                    }
+
+                    long fileInfoStartsAt = fileStream.Position; // Store the offset where the file info
+                                                                 // structure begins
+                    uint totalStructLength = fileReader.ReadUInt32(); // read the length of the whole struct
+                    fileStream.Seek(0xc, SeekOrigin.Current); // seek to offset to base pathname
+                    uint fileOffset = fileReader.ReadUInt32(); // read offset to base pathname
+                                                               // the offset is from the beginning of the file info struct (fileInfoStartsAt)
+                    fileStream.Seek((fileInfoStartsAt + fileOffset), SeekOrigin.Begin); // Seek to beginning of
+                                                                                        // base pathname (target)
+                    long pathLength = (totalStructLength + fileInfoStartsAt) - fileStream.Position - 2; // read
+                                                                                                        // the base pathname. I don't need the 2 terminating nulls.
+                    char[] linkTarget = fileReader.ReadChars((int)pathLength); // should be unicode safe
+                    var link = new string(linkTarget);
+
+                    int begin = link.IndexOf("\0\0");
+                    if (begin > -1)
+                    {
+                        int end = link.IndexOf("\\\\", begin + 2) + 2;
+                        end = link.IndexOf('\0', end) + 1;
+
+                        string firstPart = link.Substring(0, begin);
+                        string secondPart = link.Substring(end);
+
+                        return firstPart + secondPart;
+                    }
+                    else
+                    {
+                        return link;
+                    }
+                }
             }
-            return a;
+            catch
+            {
+                return "";
+            }
         }
         private static Icon Extract(string file, int number, bool largeIcon)
         {
@@ -373,7 +421,7 @@ namespace WPF.Helpers
 
         }
         [DllImport("Shell32.dll", EntryPoint = "ExtractIconExW", CharSet = CharSet.Unicode, ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
-        private static extern int ExtractIconEx(string sFile, int iIndex, out IntPtr piLargeVersion, out IntPtr piSmallVersion, int amountIcons);
+        public static extern int ExtractIconEx(string sFile, int iIndex, out IntPtr piLargeVersion, out IntPtr piSmallVersion, int amountIcons);
 
     }
 }
