@@ -63,102 +63,109 @@ namespace WPF.Helpers
         {
             string extension = System.IO.Path.GetExtension(file);
             {
-                // Check if the .lnk file exists
-                if (!File.Exists(file))
+                try
+                {
+                    // Check if the .lnk file exists
+                    if (!File.Exists(file))
+                    {
+                        throw new Exception("lnk not found");
+                    }
+                    // Get the target file path from the .lnk file using IWshRuntimeLibrary
+                    // Reference: [1](https://stackoverflow.com/questions/1127647/convert-system-drawing-icon-to-system-media-imagesource)
+
+                    Shortcut shortcut1 = Shortcut.ReadFromFile(file);
+
+                    string target = "";
+                    string rawIconPath = "";
+                    int index = shortcut1.IconIndex;
+                    if (index == -1) index = 0;
+                    try
+                    {
+                        target = new Uri(shortcut1.StringData.RelativePath).AbsolutePath;
+                        if (String.IsNullOrWhiteSpace(target)) target = GetShortcutTargetAlt(file);
+                    }
+                    catch { target = GetShortcutTargetAlt(file); }
+                    try { rawIconPath = shortcut1.StringData.IconLocation; }
+                    catch { }
+                    string icn = "";
+                    Icon icon = null;
+
+                    if (!String.IsNullOrWhiteSpace(rawIconPath))
+                    {
+                        icn = rawIconPath;
+                        if (icn[0] == '%')
+                        {
+                            string envtmp = rawIconPath.Substring(1, rawIconPath.LastIndexOf("%") - 1);
+                            string env = Environment.GetEnvironmentVariable(envtmp);
+                            string pathtmp = rawIconPath.Substring(rawIconPath.LastIndexOf("%") + 1);
+                            icn = env + pathtmp;
+                        }
+                        icon = Extract(icn, index, true);
+                        if (icon == null)
+                        {
+                            string icn2 = icn.Replace("System32", "SystemResources") + ".mun";
+                            icon = Extract(icn2, index, true);
+                        }
+                    }
+                    else
+                    {
+                        if (File.Exists(target)) icon = Icon.ExtractAssociatedIcon(target);
+                        else icon = Icon.ExtractAssociatedIcon(file);
+                    }
+                    // Extract the icon from the target file using System.Drawing.Icon
+                    // Reference: [2](https://stackoverflow.com/questions/3204883/wpf-imagesource-binding-with-custom-converter)
+                    // Convert the icon to a BitmapSource using System.Windows.Interop.Imaging
+                    // Reference: [3](https://stackoverflow.com/questions/2969821/display-icon-in-wpf-image)
+                    BitmapSource bitmapSource = Imaging.CreateBitmapSourceFromHIcon(
+                        icon.Handle,
+                        Int32Rect.Empty,
+                        BitmapSizeOptions.FromEmptyOptions());
+
+                    // Create a PngBitmapEncoder and add the BitmapSource to its frames
+                    PngBitmapEncoder encoder = new PngBitmapEncoder();
+                    encoder.Frames.Add(BitmapFrame.Create(bitmapSource));
+
+                    // Fix for icons 22.09.2023
+                    string folderPath = Environment.GetEnvironmentVariable("programdata") + @"\Startify\IconTemp";
+
+                    if (!Directory.Exists(folderPath))
+                    {
+                        try
+                        {
+                            Directory.CreateDirectory(folderPath);
+                            Console.WriteLine("Folder created successfully.");
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"Error creating folder: {ex.Message}");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Folder already exists.");
+                    }
+
+
+                    // Generate a unique file name for the icon file based on the .lnk file name
+                    string fileName = Path.GetFileNameWithoutExtension(file) + ".png";
+                    string filePath = Path.Combine(folderPath, fileName);
+
+                    // Save the icon file to the destination folder using a FileStream
+                    using (FileStream stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        encoder.Save(stream);
+                    }
+
+                    string escapedFilePath = Uri.EscapeDataString(filePath);
+
+                    // Return the URI of the icon file as a string
+                    return "file:///" + escapedFilePath;
+                }
+                catch
                 {
                     string none = "ms-appx:///Assets/placeholder.png";
                     return none;
                 }
-                // Get the target file path from the .lnk file using IWshRuntimeLibrary
-                // Reference: [1](https://stackoverflow.com/questions/1127647/convert-system-drawing-icon-to-system-media-imagesource)
-
-                Shortcut shortcut1 = Shortcut.ReadFromFile(file);
-
-                string target = "";
-                string rawIconPath = "";
-                int index = shortcut1.IconIndex;
-                if (index == -1) index = 0;
-                try
-                {
-                    target = new Uri(shortcut1.StringData.RelativePath).AbsolutePath;
-                    if (String.IsNullOrWhiteSpace(target)) target = GetShortcutTargetAlt(file);
-                }
-                catch { target = GetShortcutTargetAlt(file); }
-                try { rawIconPath = shortcut1.StringData.IconLocation; }
-                catch { }
-                string icn = "";
-                Icon icon = null;
-
-                if (!String.IsNullOrWhiteSpace(rawIconPath))
-                {
-                    icn = rawIconPath;
-                    if (icn[0] == '%')
-                    {
-                        string envtmp = rawIconPath.Substring(1, rawIconPath.LastIndexOf("%") - 1);
-                        string env = Environment.GetEnvironmentVariable(envtmp);
-                        string pathtmp = rawIconPath.Substring(rawIconPath.LastIndexOf("%") + 1);
-                        icn = env + pathtmp;
-                    }
-                    icon = Extract(icn, index, true);
-                    if (icon == null)
-                    {
-                        string icn2 = icn.Replace("System32", "SystemResources") + ".mun";
-                        icon = Extract(icn2, index, true);
-                    }
-                }
-                else
-                {
-                    if (File.Exists(target)) icon = Icon.ExtractAssociatedIcon(target);
-                    else icon = Icon.ExtractAssociatedIcon(file);
-                }
-                // Extract the icon from the target file using System.Drawing.Icon
-                // Reference: [2](https://stackoverflow.com/questions/3204883/wpf-imagesource-binding-with-custom-converter)
-                // Convert the icon to a BitmapSource using System.Windows.Interop.Imaging
-                // Reference: [3](https://stackoverflow.com/questions/2969821/display-icon-in-wpf-image)
-                BitmapSource bitmapSource = Imaging.CreateBitmapSourceFromHIcon(
-                    icon.Handle,
-                    Int32Rect.Empty,
-                    BitmapSizeOptions.FromEmptyOptions());
-
-                // Create a PngBitmapEncoder and add the BitmapSource to its frames
-                PngBitmapEncoder encoder = new PngBitmapEncoder();
-                encoder.Frames.Add(BitmapFrame.Create(bitmapSource));
-
-                // Fix for icons 22.09.2023
-                string folderPath = Environment.GetEnvironmentVariable("programdata") + @"\Startify\IconTemp";
-
-                if (!Directory.Exists(folderPath))
-                {
-                    try
-                    {
-                        Directory.CreateDirectory(folderPath);
-                        Console.WriteLine("Folder created successfully.");
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine($"Error creating folder: {ex.Message}");
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("Folder already exists.");
-                }
-
-
-                // Generate a unique file name for the icon file based on the .lnk file name
-                string fileName = Path.GetFileNameWithoutExtension(file) + ".png";
-                string filePath = Path.Combine(folderPath, fileName);
-
-                // Save the icon file to the destination folder using a FileStream
-                using (FileStream stream = new FileStream(filePath, FileMode.Create))
-                {
-                    encoder.Save(stream);
-                }
-
-                string escapedFilePath = Uri.EscapeDataString(filePath);
-
-                // Return the URI of the icon file as a string
-                return "file:///" + escapedFilePath;
             }
         }
 
