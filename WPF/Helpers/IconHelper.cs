@@ -66,7 +66,8 @@ namespace WPF.Helpers
                 // Check if the .lnk file exists
                 if (!File.Exists(file))
                 {
-                    throw new FileNotFoundException("The .lnk file does not exist.");
+                    string none = "ms-appx:///Assets/placeholder.png";
+                    return none;
                 }
                 // Get the target file path from the .lnk file using IWshRuntimeLibrary
                 // Reference: [1](https://stackoverflow.com/questions/1127647/convert-system-drawing-icon-to-system-media-imagesource)
