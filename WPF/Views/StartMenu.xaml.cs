@@ -310,7 +310,7 @@ namespace WPF.Views
         {
             foreach (string f in Directory.GetFiles(directory))
             {
-                if (System.IO.Path.GetExtension(f) != ".ini")
+                if (System.IO.Path.GetExtension(f) == ".lnk")
                 {
                     Programs.Add(new StartMenuLink
                     {
@@ -404,7 +404,7 @@ namespace WPF.Views
                 foreach (string f in Directory.GetFiles(d))
                 {
                     folderEntry.HasChildren = true;
-                    if (System.IO.Path.GetExtension(f) != ".ini")
+                    if (System.IO.Path.GetExtension(f) == ".lnk")
                     {
                         folderEntry.Links.Add(new StartMenuLink
                         {
