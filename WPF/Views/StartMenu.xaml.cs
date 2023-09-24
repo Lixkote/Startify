@@ -401,20 +401,33 @@ namespace WPF.Views
                 }
 
                 GetProgramsRecurse(d, folderEntry);
-                foreach (string f in Directory.GetFiles(d))
+                DirectoryInfo dInfo = new DirectoryInfo(d);
+                var a = dInfo.GetFiles("*.lnk", SearchOption.TopDirectoryOnly);
+                var b = dInfo.GetDirectories("*", SearchOption.TopDirectoryOnly);
+                var c = new string[a.Length + b.Length];
+                for(int i = 0; i<a.Length; i++)
+                {
+                    c[i] = a[i].FullName;
+                }
+                for(int i =0; i<b.Length; i++)
+                {
+                    c[a.Length + i] = b[i].FullName;
+                }
+                foreach (var f in c)
                 {
                     folderEntry.HasChildren = true;
-                    if (System.IO.Path.GetExtension(f) == ".lnk")
-                    {
-                        folderEntry.Links.Add(new StartMenuLink
-                        {
-                            Title = System.IO.Path.GetFileNameWithoutExtension(f),
-                            Link = f,
-                            Icon = new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri(uriString: IconHelper.GetFileIcon(f)))
-                        });
-                    }
-                }
+                    Uri uri = new Uri(uriString: IconHelper.GetFileIcon(f));
+                    FileAttributes attr = System.IO.File.GetAttributes(f);
+                    if (attr.HasFlag(FileAttributes.Directory))
+                    uri = new Uri("ms-appx:///Assets/UnplatedFolder.png");
 
+                    folderEntry.Links.Add(new StartMenuLink
+                    {
+                        Title = System.IO.Path.GetFileNameWithoutExtension(f),
+                        Link = f,
+                        Icon = new Windows.UI.Xaml.Media.Imaging.BitmapImage(uri)
+                    });
+                }
                 if (!hasParent)
                 {
                     if (!Programs.Contains(folderEntry))
