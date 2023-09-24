@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Input;
 using System.Threading;
+using WPF.Views;
 
 namespace WPF.Helpers
 {
@@ -44,7 +45,6 @@ namespace WPF.Helpers
         public const int closewin = 0;
 
         public event EventHandler<EventArgs> StartTriggered;
-
         public static IntPtr FindWindowByCaptionAndClass(string caption, string className)
         {
             IntPtr shellTrayWnd = FindWindowExA(IntPtr.Zero, IntPtr.Zero, "Shell_TrayWnd", null);
@@ -105,8 +105,12 @@ namespace WPF.Helpers
             }
         }
 
-
         public int MouseEvents(int code, IntPtr wParam, IntPtr lParam)
+        {
+            return MouseEvents(code, wParam, lParam, StartTriggered);
+        }
+
+        public int MouseEvents(int code, IntPtr wParam, IntPtr lParam, EventHandler<EventArgs> startTriggered)
         {
             if (code < 0)
                 return CallNextHookEx(_mouseHook, code, wParam, lParam);
@@ -126,7 +130,6 @@ namespace WPF.Helpers
 
                     if (win32ClassName == "Start")
                     {
-                        // Trigger your event
                         StartTriggered(this, null);
                         return 1;
                     }
@@ -134,9 +137,8 @@ namespace WPF.Helpers
             }
             return CallNextHookEx(_mouseHook, code, wParam, lParam);
         }
-        Stopwatch stopwatch = new Stopwatch();
         HashSet<Keys> pressedKeys = new HashSet<Keys>();
-
+        Stopwatch stopwatch = new Stopwatch();
         int KeyEvents(int code, IntPtr wParam, IntPtr lParam)
         {
             if (code < 0)
@@ -158,6 +160,7 @@ namespace WPF.Helpers
                     if (pressedKeys.Count == 1 && (objKeyInfo.key == Keys.LWin || objKeyInfo.key == Keys.RWin))
                     {
                         // Introduce a small delay (e.g., 100 milliseconds) to ensure the key is held for a minimum time
+
                         if (stopwatch.ElapsedMilliseconds <= 200)
                         {
                             bool anyKeyPressed = false;
@@ -170,7 +173,6 @@ namespace WPF.Helpers
                                     break;
                                 }
                             }
-
                             // Only execute the actions if no other keys are pressed
                             if (!anyKeyPressed)
                             {
@@ -179,7 +181,8 @@ namespace WPF.Helpers
                             }
                         }
                     }
-                    pressedKeys.Clear();  // Clear the key list for the next call
+
+                    pressedKeys.Clear();
                 }
             }
 
