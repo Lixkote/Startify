@@ -66,12 +66,17 @@ namespace WPF.Helpers
                 {
                     throw new FileNotFoundException("The .lnk file does not exist.");
                 }
-
+                string targetFilePath = "";
+                IWshRuntimeLibrary.IWshShortcut shortcut = null;
                 // Get the target file path from the .lnk file using IWshRuntimeLibrary
                 // Reference: [1](https://stackoverflow.com/questions/1127647/convert-system-drawing-icon-to-system-media-imagesource)
-                IWshRuntimeLibrary.WshShell shell = new IWshRuntimeLibrary.WshShell();
-                IWshRuntimeLibrary.IWshShortcut shortcut = (IWshRuntimeLibrary.IWshShortcut)shell.CreateShortcut(file);
-                string targetFilePath = shortcut.TargetPath;
+                try
+                {
+                    IWshRuntimeLibrary.WshShell shell = new IWshRuntimeLibrary.WshShell();
+                    shortcut = (IWshRuntimeLibrary.IWshShortcut)shell.CreateShortcut(file);
+                    targetFilePath = shortcut.TargetPath;
+                }
+                catch { }
 
                 // Extract the icon from the target file using System.Drawing.Icon
                 // Reference: [2](https://stackoverflow.com/questions/3204883/wpf-imagesource-binding-with-custom-converter)
