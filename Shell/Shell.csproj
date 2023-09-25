@@ -124,9 +124,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Shell\ShellUtils\IWindowPrivate.cs" />
     <Compile Include="Shell\ShellUtils\StartEntrySelector.cs" />
-    <Compile Include="Shell\Start\StartControl.xaml.cs">
-      <DependentUpon>StartControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Shell\Start\StartPlaceholder.xaml.cs">
       <DependentUpon>StartPlaceholder.xaml</DependentUpon>
     </Compile>
@@ -262,10 +259,6 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="Shell\ShellResources.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Shell\Start\StartControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

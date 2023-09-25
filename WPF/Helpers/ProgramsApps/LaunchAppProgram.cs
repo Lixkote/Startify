@@ -28,7 +28,7 @@ namespace WPF.Helpers.ProgramsApps
             var firstApp = apps.FirstOrDefault();
             return firstApp;
         }
-        public async void DirectoryAppLaunchHandler(object sender, ItemClickEventArgs e, Window window, ObservableCollection<StartMenuEntry> Programs)
+        public async void DirectoryAppLaunchHandler(object sender, ItemClickEventArgs e, Window window, ObservableCollection<StartMenuEntry> Programs, bool runasadmin)
         {
             StartMenuLink clickedItem = e.ClickedItem as StartMenuLink;
             string linkpath = clickedItem.Link;
@@ -38,7 +38,19 @@ namespace WPF.Helpers.ProgramsApps
             {
                 try
                 {
-                    Process.Start(new ProcessStartInfo(linkpath) { UseShellExecute = true });
+                    if (runasadmin == false)
+                    {
+                        Process.Start(new ProcessStartInfo(linkpath) { UseShellExecute = true });
+                    }
+                    else if (runasadmin == true)
+                    {
+                        ProcessStartInfo startInfo = new ProcessStartInfo(linkpath)
+                        {
+                            UseShellExecute = true,
+                            Verb = "runas" // This will request admin privileges
+                        };
+                        Process.Start(startInfo);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -50,7 +62,7 @@ namespace WPF.Helpers.ProgramsApps
                 Debug.WriteLine("Launching UWP apps here is not supported/Directory child app launch failed.");
             }
         }
-        public async void AppLaunchHandler(object sender, ItemClickEventArgs e, Window window, ObservableCollection<StartMenuEntry> Programs)
+        public async void AppLaunchHandler(object sender, ItemClickEventArgs e, Window window, ObservableCollection<StartMenuEntry> Programs, bool runasadmin)
         {
             StartMenuEntry clickedItem = e.ClickedItem as StartMenuEntry;
             // Get the index of the clicked item in the ObservableCollection
@@ -64,7 +76,19 @@ namespace WPF.Helpers.ProgramsApps
             window.Hide();
             if (path != null)
             {
-                Process.Start(new ProcessStartInfo(path) { UseShellExecute = true });
+                if (runasadmin == false) 
+                {
+                    Process.Start(new ProcessStartInfo(path) { UseShellExecute = true });
+                }
+                else if (runasadmin == true)
+                {
+                    ProcessStartInfo startInfo = new ProcessStartInfo(path)
+                    {
+                        UseShellExecute = true,
+                        Verb = "runas" // This will request admin privileges
+                    };
+                    Process.Start(startInfo);
+                }
             }
             if (pathuwp != null)
             {
@@ -78,11 +102,6 @@ namespace WPF.Helpers.ProgramsApps
                     System.Windows.MessageBox.Show("This UWP app couldn't be launched.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
-        }
-
-        internal ItemClickEventHandler AppLaunchHandler(object sender, RoutedEventArgs e, StartMenu startMenu, ObservableCollection<StartMenuEntry> programs)
-        {
-            throw new NotImplementedException();
         }
     }
 }

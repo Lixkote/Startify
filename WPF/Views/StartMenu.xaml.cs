@@ -159,6 +159,12 @@ namespace WPF.Views
         {
             System.Diagnostics.Process.Start("shutdown.exe", "-r -t 0");
         }
+
+        private async Task OpenUninstall()
+        {
+            Process.Start(new ProcessStartInfo("ms-settings:appsfeatures") { UseShellExecute = true });
+        }
+
         public static bool IsHibernateEnabled()
         {
             // Open the registry key for power settings
@@ -189,7 +195,7 @@ namespace WPF.Views
             var allAppsListView = startPlaceholder.FindName("AllAppsListView") as Windows.UI.Xaml.Controls.ListView;
             var cvs = startPlaceholder.FindName("cvs") as Windows.UI.Xaml.Data.CollectionViewSource;
 
-            allAppsListView.ItemClick += (sender, e) => AppLauncher.AppLaunchHandler(sender, e, this, Programs);
+            allAppsListView.ItemClick += (sender, e) => AppLauncher.AppLaunchHandler(sender, e, this, Programs, false);
 
             cvs.Source = from p in Programs
                          orderby p.Alph
@@ -211,6 +217,10 @@ namespace WPF.Views
             power.Click += async (sender, e) => await ShutdownAsync();
             restart.Click += async (sender, e) => await RestartAsync();
 
+            // startPlaceholder.OpenFileLocationClicked += async (sender, e) => await OpenUninstall();
+            // startPlaceholder.RunAsAdminClicked += async (sender, e) => await AppLauncher.DirectoryAppLaunchHandler(sender, e, this, Programs, false);
+            startPlaceholder.UninstallSettingsShouldOpen += async (sender, e) => await OpenUninstall();
+
             var colorization = startPlaceholder.FindName("IsColorizationEnabled") as Windows.UI.Xaml.Controls.TextBlock;
             int themevalue = (int)Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize").GetValue("ColorPrevalence");
             colorization.Text = themevalue.ToString();
@@ -221,7 +231,7 @@ namespace WPF.Views
             // Get the StartPlaceholder object from the WindowsXamlHost element
             var startPlaceholder = StartMenuIslandh.Child as ShellApp.Shell.Start.StartPlaceholder;
             // Find the ListView element by its name
-            startPlaceholder.DirectoryChildClicked += (sender, e) => AppLauncher.DirectoryAppLaunchHandler(sender, e, this, Programs);
+            startPlaceholder.DirectoryChildClicked += (sender, e) => AppLauncher.DirectoryAppLaunchHandler(sender, e, this, Programs, false);
         }
         private void startmenubasewindow_LostFocus(object sender, RoutedEventArgs e)
         {
@@ -234,8 +244,6 @@ namespace WPF.Views
 
         [DllImport("user32.dll")]
         static extern byte MapVirtualKey(byte wCode, int wMap);
-
-
 
         private void LaunchWindowsSearch(object sender, System.Windows.Input.KeyEventArgs e)
         {

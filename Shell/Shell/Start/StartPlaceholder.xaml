@@ -109,6 +109,37 @@
             TintOpacity="0.8" TintLuminosityOpacity="0" TintColor="Transparent" FallbackColor="PaleVioletRed" />
         <DataTemplate x:Key="AppD">
             <Grid Background="#00FFFFFF">
+                <Grid.ContextFlyout>
+                    <MenuFlyout>
+                        <MenuFlyoutItem x:Name="PinToStartifyMenuItem" Text="Pin to Startify" Click="PinToStartifyMenuItem_Click">
+                            <MenuFlyoutItem.Icon>
+                                <FontIcon Glyph=""/>
+                            </MenuFlyoutItem.Icon>
+                        </MenuFlyoutItem>
+                        <MenuFlyoutSubItem Text="More">
+                            <MenuFlyoutItem x:Name="PinToTaskbar" Text="Pin to taskbar" Click="PinToTaskbar_Click">
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon Glyph=""/>
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                            <MenuFlyoutItem x:Name="RunAsAdminItem" Text="Run as an Administrator" Click="RunAsAdminItem_Click">
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon Glyph=""/>
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                            <MenuFlyoutItem x:Name="OpenFileLocation" Text="Open file location" Click="OpenFileLocation_Click">
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon Glyph=""/>
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                        </MenuFlyoutSubItem>
+                        <MenuFlyoutItem x:Name="UninstallAppMenuItem" Text="Uninstall" Click="UninstallAppMenuItem_Click_1">
+                            <MenuFlyoutItem.Icon>
+                                <FontIcon Glyph=""/>
+                            </MenuFlyoutItem.Icon>
+                        </MenuFlyoutItem>
+                    </MenuFlyout>
+                </Grid.ContextFlyout>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
@@ -139,6 +170,15 @@
         <DataTemplate x:Key="Folder">
             <StackPanel HorizontalAlignment="Stretch" Orientation="Vertical" FocusVisualSecondaryBrush="{x:Null}">
                 <muxc:Expander Width="230" Template="{StaticResource ExpanderTemplate1}" Padding="0,0,0,0" x:Name="Expander2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
+                    <muxc:Expander.ContextFlyout>
+                        <MenuFlyout>
+                            <MenuFlyoutItem Text="Startify menu settings">
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon Glyph="" FontFamily="Segoe Fluent Icons"/>
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                        </MenuFlyout>
+                    </muxc:Expander.ContextFlyout>
                     <muxc:Expander.Header>
                         <Grid Background="#00FFFFFF" HorizontalAlignment="Stretch" Width="230">
                             <Grid.ColumnDefinitions>
@@ -180,7 +220,7 @@
                         FallbackColor="Transparent" />
         <CollectionViewSource x:Name="cvs" x:Key="cvs" IsSourceGrouped="True" />
         <ResourceDictionary x:Key="h">
-            
+
             <ResourceDictionary.MergedDictionaries>
 
                 <ResourceDictionary Source="/Shell/ShellResources.xaml" />
@@ -219,8 +259,8 @@
         <TranslateTransform x:Name="translateTransform" />
     </UserControl.RenderTransform>
 
-    
-    
+
+
     <Grid x:Name="startbackground" Background="{ThemeResource ShellAcrylicBrush}"
           BorderBrush="{ThemeResource SurfaceStrokeColorDefaultBrush}"
           BorderThickness="1,1,1,1"
@@ -230,7 +270,15 @@
           Height="650"
           HorizontalAlignment="Left"
           VerticalAlignment="Bottom" Margin="10,0,0,10">
-
+        <Grid.ContextFlyout>
+            <MenuFlyout>
+                <MenuFlyoutItem Text="Startify menu settings">
+                    <MenuFlyoutItem.Icon>
+                        <FontIcon Glyph="" FontFamily="Segoe Fluent Icons"/>
+                    </MenuFlyoutItem.Icon>
+                </MenuFlyoutItem>
+            </MenuFlyout>
+        </Grid.ContextFlyout>
         <Grid.Shadow>
             <ThemeShadow />
         </Grid.Shadow>
@@ -244,10 +292,11 @@
         <Grid Grid.Column="0">
 
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
+                <RowDefinition Height="44" />
+                <RowDefinition Height="44*" />
+                <RowDefinition Height="575*"/>
             </Grid.RowDefinitions>
-            
+
 
             <Button x:Name="ExpandButton" HorizontalAlignment="Stretch"
                     Height="34"
@@ -260,9 +309,9 @@
                     Background="Transparent"
                     BorderBrush="Transparent" Width="34" Margin="5,5,5,5" />
 
-            <StackPanel Grid.Row="1"
+            <StackPanel Grid.Row="2"
                         Orientation="Vertical"
-                        VerticalAlignment="Bottom">
+                        VerticalAlignment="Top" Margin="0,345,0,0">
 
                 <Button x:Name="UserAV_Button" HorizontalAlignment="Stretch"
                         Height="34"
@@ -340,6 +389,15 @@
                         CornerRadius="5"
                         Background="Transparent"
                         BorderBrush="Transparent" Margin="5,5,5,5">
+                    <Button.ContextFlyout>
+                        <MenuFlyout>
+                            <MenuFlyoutItem x:Name="ExitStartify" Text="Exit Startify">
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon Glyph=""/>
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                        </MenuFlyout>
+                    </Button.ContextFlyout>
                     <Button.Flyout>
                         <MenuFlyout>
                             <MenuFlyoutItem x:Name="HibernateMenuButton" Text="Hibernate">
@@ -363,7 +421,6 @@
                                 </MenuFlyoutItem.Icon>
                             </MenuFlyoutItem>
                         </MenuFlyout>
-
                     </Button.Flyout>
                 </Button>
 

@@ -32,6 +32,11 @@ namespace ShellApp.Shell.Start
         public event EventHandler<ItemClickEventArgs> DirectoryChildClicked;
         public event EventHandler<ItemClickEventArgs> ErrorHappened;
 
+        public event EventHandler<RoutedEventArgs> UninstallSettingsShouldOpen;
+        public event EventHandler<RoutedEventArgs> RunAsAdminClicked;
+        public event EventHandler<RoutedEventArgs> OpenFileLocationClicked;
+
+
         public event EventHandler AnimationStarted;
         public StartPlaceholder()
         {
@@ -134,6 +139,32 @@ namespace ShellApp.Shell.Start
             // Call the OnDirectoryChildClicked method to raise the event
             DirectoryChildClicked?.Invoke(sender, e);
         }
+        private void UninstallAppMenuItem_Click_1(object sender, RoutedEventArgs e)
+        {
+            // Call the OnDirectoryChildClicked method to raise the event
+            UninstallSettingsShouldOpen?.Invoke(sender, e);
+        }
 
+        private void OpenFileLocation_Click(object sender, RoutedEventArgs e)
+        {
+            // Call the OnDirectoryChildClicked method to raise the event
+            OpenFileLocationClicked?.Invoke(sender, e);
+        }
+
+        private void RunAsAdminItem_Click(object sender, RoutedEventArgs e)
+        {
+            // Call the OnDirectoryChildClicked method to raise the event
+            RunAsAdminClicked?.Invoke(sender, e);
+        }
+
+        private void PinToTaskbar_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void PinToStartifyMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
