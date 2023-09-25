@@ -1,4 +1,5 @@
 ﻿using IWshRuntimeLibrary;
+using Microsoft.Toolkit.Uwp.Notifications;
 using Microsoft.Toolkit.Wpf.UI.XamlHost;
 using Microsoft.Win32;
 using ShellApp;
@@ -9,6 +10,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security.Policy;
 using System.Threading.Tasks;
@@ -19,10 +21,12 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Effects;
+using System.Xml;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Core;
 using Windows.Management.Deployment;
 using Windows.System;
+using Windows.UI.Notifications;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using WPF.Helpers;
@@ -36,46 +40,81 @@ namespace WPF.Views
     /// </summary>
     public partial class StartMenu : Window
     {
-        Helpers.StartMenuListener _listener;
+        Helpers.StartMenuListener StartListener;
+        Helpers.ProgramsApps.LaunchAppProgram AppLauncher = new Helpers.ProgramsApps.LaunchAppProgram();
+        Helpers.ProgramsApps.ProgramGetHelper AppHelper = new Helpers.ProgramsApps.ProgramGetHelper();
+        Helpers.Launching.Startup startup = new Helpers.Launching.Startup();
+        Helpers.StartMenuTools startMenuTools = new Helpers.StartMenuTools();
+
+        ObservableCollection<StartMenuEntry> Programs = new ObservableCollection<StartMenuEntry>();
         public StartMenu()
         {
+            // Initialize Startify
             InitializeComponent();
-            _listener = new StartMenuListener();
-            _listener.StartTriggered += OnStartTriggered;
-            _listener.FindAndActivateWindow();
-            AlignSM();
+            StartListener = new StartMenuListener();
+            StartListener.StartTriggered += OnStartTriggered;
+            StartListener.ListenerErrorHappened += StartifyErrorOccured;
+            StartListener.FindAndActivateWindow();
+            startMenuTools.AlignStartifyWithTaskbar(this);
             var startPlaceholder = StartMenuIslandh.Child as ShellApp.Shell.Start.StartPlaceholder;
-            this.Focus();
+            // Do this so the app wont wait for user start button press on startup.
+            Show();
+            Hide();
         }
 
-        void AlignSM()
+        private void StartifyErrorOccured(object sender, EventArgs e)
         {
-            //Align the start menu with taskbar alignment (center or left)
-            RegistryKey alignkey = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced");
+            ShowErrorNotification();
+        }
 
-            int alignvalue = (int)alignkey.GetValue("TaskbarAl");
-            
-            if(alignvalue.ToString() == "0")
-            {
-                var desktopWorkingArea = SystemParameters.WorkArea;
-                Left = 0;
-                Top = desktopWorkingArea.Bottom - Height;
-            }
-            else if (alignvalue.ToString() == "1")
-            {
-                // Calculate the screen center coordinates
-                double screenWidth = SystemParameters.PrimaryScreenWidth;
-                double screenHeight = SystemParameters.PrimaryScreenHeight;
-                var desktopWorkingArea = SystemParameters.WorkArea;
-                double windowWidth = Width;
-                double windowHeight = Height;
 
-                double left = (screenWidth - windowWidth) / 2;
+        public async void ShowNotification()
+        {
+            // Get the path to the "Assets" folder in the current running directory
+            string assetsFolderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets");
 
-                // Set the window position to the center of the screen
-                Left = left;
-                Top = desktopWorkingArea.Bottom - Height;
-            }
+            // Specify the file name you want to access
+            string fileName = "halal.png";
+
+            // Combine the folder path with the file name to get the full file path
+            string filePath = Path.Combine(assetsFolderPath, fileName);
+
+            // Create a URI object from the file path
+            Uri fileUri = new Uri(filePath);
+
+            // Get the URI as a string
+            string uriString = fileUri.ToString();
+
+            // Show the "everything is ok" toast
+            new ToastContentBuilder()
+                .AddInlineImage(new Uri(uriString))
+                .AddText("Startify launched")
+                .AddText("Try clicking the Windows Start button!")
+                .Show(); 
+        }
+        public void ShowErrorNotification()
+        {
+            // Get the path to the "Assets" folder in the current running directory
+            string assetsFolderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets");
+
+            // Specify the file name you want to access
+            string fileName = "error.png";
+
+            // Combine the folder path with the file name to get the full file path
+            string filePath = Path.Combine(assetsFolderPath, fileName);
+
+            // Create a URI object from the file path
+            Uri fileUri = new Uri(filePath);
+
+            // Get the URI as a string
+            string uriString = fileUri.ToString();
+
+            // Show the "everything is ok" toast
+            new ToastContentBuilder()
+                .AddInlineImage(new Uri(uriString))
+                .AddText(":(")
+                .AddText("Startify encountered an internal error and may not work properly.")
+                .Show();
         }
 
         void OnStartTriggered(object sender, EventArgs e)
@@ -85,30 +124,12 @@ namespace WPF.Views
             {
                 Show();
                 WindowActivator.ActivateWindow(new System.Windows.Interop.WindowInteropHelper(startmenubasewindow).Handle);
+                this.Focus();
             }
         }
         private void StartMenuActivated(object sender, EventArgs e)
         {
-            //Align the start menu with taskbar alignment (center or left)
-            RegistryKey alignkey = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced");
-
-            int alignvalue = (int)alignkey.GetValue("TaskbarAl");
-
-            if (alignvalue.ToString() == "0")
-            {
-                Screen screen = Screen.FromPoint(System.Windows.Forms.Control.MousePosition);
-                this.Left = screen.WorkingArea.Left;
-            }
-            else if (alignvalue.ToString() == "1")
-            {
-                // Calculate the screen center coordinates
-                double screenWidth = SystemParameters.PrimaryScreenWidth;
-                double windowWidth = Width;
-                double left = (screenWidth - windowWidth) / 2;
-
-                // Set the window position to the center of the screen
-                Left = left;
-            }
+            startMenuTools.AlignStartifyWithTaskbar(this);
             var startPlaceholder = StartMenuIslandh.Child as ShellApp.Shell.Start.StartPlaceholder;
             startPlaceholder.StartOpenStartAnimation();
         }
@@ -120,159 +141,6 @@ namespace WPF.Views
             Visibility = Visibility.Hidden;
             Hide();
         }
-
-        ObservableCollection<StartMenuEntry> Programs = new ObservableCollection<StartMenuEntry>();
-        ObservableCollection<StartMenuLink> Links = new ObservableCollection<StartMenuLink>();
-        ObservableCollection<StartMenuLink> Results = new ObservableCollection<StartMenuLink>();
-
-
-
-        private void StartMenuIsland_Loaded(object sender, RoutedEventArgs e)
-        {
-            // this is responsible for filling the xaml listview with programs and folders
-            string programs = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonStartMenu), "Programs");
-            GetPrograms(programs);
-            programs = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.StartMenu), "Programs");
-            GetPrograms(programs);
-            Programs = new ObservableCollection<StartMenuEntry>(Programs.OrderBy(x => x.Title));
-
-
-            //Get the installed UWP apps and display them on the xaml App list
-            GetUWPApps();
-
-            // Get the StartPlaceholder object from the WindowsXamlHost element
-            var startPlaceholder = StartMenuIslandh.Child as ShellApp.Shell.Start.StartPlaceholder;
-
-            // Find the ListView element by its name
-            var allAppsListView = startPlaceholder.FindName("AllAppsListView") as Windows.UI.Xaml.Controls.ListView;
-
-            // Find the smaller ListView element by its name
-            var allAppsListViewFolder = startPlaceholder.FindName("DirectoryChildContainer") as Windows.UI.Xaml.Controls.ListView;
-
-            // Find the CollectionViewSource element by its name
-            var cvs = startPlaceholder.FindName("cvs") as Windows.UI.Xaml.Data.CollectionViewSource;
-
-            // Set the ItemsSource property of the ListView element to Programs
-            // allAppsListView.ItemsSource = Programs;
-            // Assign it to the ItemClick property of your UWP ListView control
-            allAppsListView.ItemClick += launchhandler;
-
-            var groups = from p in Programs
-                         orderby p.Alph
-                         group p by char.IsDigit(p.Alph[0]) ? "#" : p.Alph into g
-                         select g;
-
-            cvs.Source = groups;
-
-            allAppsListView.Loaded += applistloaded;
-
-
-            //////////////////////////////////////////////////////////////////////////////////
-            /// Set power button actions and hibernate item visibility.
-            //////////////////////////////////////////////////////////////////////////////////
-
-            // Find the buttons by its name
-            var hibernate = startPlaceholder.FindName("HibernateMenuButton") as Windows.UI.Xaml.Controls.MenuFlyoutItem;
-            var sleep = startPlaceholder.FindName("SleepMenuButton") as Windows.UI.Xaml.Controls.MenuFlyoutItem;
-            var restart = startPlaceholder.FindName("RestartMenuButton") as Windows.UI.Xaml.Controls.MenuFlyoutItem;
-            var power = startPlaceholder.FindName("PowerMenuButton") as Windows.UI.Xaml.Controls.MenuFlyoutItem;
-
-            // Determine if Hibernate button should be shown.
-
-            // Open the registry key for power settings
-            RegistryKey powerKey = Registry.LocalMachine.OpenSubKey("SYSTEM\\CurrentControlSet\\Control\\Power");
-
-            // Get the value of HibernateEnabled
-            int hibernateValue = (int)powerKey.GetValue("HibernateEnabledDefault");
-
-            // very epic check 
-            if (hibernateValue == 1)
-            {
-                hibernate.Visibility = Windows.UI.Xaml.Visibility.Visible;
-            }
-            else
-            {
-                hibernate.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
-            }
-            hibernate.Click += async (sender, e) => await HibernateAsync();
-            sleep.Click += async (sender, e) => await SleepAsync();
-            power.Click += async (sender, e) => await ShutdownAsync();
-            restart.Click += async (sender, e) => await RestartAsync();
-
-
-            //Colorization dishery
-            var colorization = startPlaceholder.FindName("IsColorizationEnabled") as Windows.UI.Xaml.Controls.TextBlock;
-            RegistryKey themekey = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize");
-
-            int themevalue = (int)themekey.GetValue("ColorPrevalence");
-            colorization.Text = themevalue.ToString();
-        }
-
-        private void applistloaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
-        {
-            try
-            {
-                // Get the StartPlaceholder object from the WindowsXamlHost element
-                var startPlaceholder = StartMenuIslandh.Child as ShellApp.Shell.Start.StartPlaceholder;
-                // Find the ListView element by its name
-                startPlaceholder.DirectoryChildClicked += launchhandleralt;
-            }
-            catch (Exception ex) 
-            {
-                System.Windows.MessageBox.Show(ex.ToString());
-            }
-
-        }
-
-        private async void launchhandleralt(object sender, ItemClickEventArgs e)
-        {
-            StartMenuLink clickedItem = e.ClickedItem as StartMenuLink;
-            // Get the index of the clicked item in the ObservableCollection
-
-            System.Windows.MessageBox.Show("Not yet implemented :/");
-            
-        }
-        private async void launchhandler(object sender, ItemClickEventArgs e)
-        {
-            StartMenuEntry clickedItem = e.ClickedItem as StartMenuEntry;
-            // Get the index of the clicked item in the ObservableCollection
-            int index = Programs.IndexOf(clickedItem);
-
-            // Get the path of the clicked item from the ObservableCollection
-            string path = Programs[index].Path;
-            string pathuwp = Programs[index].PathUWP;
-
-            // Do something with the index and path
-            this.Hide();
-            if (path != null)
-            {
-                Process.Start(new ProcessStartInfo(path) { UseShellExecute = true });
-            }
-            if (pathuwp != null)
-            {
-                var app = await GetAppByPackageFamilyNameAsync(pathuwp);
-                if (app != null)
-                {
-                    await app.LaunchAsync();
-                }
-                else
-                {
-                    System.Windows.MessageBox.Show("This UWP app couldn't be launched.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
-            }
-        }
-        static async Task<AppListEntry> GetAppByPackageFamilyNameAsync(string packageFamilyName)
-        {
-            var pkgManager = new PackageManager();
-            var pkg = pkgManager.FindPackagesForUser("", packageFamilyName).FirstOrDefault();
-
-            if (pkg == null) return null;
-
-            var apps = await pkg.GetAppListEntriesAsync();
-            var firstApp = apps.FirstOrDefault();
-            return firstApp;
-        }
-
 
         private async Task HibernateAsync()
         {
@@ -291,7 +159,6 @@ namespace WPF.Views
         {
             System.Diagnostics.Process.Start("shutdown.exe", "-r -t 0");
         }
-
         public static bool IsHibernateEnabled()
         {
             // Open the registry key for power settings
@@ -304,143 +171,58 @@ namespace WPF.Views
             return hibernateValue == 1;
         }
 
-
-        private void GetPrograms(string directory)
+        private void StartMenuIsland_Loaded(object sender, RoutedEventArgs e)
         {
-            foreach (string f in Directory.GetFiles(directory))
-            {
-                if (System.IO.Path.GetExtension(f) == ".lnk")
-                {
-                    Programs.Add(new StartMenuLink
-                    {
-                        Title = System.IO.Path.GetFileNameWithoutExtension(f),
-                        Link = f,
-                        Path = System.IO.Path.GetFullPath(f),
-                        Icon = new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri(uriString: IconHelper.GetFileIcon(f)))
-                    });
-                }
-            }
-            GetProgramsRecurse(directory);
+            // Attach all of the xaml functions and actions to the WPF part of the app.
+
+            string commonStartMenu = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonStartMenu), "Programs");
+            string userStartMenu = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.StartMenu), "Programs");
+
+            AppHelper.GetPrograms(commonStartMenu, Programs);
+            AppHelper.GetPrograms(userStartMenu, Programs);
+
+            Programs = new ObservableCollection<StartMenuEntry>(Programs.OrderBy(x => x.Title));
+
+            AppHelper.GetUWPApps(Programs);
+
+            var startPlaceholder = StartMenuIslandh.Child as ShellApp.Shell.Start.StartPlaceholder;
+            var allAppsListView = startPlaceholder.FindName("AllAppsListView") as Windows.UI.Xaml.Controls.ListView;
+            var cvs = startPlaceholder.FindName("cvs") as Windows.UI.Xaml.Data.CollectionViewSource;
+
+            allAppsListView.ItemClick += (sender, e) => AppLauncher.AppLaunchHandler(sender, e, this, Programs);
+
+            cvs.Source = from p in Programs
+                         orderby p.Alph
+                         group p by char.IsDigit(p.Alph[0]) ? "#" : p.Alph into g
+                         select g;
+            allAppsListView.Loaded += applistloaded;
+
+            var hibernate = startPlaceholder.FindName("HibernateMenuButton") as Windows.UI.Xaml.Controls.MenuFlyoutItem;
+            var sleep = startPlaceholder.FindName("SleepMenuButton") as Windows.UI.Xaml.Controls.MenuFlyoutItem;
+            var restart = startPlaceholder.FindName("RestartMenuButton") as Windows.UI.Xaml.Controls.MenuFlyoutItem;
+            var power = startPlaceholder.FindName("PowerMenuButton") as Windows.UI.Xaml.Controls.MenuFlyoutItem;
+
+            var powerKey = Registry.LocalMachine.OpenSubKey("SYSTEM\\CurrentControlSet\\Control\\Power");
+            int hibernateValue = (int)powerKey.GetValue("HibernateEnabledDefault");
+            hibernate.Visibility = (hibernateValue == 1) ? Windows.UI.Xaml.Visibility.Visible : Windows.UI.Xaml.Visibility.Collapsed;
+
+            hibernate.Click += async (sender, e) => await HibernateAsync();
+            sleep.Click += async (sender, e) => await SleepAsync();
+            power.Click += async (sender, e) => await ShutdownAsync();
+            restart.Click += async (sender, e) => await RestartAsync();
+
+            var colorization = startPlaceholder.FindName("IsColorizationEnabled") as Windows.UI.Xaml.Controls.TextBlock;
+            int themevalue = (int)Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize").GetValue("ColorPrevalence");
+            colorization.Text = themevalue.ToString();
+            ShowNotification();
         }
-
-
-
-    private void GetUWPApps()
-    {
-        // Create a PackageManager object
-        PackageManager packageManager = new PackageManager();
-
-        // Get the user SID
-        string userSid = System.Security.Principal.WindowsIdentity.GetCurrent().User.Value;
-
-        // Get the packages for the current user
-        var packages = packageManager.FindPackagesForUser(userSid);
-
-        // Create a HashSet to store the added package names
-        HashSet<string> addedPackages = new HashSet<string>();
-
-        // Loop through the packages and add them to the Apps collection
-        foreach (var package in packages)
+        private void applistloaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-            if (package.IsFramework == false && package.IsResourcePackage == false && package.IsOptional == false && package.IsBundle == false)
-            {
-            // Get the app list entries for the package
-            var appListEntries = package.GetAppListEntriesAsync().GetAwaiter().GetResult();
-
-            // Loop through the app list entries and find the default one
-            foreach (var appListEntry in appListEntries)
-            {
-                if (appListEntry != null)
-                {
-                    string packageName = package.Id.Name;
-                    {
-                        // Check if the package name has already been added to the Apps collection
-                        if (!addedPackages.Contains(packageName))
-                        {
-                                // Add the package name to the HashSet
-                                addedPackages.Add(packageName);
-
-                                // Add the app entry to the Programs collection
-                                Programs.Add(new StartMenuLink()
-                                {
-                                    Title = appListEntry.DisplayInfo.DisplayName,
-                                    Icon = new Windows.UI.Xaml.Media.Imaging.BitmapImage(package.Logo),
-                                    PathUWP = package.Id.FamilyName
-                                });
-                            }
-                        }
-                    }
-                }
-            }
+            // Get the StartPlaceholder object from the WindowsXamlHost element
+            var startPlaceholder = StartMenuIslandh.Child as ShellApp.Shell.Start.StartPlaceholder;
+            // Find the ListView element by its name
+            startPlaceholder.DirectoryChildClicked += (sender, e) => AppLauncher.DirectoryAppLaunchHandler(sender, e, this, Programs);
         }
-    }
-
-
-        private void GetProgramsRecurse(string directory, StartMenuDirectory parent = null)
-        {
-            bool hasParent = parent != null;
-            foreach (string d in Directory.GetDirectories(directory))
-            {
-                StartMenuDirectory folderEntry = null;
-                if (!hasParent)
-                {
-                    folderEntry = Programs.FirstOrDefault(x => x.Title == new DirectoryInfo(d).Name) as StartMenuDirectory;
-                }
-                if (folderEntry == null)
-                {
-                    folderEntry = new StartMenuDirectory
-                    {
-                        Title = new DirectoryInfo(d).Name,
-                        Path = System.IO.Path.GetFullPath(d),
-                        Links = new ObservableCollection<StartMenuLink>(),
-                        Directories = new ObservableCollection<StartMenuDirectory>(),
-                        Link = d,
-                        Icon = new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///Assets/UnplatedFolder.png"))
-                    };
-                }
-
-                GetProgramsRecurse(d, folderEntry);
-                DirectoryInfo dInfo = new DirectoryInfo(d);
-                var a = dInfo.GetFiles("*.lnk", SearchOption.TopDirectoryOnly);
-                var b = dInfo.GetDirectories("*", SearchOption.TopDirectoryOnly);
-                var c = new string[a.Length + b.Length];
-                for(int i = 0; i<a.Length; i++)
-                {
-                    c[i] = a[i].FullName;
-                }
-                for(int i =0; i<b.Length; i++)
-                {
-                    c[a.Length + i] = b[i].FullName;
-                }
-                foreach (var f in c)
-                {
-                    folderEntry.HasChildren = true;
-                    Uri uri = new Uri(uriString: IconHelper.GetFileIcon(f));
-                    FileAttributes attr = System.IO.File.GetAttributes(f);
-                    if (attr.HasFlag(FileAttributes.Directory))
-                    uri = new Uri("ms-appx:///Assets/UnplatedFolder.png");
-
-                    folderEntry.Links.Add(new StartMenuLink
-                    {
-                        Title = System.IO.Path.GetFileNameWithoutExtension(f),
-                        Link = f,
-                        Icon = new Windows.UI.Xaml.Media.Imaging.BitmapImage(uri)
-                    });
-                }
-                if (!hasParent)
-                {
-                    if (!Programs.Contains(folderEntry))
-                    {
-                        Programs.Add(folderEntry);
-                    }
-                }
-                else
-                {
-                    parent.Directories.Add(folderEntry);
-                }
-            }
-        }
-
         private void startmenubasewindow_LostFocus(object sender, RoutedEventArgs e)
         {
             Hide();
@@ -453,7 +235,9 @@ namespace WPF.Views
         [DllImport("user32.dll")]
         static extern byte MapVirtualKey(byte wCode, int wMap);
 
-        private void startmenubasewindow_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+
+
+        private void LaunchWindowsSearch(object sender, System.Windows.Input.KeyEventArgs e)
         {
             // Check if the pressed key is a letter (A-Z)
             if (e.Key >= Key.A && e.Key <= Key.Z)

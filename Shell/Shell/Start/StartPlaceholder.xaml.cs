@@ -4,10 +4,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.ServiceModel.Channels;
+using System.Xml;
 using Windows.ApplicationModel.Contacts;
 using Windows.Storage;
 using Windows.Storage.Streams;
 using Windows.System;
+using Windows.UI.Notifications;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -28,12 +30,19 @@ namespace ShellApp.Shell.Start
     {
         // Declare the event
         public event EventHandler<ItemClickEventArgs> DirectoryChildClicked;
+        public event EventHandler<ItemClickEventArgs> ErrorHappened;
 
         public event EventHandler AnimationStarted;
         public StartPlaceholder()
         {
             this.InitializeComponent();
             this.Loaded += Start_Loaded;
+            this.ErrorHappened += errornotif;
+        }
+
+        private void errornotif(object sender, ItemClickEventArgs e)
+        {
+
         }
 
         private bool IsFolderOpened = false;
@@ -125,5 +134,6 @@ namespace ShellApp.Shell.Start
             // Call the OnDirectoryChildClicked method to raise the event
             DirectoryChildClicked?.Invoke(sender, e);
         }
+
     }
 }

@@ -17,7 +17,9 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WindowsXamlEnableOverview>true</WindowsXamlEnableOverview>
-    <AppxPackageSigningEnabled>false</AppxPackageSigningEnabled>
+    <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
+    <PackageCertificateThumbprint>CCE73B3B8446A53C73A1611D909FA467DFE83054</PackageCertificateThumbprint>
+    <PackageCertificateKeyFile>Shell_TemporaryKey.pfx</PackageCertificateKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -128,12 +130,6 @@
     <Compile Include="Shell\Start\StartPlaceholder.xaml.cs">
       <DependentUpon>StartPlaceholder.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Shell\Start\Tester.xaml.cs">
-      <DependentUpon>Tester.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Shell\Start\Tester2.xaml.cs">
-      <DependentUpon>Tester2.xaml</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -144,12 +140,14 @@
     <Content Include="Assets\Edge.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\error.png" />
     <Content Include="Assets\Excel.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\ff.png" />
     <Content Include="Assets\Figma.png" />
     <Content Include="Assets\glassmorph.jpg" />
+    <Content Include="Assets\halal.png" />
     <Content Include="Assets\HeavyDrizzle.png" />
     <Content Include="Assets\img1.jpg" />
     <Content Include="Assets\img2.jpg" />
@@ -275,14 +273,9 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Shell\Start\Tester.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Shell\Start\Tester2.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Shell_TemporaryKey.pfx" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

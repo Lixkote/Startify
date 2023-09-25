@@ -30,6 +30,7 @@ namespace WPF.Helpers
     internal class StartMenuLink : StartMenuEntry
     {
         public string Link { get; set; }
+        public string LinkUWP { get; set; }
         public bool AllowOpenLocation { get; set; }
     }
 

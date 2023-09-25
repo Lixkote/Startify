@@ -45,6 +45,7 @@ namespace WPF.Helpers
         public const int closewin = 0;
 
         public event EventHandler<EventArgs> StartTriggered;
+        public event EventHandler<EventArgs> ListenerErrorHappened;
         public static IntPtr FindWindowByCaptionAndClass(string caption, string className)
         {
             IntPtr shellTrayWnd = FindWindowExA(IntPtr.Zero, IntPtr.Zero, "Shell_TrayWnd", null);
@@ -80,7 +81,8 @@ namespace WPF.Helpers
             }
             else
             {
-                MessageBox.Show("Error hooking Windows 11's Start Button :C");
+                MessageBox.Show("Startify had an issue hooking the windows start button, and might not work properly.");
+                ListenerErrorHappened(this, null);
             }
         }
 
@@ -101,7 +103,8 @@ namespace WPF.Helpers
             }
             else
             {
-                MessageBox.Show("Error closing Windows 11's Start Menu :C");
+                Debug.WriteLine("Startify had an issue closing the windows start menu, and might not work properly.");
+                ListenerErrorHappened(this, null);
             }
         }
 
