@@ -117,6 +117,31 @@ namespace WPF.Views
                 .Show();
         }
 
+        public async Task ShowByeNotification()
+        {
+            // Get the path to the "Assets" folder in the current running directory
+            string assetsFolderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets");
+
+            // Specify the file name you want to access
+            string fileName = "bye.png";
+
+            // Combine the folder path with the file name to get the full file path
+            string filePath = Path.Combine(assetsFolderPath, fileName);
+
+            // Create a URI object from the file path
+            Uri fileUri = new Uri(filePath);
+
+            // Get the URI as a string
+            string uriString = fileUri.ToString();
+
+            // Show the "everything is ok" toast
+            new ToastContentBuilder()
+                .AddInlineImage(new Uri(uriString))
+                .AddText("Startify disabled")
+                .AddText("See you later")
+                .Show();
+        }
+
         void OnStartTriggered(object sender, EventArgs e)
         {
             Visibility = Visibility == Visibility.Visible ? Visibility.Hidden : Visibility.Visible;
@@ -158,6 +183,12 @@ namespace WPF.Views
         private async Task RestartAsync()
         {
             System.Diagnostics.Process.Start("shutdown.exe", "-r -t 0");
+        }
+
+        private async Task CloseStartify()
+        {
+            await ShowByeNotification();
+            System.Windows.Application.Current.Shutdown();
         }
 
         private async Task OpenUninstall()
@@ -207,6 +238,7 @@ namespace WPF.Views
             var sleep = startPlaceholder.FindName("SleepMenuButton") as Windows.UI.Xaml.Controls.MenuFlyoutItem;
             var restart = startPlaceholder.FindName("RestartMenuButton") as Windows.UI.Xaml.Controls.MenuFlyoutItem;
             var power = startPlaceholder.FindName("PowerMenuButton") as Windows.UI.Xaml.Controls.MenuFlyoutItem;
+            var exitmenuitem = startPlaceholder.FindName("ExitStartify") as Windows.UI.Xaml.Controls.MenuFlyoutItem;
 
             var powerKey = Registry.LocalMachine.OpenSubKey("SYSTEM\\CurrentControlSet\\Control\\Power");
             int hibernateValue = (int)powerKey.GetValue("HibernateEnabledDefault");
@@ -216,6 +248,8 @@ namespace WPF.Views
             sleep.Click += async (sender, e) => await SleepAsync();
             power.Click += async (sender, e) => await ShutdownAsync();
             restart.Click += async (sender, e) => await RestartAsync();
+
+            exitmenuitem.Click += async (sender, e) => await CloseStartify();
 
             // startPlaceholder.OpenFileLocationClicked += async (sender, e) => await OpenUninstall();
             // startPlaceholder.RunAsAdminClicked += async (sender, e) => await AppLauncher.DirectoryAppLaunchHandler(sender, e, this, Programs, false);

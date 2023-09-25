@@ -111,7 +111,7 @@
             <Grid Background="#00FFFFFF">
                 <Grid.ContextFlyout>
                     <MenuFlyout>
-                        <MenuFlyoutItem x:Name="PinToStartifyMenuItem" Text="Pin to Startify" Click="PinToStartifyMenuItem_Click">
+                        <MenuFlyoutItem x:Name="PinToStartifyMenuItem" Text="Pin to Start" Click="PinToStartifyMenuItem_Click">
                             <MenuFlyoutItem.Icon>
                                 <FontIcon Glyph=""/>
                             </MenuFlyoutItem.Icon>
@@ -391,7 +391,7 @@
                         BorderBrush="Transparent" Margin="5,5,5,5">
                     <Button.ContextFlyout>
                         <MenuFlyout>
-                            <MenuFlyoutItem x:Name="ExitStartify" Text="Exit Startify">
+                            <MenuFlyoutItem x:Name="ExitStartify" Text="Exit Startify" Click="ExitStartify_Click">
                                 <MenuFlyoutItem.Icon>
                                     <FontIcon Glyph=""/>
                                 </MenuFlyoutItem.Icon>
@@ -410,7 +410,7 @@
                                     <FontIcon Glyph=""/>
                                 </MenuFlyoutItem.Icon>
                             </MenuFlyoutItem>
-                            <MenuFlyoutItem x:Name="PowerMenuButton" Text="Power">
+                            <MenuFlyoutItem x:Name="PowerMenuButton" Text="Shut down">
                                 <MenuFlyoutItem.Icon>
                                     <FontIcon Glyph=""/>
                                 </MenuFlyoutItem.Icon>

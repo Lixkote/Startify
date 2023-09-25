@@ -134,6 +134,7 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\bye.png" />
     <Content Include="Assets\Edge.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

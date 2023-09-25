@@ -35,6 +35,7 @@ namespace ShellApp.Shell.Start
         public event EventHandler<RoutedEventArgs> UninstallSettingsShouldOpen;
         public event EventHandler<RoutedEventArgs> RunAsAdminClicked;
         public event EventHandler<RoutedEventArgs> OpenFileLocationClicked;
+        public event EventHandler<RoutedEventArgs> exitstartapp;
 
 
         public event EventHandler AnimationStarted;
@@ -165,6 +166,12 @@ namespace ShellApp.Shell.Start
         private void PinToStartifyMenuItem_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void ExitStartify_Click(object sender, RoutedEventArgs e)
+        {
+            // Call the OnDirectoryChildClicked method to raise the event
+            exitstartapp?.Invoke(sender, e);
         }
     }
 }
