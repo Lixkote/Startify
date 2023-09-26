@@ -59,12 +59,33 @@ namespace WPF.Views
             var startPlaceholder = StartMenuIslandh.Child as ShellApp.Shell.Start.StartPlaceholder;
             // Do this so the app wont wait for user start button press on startup.
             Show();
+            ReadAndSetTaskbarTheme();
             Hide();
         }
 
         private void StartifyErrorOccured(object sender, EventArgs e)
         {
             ShowErrorNotification();
+        }
+
+
+        private void ReadAndSetTaskbarTheme()
+        {
+            // Open the registry key for theme settings
+            RegistryKey themeKey = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize");
+
+            // Get the value of HibernateEnabled
+            int taskbartheme = (int)themeKey.GetValue("SystemUsesLightTheme");
+            var startPlaceholder = StartMenuIslandh.Child as ShellApp.Shell.Start.StartPlaceholder;
+
+            if (taskbartheme == 1)
+            {
+                startPlaceholder.RequestedTheme = Windows.UI.Xaml.ElementTheme.Light;
+            }
+            else if (taskbartheme == 0)
+            {
+                startPlaceholder.RequestedTheme = Windows.UI.Xaml.ElementTheme.Dark;
+            }
         }
 
 
