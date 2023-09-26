@@ -46,6 +46,11 @@ namespace WPF.Views
         Helpers.Launching.Startup startup = new Helpers.Launching.Startup();
         Helpers.StartMenuTools startMenuTools = new Helpers.StartMenuTools();
 
+        [DllImport("user32.dll", SetLastError = true)]
+        static extern bool ExitWindowsEx(uint uFlags, uint dwReason);
+
+        const uint EWX_LOGOFF = 0x00000000;
+
         ObservableCollection<StartMenuEntry> Programs = new ObservableCollection<StartMenuEntry>();
         public StartMenu()
         {
@@ -163,9 +168,20 @@ namespace WPF.Views
                 .Show();
         }
 
-        void OnStartTriggered(object sender, EventArgs e)
+        async void OnStartTriggered(object sender, EventArgs e)
         {
-            Visibility = Visibility == Visibility.Visible ? Visibility.Hidden : Visibility.Visible;
+            var newVisibility = Visibility == Visibility.Visible ? Visibility.Hidden : Visibility.Visible;
+
+            if (newVisibility == Visibility.Hidden)
+            {
+                var startPlaceholder = StartMenuIslandh.Child as ShellApp.Shell.Start.StartPlaceholder;
+                Task animationTask = startPlaceholder.StartCloseStartAnimation();
+                await animationTask; // Wait for the animation task to finish
+                Hide(); // Hide the window
+            }
+
+            Visibility = newVisibility;
+
             if (Visibility == Visibility.Visible)
             {
                 Show();
@@ -173,18 +189,23 @@ namespace WPF.Views
                 this.Focus();
             }
         }
-        private void StartMenuActivated(object sender, EventArgs e)
+
+
+        private async void StartMenuActivated(object sender, EventArgs e)
         {
+            Show();
             startMenuTools.AlignStartifyWithTaskbar(this);
             var startPlaceholder = StartMenuIslandh.Child as ShellApp.Shell.Start.StartPlaceholder;
-            startPlaceholder.StartOpenStartAnimation();
+            Task animationTask = startPlaceholder.StartOpenStartAnimation();
+            await animationTask; // wait for the animation task to finish
+            this.Focus();
         }
 
-        private void StartMenuDeactivated(object sender, EventArgs e)
+        private async void StartMenuDeactivated(object sender, EventArgs e)
         {
             var startPlaceholder = StartMenuIslandh.Child as ShellApp.Shell.Start.StartPlaceholder;
-            startPlaceholder.StartCloseStartAnimation();
-            Visibility = Visibility.Hidden;
+            Task animationTask = startPlaceholder.StartCloseStartAnimation();
+            await animationTask; // wait for the animation task to finish
             Hide();
         }
 
@@ -204,6 +225,41 @@ namespace WPF.Views
         private async Task RestartAsync()
         {
             System.Diagnostics.Process.Start("shutdown.exe", "-r -t 0");
+        }
+
+
+        private async Task AccountSettingsAsync()
+        {
+            Process.Start(new ProcessStartInfo("ms-settings:yourinfo") { UseShellExecute = true });
+        }
+        private async Task SignoutAsync()
+        {
+            // Exit the WPF application
+            System.Windows.Application.Current.Shutdown();
+            // Log off the current user
+            ExitWindowsEx(EWX_LOGOFF, 0);
+        }
+        private async Task LockAsync()
+        {
+            // Define some constants
+            const int KEYEVENTF_EXTENDEDKEY = 0x1;
+            const int KEYEVENTF_KEYUP = 0x2;
+
+            // Get the virtual key codes for Windows and L keys
+            byte winKey = (byte)KeyInterop.VirtualKeyFromKey(Key.LWin);
+            byte lKey = (byte)KeyInterop.VirtualKeyFromKey(Key.L);
+
+            // Press the Windows key
+            keybd_event(winKey, MapVirtualKey(winKey, 0), KEYEVENTF_EXTENDEDKEY, 0);
+
+            // Press the L key
+            keybd_event(lKey, MapVirtualKey(lKey, 0), KEYEVENTF_EXTENDEDKEY, 0);
+
+            // Release the L key
+            keybd_event(lKey, MapVirtualKey(lKey, 0), KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, 0);
+
+            // Release the Windows key
+            keybd_event(winKey, MapVirtualKey(winKey, 0), KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, 0);
         }
 
         private async Task CloseStartify()
@@ -261,6 +317,10 @@ namespace WPF.Views
             var power = startPlaceholder.FindName("PowerMenuButton") as Windows.UI.Xaml.Controls.MenuFlyoutItem;
             var exitmenuitem = startPlaceholder.FindName("ExitStartify") as Windows.UI.Xaml.Controls.MenuFlyoutItem;
 
+            var signout = startPlaceholder.FindName("SignOutMenuItem") as Windows.UI.Xaml.Controls.MenuFlyoutItem;
+            var lockout = startPlaceholder.FindName("LockMenuItem") as Windows.UI.Xaml.Controls.MenuFlyoutItem;
+            var accsetting = startPlaceholder.FindName("AccountSettingsMenuItem") as Windows.UI.Xaml.Controls.MenuFlyoutItem;
+
             var powerKey = Registry.LocalMachine.OpenSubKey("SYSTEM\\CurrentControlSet\\Control\\Power");
             int hibernateValue = (int)powerKey.GetValue("HibernateEnabledDefault");
             hibernate.Visibility = (hibernateValue == 1) ? Windows.UI.Xaml.Visibility.Visible : Windows.UI.Xaml.Visibility.Collapsed;
@@ -269,6 +329,10 @@ namespace WPF.Views
             sleep.Click += async (sender, e) => await SleepAsync();
             power.Click += async (sender, e) => await ShutdownAsync();
             restart.Click += async (sender, e) => await RestartAsync();
+
+            signout.Click += async (sender, e) => await SignoutAsync();
+            lockout.Click += async (sender, e) => await LockAsync();
+            accsetting.Click += async (sender, e) => await AccountSettingsAsync();
 
             exitmenuitem.Click += async (sender, e) => await CloseStartify();
 
@@ -288,8 +352,11 @@ namespace WPF.Views
             // Find the ListView element by its name
             startPlaceholder.DirectoryChildClicked += (sender, e) => AppLauncher.DirectoryAppLaunchHandler(sender, e, this, Programs, false);
         }
-        private void startmenubasewindow_LostFocus(object sender, RoutedEventArgs e)
+        private async void startmenubasewindow_LostFocus(object sender, RoutedEventArgs e)
         {
+            var startPlaceholder = StartMenuIslandh.Child as ShellApp.Shell.Start.StartPlaceholder;
+            Task animationTask = startPlaceholder.StartCloseStartAnimation();
+            await animationTask; // wait for the animation task to finish
             Hide();
         }
 

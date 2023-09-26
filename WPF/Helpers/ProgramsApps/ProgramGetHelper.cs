@@ -82,62 +82,73 @@ namespace WPF.Helpers.ProgramsApps
         public void GetProgramsRecurse(ObservableCollection<StartMenuEntry> programs, string directory, StartMenuDirectory parent = null)
         {
             bool hasParent = parent != null;
-            foreach (string d in Directory.GetDirectories(directory))
+            string[] subDirectories = Directory.GetDirectories(directory);
+
+            foreach (string d in subDirectories)
             {
-                StartMenuDirectory folderEntry = null;
-                if (!hasParent)
-                {
-                    folderEntry = programs.FirstOrDefault(x => x.Title == new DirectoryInfo(d).Name) as StartMenuDirectory;
-                }
-                if (folderEntry == null)
-                {
-                    folderEntry = new StartMenuDirectory
-                    {
-                        Title = new DirectoryInfo(d).Name,
-                        Path = System.IO.Path.GetFullPath(d),
-                        Links = new ObservableCollection<StartMenuLink>(),
-                        Directories = new ObservableCollection<StartMenuDirectory>(),
-                        Link = d,
-                        Icon = new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///Assets/UnplatedFolder.png"))
-                    };
-                }
                 DirectoryInfo dInfo = new DirectoryInfo(d);
                 var a = dInfo.GetFiles("*.lnk", SearchOption.TopDirectoryOnly);
                 var b = dInfo.GetDirectories("*", SearchOption.TopDirectoryOnly);
-                var c = new string[a.Length + b.Length];
-                for (int i = 0; i < a.Length; i++)
-                {
-                    c[i] = a[i].FullName;
-                }
-                for (int i = 0; i < b.Length; i++)
-                {
-                    c[a.Length + i] = b[i].FullName;
-                }
-                foreach (var f in c)
-                {
-                    folderEntry.HasChildren = true;
-                    Uri uri = new Uri(uriString: IconHelper.GetFileIcon(f));
-                    FileAttributes attr = System.IO.File.GetAttributes(f);
-                    if (attr.HasFlag(FileAttributes.Directory))
-                        uri = new Uri("ms-appx:///Assets/UnplatedFolder.png");
 
-                    folderEntry.Links.Add(new StartMenuLink
-                    {
-                        Title = System.IO.Path.GetFileNameWithoutExtension(f),
-                        Link = f,
-                        Icon = new Windows.UI.Xaml.Media.Imaging.BitmapImage(uri)
-                    });
-                }
-                if (!hasParent)
+                if (a.Length > 0 || b.Length > 0) // Check if the directory is not empty
                 {
-                    if (!programs.Contains(folderEntry))
+                    StartMenuDirectory folderEntry = null;
+
+                    if (!hasParent)
                     {
-                        programs.Add(folderEntry);
+                        folderEntry = programs.FirstOrDefault(x => x.Title == dInfo.Name) as StartMenuDirectory;
                     }
-                }
-                else
-                {
-                    parent.Directories.Add(folderEntry);
+
+                    if (folderEntry == null)
+                    {
+                        folderEntry = new StartMenuDirectory
+                        {
+                            Title = dInfo.Name,
+                            Path = System.IO.Path.GetFullPath(d),
+                            Links = new ObservableCollection<StartMenuLink>(),
+                            Directories = new ObservableCollection<StartMenuDirectory>(),
+                            Link = d,
+                            Icon = new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///Assets/UnplatedFolder.png")),
+                        };
+                    }
+
+                    var c = new string[a.Length + b.Length];
+                    for (int i = 0; i < a.Length; i++)
+                    {
+                        c[i] = a[i].FullName;
+                    }
+                    for (int i = 0; i < b.Length; i++)
+                    {
+                        c[a.Length + i] = b[i].FullName;
+                    }
+
+                    foreach (var f in c)
+                    {
+                        folderEntry.HasChildren = true;
+                        Uri uri = new Uri(uriString: IconHelper.GetFileIcon(f));
+                        FileAttributes attr = System.IO.File.GetAttributes(f);
+                        if (attr.HasFlag(FileAttributes.Directory))
+                            uri = new Uri("ms-appx:///Assets/UnplatedFolder.png");
+
+                        folderEntry.Links.Add(new StartMenuLink
+                        {
+                            Title = System.IO.Path.GetFileNameWithoutExtension(f),
+                            Link = f,
+                            Icon = new Windows.UI.Xaml.Media.Imaging.BitmapImage(uri),
+                        });
+                    }
+
+                    if (!hasParent)
+                    {
+                        if (!programs.Contains(folderEntry))
+                        {
+                            programs.Add(folderEntry);
+                        }
+                    }
+                    else
+                    {
+                        parent.Directories.Add(folderEntry);
+                    }
                 }
             }
         }

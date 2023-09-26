@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.ServiceModel.Channels;
+using System.Threading.Tasks;
 using System.Xml;
 using Windows.ApplicationModel.Contacts;
 using Windows.Storage;
@@ -53,16 +54,62 @@ namespace ShellApp.Shell.Start
 
         private bool IsFolderOpened = false;
 
-        public void StartCloseStartAnimation()
+        public Task StartCloseStartAnimation()
         {
-            closestartanimation.Begin();
-            AnimationStarted?.Invoke(this, EventArgs.Empty);
+            TaskCompletionSource<bool> animationCompletionSource = new TaskCompletionSource<bool>();
+
+            try
+            {
+                // Ensure that "closestartanimation" is properly initialized.
+                if (closestartanimation != null)
+                {
+                    closestartanimation.Completed += (sender, args) =>
+                    {
+                        animationCompletionSource.TrySetResult(true);
+                    };
+
+                    closestartanimation.Begin();
+                }
+                else
+                {
+                    animationCompletionSource.TrySetException(new InvalidOperationException("Animation not properly initialized."));
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+
+            return animationCompletionSource.Task;
         }
 
-        public void StartOpenStartAnimation()
+        public Task StartOpenStartAnimation()
         {
-            openstartanimation.Begin();
-            AnimationStarted?.Invoke(this, EventArgs.Empty);
+            TaskCompletionSource<bool> animationCompletionSource = new TaskCompletionSource<bool>();
+
+            try
+            {
+                // Ensure that "closestartanimation" is properly initialized.
+                if (openstartanimation != null)
+                {
+                    openstartanimation.Completed += (sender, args) =>
+                    {
+                        animationCompletionSource.TrySetResult(true);
+                    };
+
+                    openstartanimation.Begin();
+                }
+                else
+                {
+                    animationCompletionSource.TrySetException(new InvalidOperationException("Animation not properly initialized."));
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+
+            return animationCompletionSource.Task;
         }
 
         private async void Start_Loaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)

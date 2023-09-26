@@ -159,7 +159,7 @@
                         </Border.Child>
                     </Border>
                     <Rectangle x:Name="LogoBorder" Grid.RowSpan="4" VerticalAlignment="Top" Stroke="{ThemeResource TransparentButtonTextBrush}" StrokeThickness="2" />
-                    <TextBlock x:Name="AppDisplayName" Text="{Binding Title}" Grid.Column="1" Grid.Row="1" Style="{StaticResource TextStyle_AppListItemName}" Margin="10,0,0,0" />
+                    <TextBlock x:Name="AppDisplayName" Text="{Binding Title}" Grid.Column="1" Grid.Row="1" Style="{StaticResource TextStyle_AppListItemName}" Margin="10,0,0,0" Width="180" />
                     <TextBlock x:Name="FolderGlyph"
                             Grid.Column="3"
                             Grid.Row="1"
@@ -201,7 +201,7 @@
                                     </Border.Child>
                                 </Border>
                                 <Rectangle x:Name="LogoBorder" VerticalAlignment="Center" Stroke="{ThemeResource TransparentButtonTextBrush}" StrokeThickness="2" />
-                                <TextBlock x:Name="AppDisplayName" Text="{Binding Title}" Grid.Column="1" Grid.Row="1" Style="{StaticResource TextStyle_AppListItemName}" Margin="10,0,2,1" Grid.RowSpan="3" />
+                                <TextBlock x:Name="AppDisplayName" Text="{Binding Title}" Grid.Column="1" Grid.Row="1" Style="{StaticResource TextStyle_AppListItemName}" Margin="10,0,2,1" Grid.RowSpan="3" Width="180" />
                             </Grid.Children>
                         </Grid>
                     </muxc:Expander.Header>
@@ -230,10 +230,9 @@
                                  Storyboard.TargetProperty="Y"
                                  From="600"
                                  To="0"
-                                 Duration="0:0:0.325">
+                                 Duration="0:0:0.300">
                     <DoubleAnimation.EasingFunction>
-                        <ExponentialEase Exponent="7"
-                                         EasingMode="EaseOut" />
+                        <ExponentialEase Exponent="7" EasingMode="EaseOut" />
                     </DoubleAnimation.EasingFunction>
                 </DoubleAnimation>
             </Storyboard>
@@ -241,11 +240,10 @@
                 <DoubleAnimation Storyboard.TargetName="translateTransform"
                                  Storyboard.TargetProperty="Y"
                                  From="0"
-                                 To="600"
-                                 Duration="0:0:0.305">
+                                 To="700"
+                                 Duration="0:0:0.300">
                     <DoubleAnimation.EasingFunction>
-                        <ExponentialEase EasingMode="EaseIn"
-                                         Exponent="8" />
+                        <ExponentialEase Exponent="7" EasingMode="EaseIn" />
                     </DoubleAnimation.EasingFunction>
                 </DoubleAnimation>
             </Storyboard>
@@ -325,17 +323,17 @@
                     </Grid>
                     <Button.Flyout>
                         <MenuFlyout>
-                            <MenuFlyoutItem Text="Change account settings">
+                            <MenuFlyoutItem x:Name="AccountSettingsMenuItem" Text="Change account settings">
                                 <MenuFlyoutItem.Icon>
                                     <FontIcon Glyph=""/>
                                 </MenuFlyoutItem.Icon>
                             </MenuFlyoutItem>
-                            <MenuFlyoutItem  Text="Lock">
+                            <MenuFlyoutItem x:Name="LockMenuItem"  Text="Lock">
                                 <MenuFlyoutItem.Icon>
                                     <FontIcon Glyph=""/>
                                 </MenuFlyoutItem.Icon>
                             </MenuFlyoutItem>
-                            <MenuFlyoutItem  Text="Sign out">
+                            <MenuFlyoutItem x:Name="SignOutMenuItem"  Text="Sign out">
                                 <MenuFlyoutItem.Icon>
                                     <FontIcon Glyph=""/>
                                 </MenuFlyoutItem.Icon>
