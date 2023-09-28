@@ -17,6 +17,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Documents;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
@@ -31,6 +32,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using WPF.Helpers;
 using static System.Windows.Forms.LinkLabel;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace WPF.Views
@@ -38,13 +40,14 @@ namespace WPF.Views
     /// <summary>
     /// Interaction logic for StartMenu.xaml
     /// </summary>
-    public partial class StartMenu : Window
+    public partial class StartMenu : System.Windows.Window
     {
         Helpers.StartMenuListener StartListener;
         Helpers.ProgramsApps.LaunchAppProgram AppLauncher = new Helpers.ProgramsApps.LaunchAppProgram();
         Helpers.ProgramsApps.ProgramGetHelper AppHelper = new Helpers.ProgramsApps.ProgramGetHelper();
         Helpers.Launching.Startup startup = new Helpers.Launching.Startup();
         Helpers.StartMenuTools startMenuTools = new Helpers.StartMenuTools();
+        public bool applistwasloaded = false;
 
         [DllImport("user32.dll", SetLastError = true)]
         static extern bool ExitWindowsEx(uint uFlags, uint dwReason);
@@ -184,11 +187,34 @@ namespace WPF.Views
 
             if (Visibility == Visibility.Visible)
             {
-                Show();
+                Show();               
                 WindowActivator.ActivateWindow(new System.Windows.Interop.WindowInteropHelper(startmenubasewindow).Handle);
+                RefreshAppList();
                 this.Focus();
             }
         }
+
+
+        public void RefreshAppList()
+        {
+            if (applistwasloaded == true) 
+            {
+                var startPlaceholder = StartMenuIslandh.Child as ShellApp.Shell.Start.StartPlaceholder;
+                var allAppsListView = startPlaceholder.FindName("AllAppsListView") as Windows.UI.Xaml.Controls.ListView;
+                if (allAppsListView.Items.Count > 0)
+                {
+                    var firstItem = allAppsListView.Items[0]; // Get the first item in your data source
+                    allAppsListView.ScrollIntoView(firstItem);
+                }
+                var cvs = startPlaceholder.FindName("cvs") as Windows.UI.Xaml.Data.CollectionViewSource;
+                cvs.Source = from p in Programs
+                             orderby p.Alph
+                             group p by char.IsDigit(p.Alph[0]) ? "#" : p.Alph into g
+                             select g;
+            }
+        }
+
+
 
 
         private async void StartMenuActivated(object sender, EventArgs e)
@@ -301,10 +327,10 @@ namespace WPF.Views
 
             var startPlaceholder = StartMenuIslandh.Child as ShellApp.Shell.Start.StartPlaceholder;
             var allAppsListView = startPlaceholder.FindName("AllAppsListView") as Windows.UI.Xaml.Controls.ListView;
-            var cvs = startPlaceholder.FindName("cvs") as Windows.UI.Xaml.Data.CollectionViewSource;
 
             allAppsListView.ItemClick += (sender, e) => AppLauncher.AppLaunchHandler(sender, e, this, Programs, false);
 
+            var cvs = startPlaceholder.FindName("cvs") as Windows.UI.Xaml.Data.CollectionViewSource;
             cvs.Source = from p in Programs
                          orderby p.Alph
                          group p by char.IsDigit(p.Alph[0]) ? "#" : p.Alph into g
@@ -351,6 +377,7 @@ namespace WPF.Views
             var startPlaceholder = StartMenuIslandh.Child as ShellApp.Shell.Start.StartPlaceholder;
             // Find the ListView element by its name
             startPlaceholder.DirectoryChildClicked += (sender, e) => AppLauncher.DirectoryAppLaunchHandler(sender, e, this, Programs, false);
+            applistwasloaded = true;
         }
         private async void startmenubasewindow_LostFocus(object sender, RoutedEventArgs e)
         {

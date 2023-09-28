@@ -116,50 +116,56 @@ namespace WPF.Helpers
                     // Reference: [2](https://stackoverflow.com/questions/3204883/wpf-imagesource-binding-with-custom-converter)
                     // Convert the icon to a BitmapSource using System.Windows.Interop.Imaging
                     // Reference: [3](https://stackoverflow.com/questions/2969821/display-icon-in-wpf-image)
-                    BitmapSource bitmapSource = Imaging.CreateBitmapSourceFromHIcon(
+                    if (icon != null)
+                    {
+                        BitmapSource bitmapSource = Imaging.CreateBitmapSourceFromHIcon(
                         icon.Handle,
                         Int32Rect.Empty,
                         BitmapSizeOptions.FromEmptyOptions());
+                        // Create a PngBitmapEncoder and add the BitmapSource to its frames
+                        PngBitmapEncoder encoder = new PngBitmapEncoder();
+                        encoder.Frames.Add(BitmapFrame.Create(bitmapSource));
+                        // Fix for icons 22.09.2023
+                        string folderPath = Environment.GetEnvironmentVariable("programdata") + @"\Startify\IconTemp";
 
-                    // Create a PngBitmapEncoder and add the BitmapSource to its frames
-                    PngBitmapEncoder encoder = new PngBitmapEncoder();
-                    encoder.Frames.Add(BitmapFrame.Create(bitmapSource));
-
-                    // Fix for icons 22.09.2023
-                    string folderPath = Environment.GetEnvironmentVariable("programdata") + @"\Startify\IconTemp";
-
-                    if (!Directory.Exists(folderPath))
-                    {
-                        try
+                        if (!Directory.Exists(folderPath))
                         {
-                            Directory.CreateDirectory(folderPath);
-                            Console.WriteLine("Folder created successfully.");
+                            try
+                            {
+                                Directory.CreateDirectory(folderPath);
+                                Console.WriteLine("Folder created successfully.");
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine($"Error creating folder: {ex.Message}");
+                            }
                         }
-                        catch (Exception ex)
+                        else
                         {
-                            Console.WriteLine($"Error creating folder: {ex.Message}");
+                            Console.WriteLine("Folder already exists.");
                         }
+
+
+                        // Generate a unique file name for the icon file based on the .lnk file name
+                        string fileName = Path.GetFileNameWithoutExtension(file) + ".png";
+                        string filePath = Path.Combine(folderPath, fileName);
+
+                        // Save the icon file to the destination folder using a FileStream
+                        using (FileStream stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            encoder.Save(stream);
+                        }
+
+                        string escapedFilePath = Uri.EscapeDataString(filePath);
+
+                        // Return the URI of the icon file as a string
+                        return "file:///" + escapedFilePath;
                     }
                     else
                     {
-                        Console.WriteLine("Folder already exists.");
+                        string none = "ms-appx:///Assets/placeholder.png";
+                        return none;
                     }
-
-
-                    // Generate a unique file name for the icon file based on the .lnk file name
-                    string fileName = Path.GetFileNameWithoutExtension(file) + ".png";
-                    string filePath = Path.Combine(folderPath, fileName);
-
-                    // Save the icon file to the destination folder using a FileStream
-                    using (FileStream stream = new FileStream(filePath, FileMode.Create))
-                    {
-                        encoder.Save(stream);
-                    }
-
-                    string escapedFilePath = Uri.EscapeDataString(filePath);
-
-                    // Return the URI of the icon file as a string
-                    return "file:///" + escapedFilePath;
                 }
                 catch
                 {
