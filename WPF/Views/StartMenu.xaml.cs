@@ -13,6 +13,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security.Policy;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -43,11 +44,13 @@ namespace WPF.Views
     public partial class StartMenu : System.Windows.Window
     {
         Helpers.StartMenuListener StartListener;
+        Helpers.RegistryMonitor RegListener;
         Helpers.ProgramsApps.LaunchAppProgram AppLauncher = new Helpers.ProgramsApps.LaunchAppProgram();
         Helpers.ProgramsApps.ProgramGetHelper AppHelper = new Helpers.ProgramsApps.ProgramGetHelper();
         Helpers.Launching.Startup startup = new Helpers.Launching.Startup();
         Helpers.StartMenuTools startMenuTools = new Helpers.StartMenuTools();
         public bool applistwasloaded = false;
+        private IntPtr HKEY_CURRENT_USER;
 
         [DllImport("user32.dll", SetLastError = true)]
         static extern bool ExitWindowsEx(uint uFlags, uint dwReason);
@@ -60,6 +63,12 @@ namespace WPF.Views
             // Initialize Startify
             InitializeComponent();
             StartListener = new StartMenuListener();
+
+            RegListener = new RegistryMonitor(RegistryHive.CurrentUser, "Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize");
+            RegListener.RegChanged += new EventHandler(RegListener_RegistryModified);
+
+            RegListener.Start();
+
             StartListener.StartTriggered += OnStartTriggered;
             StartListener.ListenerErrorHappened += StartifyErrorOccured;
             StartListener.FindAndActivateWindow();
@@ -69,6 +78,21 @@ namespace WPF.Views
             Show();
             ReadAndSetTaskbarTheme();
             Hide();
+        }
+
+        private void RegListener_RegistryModified(object sender, EventArgs e)
+        {
+            int themeValue = (int)Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize").GetValue("ColorPrevalence");
+            if (themeValue == 1)
+            {
+                var startPlaceholder = StartMenuIslandh.Child as ShellApp.Shell.Start.StartPlaceholder;
+                startPlaceholder.AccentWasEnabled();
+            }
+            else if (themeValue == 0)
+            {
+                var startPlaceholder = StartMenuIslandh.Child as ShellApp.Shell.Start.StartPlaceholder;
+                startPlaceholder.AccentWasDisabled();
+            }
         }
 
         private void StartifyErrorOccured(object sender, EventArgs e)
@@ -371,6 +395,7 @@ namespace WPF.Views
             colorization.Text = themevalue.ToString();
             ShowNotification();
         }
+
         private void applistloaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             // Get the StartPlaceholder object from the WindowsXamlHost element

@@ -10,6 +10,7 @@ using Windows.ApplicationModel.Contacts;
 using Windows.Storage;
 using Windows.Storage.Streams;
 using Windows.System;
+using Windows.UI.Core;
 using Windows.UI.Notifications;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
@@ -37,6 +38,7 @@ namespace ShellApp.Shell.Start
         public event EventHandler<RoutedEventArgs> RunAsAdminClicked;
         public event EventHandler<RoutedEventArgs> OpenFileLocationClicked;
         public event EventHandler<RoutedEventArgs> exitstartapp;
+        Brush originalBackground;
 
 
         public event EventHandler AnimationStarted;
@@ -155,7 +157,7 @@ namespace ShellApp.Shell.Start
             }
             // Cool acrylic demo
             // startbackground.Background = (AcrylicBrush)Resources["CustomAcrylicInAppLuminosity"];
-
+            originalBackground = startbackground.Background;
         }
 
         private async void SettingsButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
@@ -220,5 +222,44 @@ namespace ShellApp.Shell.Start
             // Call the OnDirectoryChildClicked method to raise the event
             exitstartapp?.Invoke(sender, e);
         }
+        public async void AccentWasEnabled()
+        {
+            try
+            {
+                await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    // Get the current system accent color
+                    var uiSettings = new UISettings();
+                    var accentColor = uiSettings.GetColorValue(UIColorType.AccentDark2);
+
+                    // Set the TintColor and FallbackColor of the AcrylicBrush to the system accent color
+                    ((AcrylicBrush)Resources["halal"]).TintColor = accentColor;
+                    ((AcrylicBrush)Resources["halal"]).FallbackColor = accentColor;
+
+                    // Set the background of the startbackground element to the modified AcrylicBrush
+                    startbackground.Background = (AcrylicBrush)Resources["halal"];
+                });
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Error applying accent color: " + ex.Message);
+            }
+        }
+
+        public async void AccentWasDisabled()
+        {
+            try
+            {
+                await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    startbackground.Background = originalBackground;
+                });
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Error disabling accent color: " + ex.ToString());
+            }
+        }
+
     }
 }
