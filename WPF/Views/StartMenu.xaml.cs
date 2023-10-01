@@ -44,9 +44,11 @@ namespace WPF.Views
     public partial class StartMenu : System.Windows.Window
     {
         Helpers.StartMenuListener StartListener;
-        Helpers.RegistryMonitor RegListener;
+        Helpers.RegistryMonitor AccentListener;
+        Helpers.RegistryMonitor ThemeListener;
         Helpers.ProgramsApps.LaunchAppProgram AppLauncher = new Helpers.ProgramsApps.LaunchAppProgram();
         Helpers.ProgramsApps.ProgramGetHelper AppHelper = new Helpers.ProgramsApps.ProgramGetHelper();
+        Helpers.ProgramsApps.TileGetHelper TileAppHelper = new Helpers.ProgramsApps.TileGetHelper();
         Helpers.Launching.Startup startup = new Helpers.Launching.Startup();
         Helpers.StartMenuTools startMenuTools = new Helpers.StartMenuTools();
         public bool applistwasloaded = false;
@@ -58,16 +60,20 @@ namespace WPF.Views
         const uint EWX_LOGOFF = 0x00000000;
 
         ObservableCollection<StartMenuEntry> Programs = new ObservableCollection<StartMenuEntry>();
+        ObservableCollection<StartMenuTile> Tiles = new ObservableCollection<StartMenuTile>();
         public StartMenu()
         {
             // Initialize Startify
             InitializeComponent();
             StartListener = new StartMenuListener();
 
-            RegListener = new RegistryMonitor(RegistryHive.CurrentUser, "Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize");
-            RegListener.RegChanged += new EventHandler(RegListener_RegistryModified);
+            // AccentListener = new RegistryMonitor(Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize\\ColorPrevalence"));
+            // AccentListener.RegChanged += new EventHandler(ApplyNewAccent);
+            // AccentListener.Start();
 
-            RegListener.Start();
+            // ThemeListener = new RegistryMonitor(Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize\\SystemUsesLightTheme"));
+            // ThemeListener.RegChanged += new EventHandler(ApplyNewShellTheme);
+            // ThemeListener.Start();
 
             StartListener.StartTriggered += OnStartTriggered;
             StartListener.ListenerErrorHappened += StartifyErrorOccured;
@@ -76,12 +82,12 @@ namespace WPF.Views
             var startPlaceholder = StartMenuIslandh.Child as ShellApp.Shell.Start.StartPlaceholder;
             // Do this so the app wont wait for user start button press on startup.
             Show();
-            ReadAndSetTaskbarTheme();
             Hide();
         }
 
-        private void RegListener_RegistryModified(object sender, EventArgs e)
+        private void ApplyNewAccent(object sender, EventArgs e)
         {
+            System.Windows.MessageBox.Show("New accent was applied");
             int themeValue = (int)Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize").GetValue("ColorPrevalence");
             if (themeValue == 1)
             {
@@ -94,30 +100,38 @@ namespace WPF.Views
                 startPlaceholder.AccentWasDisabled();
             }
         }
+        private void ApplyNewShellTheme(object sender, EventArgs e)
+        {
+            System.Windows.MessageBox.Show("New theme was applied");
+            try
+            {
+                int themeValue2 = (int)Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize").GetValue("SystemUsesLightTheme");
+
+                // Use the Dispatcher to run the UI-related code on the UI thread
+                Dispatcher.Invoke(() =>
+                {
+                    var startPlaceholder = StartMenuIslandh.Child as ShellApp.Shell.Start.StartPlaceholder;
+
+                    if (themeValue2 == 1)
+                    {
+                        startPlaceholder.RequestedTheme = Windows.UI.Xaml.ElementTheme.Light;
+                    }
+                    else if (themeValue2 == 0)
+                    {
+                        startPlaceholder.RequestedTheme = Windows.UI.Xaml.ElementTheme.Dark;
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show("Apply shell theme failed: " + ex.ToString());
+            }
+        }
+
 
         private void StartifyErrorOccured(object sender, EventArgs e)
         {
             ShowErrorNotification();
-        }
-
-
-        private void ReadAndSetTaskbarTheme()
-        {
-            // Open the registry key for theme settings
-            RegistryKey themeKey = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize");
-
-            // Get the value of HibernateEnabled
-            int taskbartheme = (int)themeKey.GetValue("SystemUsesLightTheme");
-            var startPlaceholder = StartMenuIslandh.Child as ShellApp.Shell.Start.StartPlaceholder;
-
-            if (taskbartheme == 1)
-            {
-                startPlaceholder.RequestedTheme = Windows.UI.Xaml.ElementTheme.Light;
-            }
-            else if (taskbartheme == 0)
-            {
-                startPlaceholder.RequestedTheme = Windows.UI.Xaml.ElementTheme.Dark;
-            }
         }
 
 
@@ -389,11 +403,20 @@ namespace WPF.Views
             // startPlaceholder.OpenFileLocationClicked += async (sender, e) => await OpenUninstall();
             // startPlaceholder.RunAsAdminClicked += async (sender, e) => await AppLauncher.DirectoryAppLaunchHandler(sender, e, this, Programs, false);
             startPlaceholder.UninstallSettingsShouldOpen += async (sender, e) => await OpenUninstall();
-
-            var colorization = startPlaceholder.FindName("IsColorizationEnabled") as Windows.UI.Xaml.Controls.TextBlock;
-            int themevalue = (int)Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize").GetValue("ColorPrevalence");
-            colorization.Text = themevalue.ToString();
             ShowNotification();
+            LoadTiles();
+        }
+
+        public void LoadTiles()
+        {
+            var startPlaceholder = StartMenuIslandh.Child as ShellApp.Shell.Start.StartPlaceholder;
+
+            string TilesDir = Environment.GetEnvironmentVariable("programdata") + @"\Startify\Tiles\";
+            TileAppHelper.GetTiles(TilesDir, Tiles);
+
+            var tilegridview = startPlaceholder.FindName("TileGridView1") as Windows.UI.Xaml.Controls.GridView;
+            tilegridview.ItemsSource = Tiles;
+            tilegridview.ItemClick += (sender, e) => TileAppHelper.TileLaunchHandler(sender, e, this, Tiles, false);
         }
 
         private void applistloaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)

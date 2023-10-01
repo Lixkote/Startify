@@ -11,6 +11,40 @@
              mc:Ignorable="d" Height="700" Width="700">
 
     <UserControl.Resources>
+        <DataTemplate x:Key='Tile1'>
+            <Button
+                                 CornerRadius="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="0,0,0,0">
+                <Image Source="{Binding TileIcon}"
+                                   Width="28"
+                                   Height="28" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="UniformToFill"/>
+            </Button>
+        </DataTemplate>
+        <DataTemplate x:Key='Tile2'>
+            <Button Grid.Column="1" CornerRadius="5" Padding="0,0,0,0" IsHitTestVisible="False">
+                <Grid Width="96" Height="96">
+                    <Image Source="{Binding TileIcon}"
+                               Width="32"
+                               Height="32" />
+                    <TextBlock Text="{Binding TileName}"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Bottom"
+                                           FontSize="12" Margin="6,0,0,6" />
+                </Grid>
+            </Button>
+        </DataTemplate>
+        <DataTemplate x:Key='Tile3'>
+            <Button Grid.Column="1" CornerRadius="5" Grid.RowSpan="2" Grid.Row="2" Grid.ColumnSpan="2" Padding="0,0,0,0">
+                <Grid Width="196" Height="96">
+                    <Image Source="{Binding TileIcon}"
+                                Width="32"
+                                Height="32" />
+                    <TextBlock Text="{Binding TileName}"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Bottom"
+                                FontSize="12" Margin="6,0,0,6" />
+                </Grid>
+            </Button>
+        </DataTemplate>
         <ControlTemplate x:Key="ExpanderTemplate1" TargetType="muxc:Expander">
             <Grid MaxWidth="{TemplateBinding MaxWidth}" MinWidth="{TemplateBinding MinWidth}">
                 <Grid.RowDefinitions>
@@ -251,6 +285,9 @@
         <selector:StartMenuSelector x:Key="apporfolder"
                                  AppD="{StaticResource AppD}"
                                  Folder="{StaticResource Folder}" />
+        <selector:TileTempleteSelector x:Key="whichtile"
+                                 Tile1="{StaticResource Tile1}"
+                                 Tile2="{StaticResource Tile2}" />
     </UserControl.Resources>
 
     <UserControl.RenderTransform>
@@ -427,273 +464,31 @@
 
         </Grid>
 
-        <StackPanel Grid.Column="2"
-                    Padding="27,30,27,0"
-                    Spacing="32"
-                    Orientation="Vertical">
+        <ScrollViewer Grid.Column="2"
+                    Padding="17,30,0,0"
+                   
+                    >
 
             <Grid Height="Auto"
-                  VerticalAlignment="Top"
                   RowSpacing="16">
                 <Grid.RowDefinitions>
-                    <RowDefinition />
+                    <RowDefinition Height="32" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <TextBox Text="More or less useful"
-                           
-                           Grid.Row="0" Background="{x:Null}" BorderBrush="{x:Null}" HorizontalContentAlignment="Left" Padding="3,4,6,6" FontFamily="Segoe UI Variable Display Light" FontSize="14" FontWeight="Bold" />
-                <Grid Grid.Row="1"
-                      RowSpacing="4"
-                      ColumnSpacing="4">
-
-                    <Grid.Resources>
-                        <Style TargetType="Button"
-                               BasedOn="{StaticResource DefaultButtonStyle}">
-                            <Setter Property="Padding"
-                                    Value="0" />
-                            <Setter Property="CornerRadius"
-                                    Value="2" />
-                            <Setter Property="HorizontalAlignment"
-                                    Value="Stretch" />
-                            <Setter Property="VerticalAlignment"
-                                    Value="Stretch" />
-                        </Style>
-                    </Grid.Resources>
-
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
-
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="96" />
-                        <RowDefinition Height="96" />
-                    </Grid.RowDefinitions>
-
-                    <Button Grid.Column="0" CornerRadius="5">
-                        <Grid Width="96" Height="96">
-                            <Image Source="/Assets/Teams.png"
-                               Width="32"
-                               Height="32" />
-                            <TextBlock Text="Teams"
-                                           HorizontalAlignment="Left"
-                                           VerticalAlignment="Bottom"
-                                           FontSize="12" Margin="6,0,0,6" />
-                        </Grid>
-                    </Button>
-
-                    <Button Grid.Column="1" CornerRadius="5">
-                        <Grid Width="96" Height="96">
-                            <Image Source="/Assets/ff.png"
-                               Width="32"
-                               Height="32" />
-                            <TextBlock Text="Firefox"
-                                           HorizontalAlignment="Left"
-                                           VerticalAlignment="Bottom"
-                                           FontSize="12" Margin="6,0,0,6" />
-                        </Grid>
-                    </Button>
-
-                    <Button
-                            Grid.Column="2" CornerRadius="5">
-                        <Grid Width="96" Height="96">
-                            <Image Source="/Assets/Edge.png"
-                               Width="32"
-                               Height="32" />
-                            <TextBlock Text="Edge"
-                                           HorizontalAlignment="Left"
-                                           VerticalAlignment="Bottom"
-                                           FontSize="12" Margin="6,0,0,6" />
-                        </Grid>
-                    </Button>
-
-                    <Grid HorizontalAlignment="Stretch"
-                          VerticalAlignment="Stretch"
-                          Grid.Row="1"
-                          RowSpacing="4"
-                          ColumnSpacing="4">
-
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
-
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="46" />
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
-
-                        <Button Grid.Row="0"
-                                Grid.Column="0" CornerRadius="5">
-                            <Image Source="/Assets/Word.png"
-                                   Width="28"
-                                   Height="28" />
-                        </Button>
-
-
-                        <Button Grid.Row="0"
-                                Grid.Column="1" CornerRadius="5">
-                            <Image Source="/Assets/PowerPoint.png"
-                                   Width="28"
-                                   Height="28"/>
-                        </Button>
-
-
-                        <Button Grid.Row="1"
-                                Grid.Column="0" CornerRadius="5">
-                            <Image Source="/Assets/Excel.png"
-                                   Width="28"
-                                   Height="28" />
-                        </Button>
-
-
-                        <Button Grid.Row="1"
-                                Grid.Column="1" CornerRadius="5">
-                            <Image Source="/Assets/OneNote.png"
-                                   Width="28"
-                                   Height="28" />
-                        </Button>
-
-                    </Grid>
-                    <Button Grid.Column="1" CornerRadius="5" Grid.RowSpan="2" Grid.Row="2" Grid.ColumnSpan="2">
-                        <Grid Width="196" Height="96">
-                            <Image Source="/Assets/rpad.png"
-                                Width="32"
-                                Height="32" />
-                            <TextBlock Text="RectifyPad"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Bottom"
-                                FontSize="12" Margin="6,0,0,6" />
-                        </Grid>
-                    </Button>
-
-                </Grid>
-            </Grid>
-
-            <Grid Height="Auto"
-                  VerticalAlignment="Top"
-                  RowSpacing="16">
-                <Grid.RowDefinitions>
-                    <RowDefinition />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <TextBox Text="Media"
-           
-           Grid.Row="0" Background="{x:Null}" BorderBrush="{x:Null}" HorizontalContentAlignment="Left" Padding="3,4,6,6" FontFamily="Segoe UI Variable Small Semibold" FontSize="14" FontWeight="Bold" />
-                <Grid Grid.Row="1"
-                      RowSpacing="4"
-                      ColumnSpacing="4">
-
-                    <Grid.Resources>
-                        <Style TargetType="Button"
-                               BasedOn="{StaticResource DefaultButtonStyle}">
-                            <Setter Property="Padding"
-                                    Value="0" />
-                            <Setter Property="HorizontalAlignment"
-                                    Value="Stretch" />
-                            <Setter Property="VerticalAlignment"
-                                    Value="Stretch" />
-                        </Style>
-                    </Grid.Resources>
-
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
-
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="96" />
-                        <RowDefinition Height="96" />
-                    </Grid.RowDefinitions>
-
-                    <Button Grid.Column="0"
-                            Grid.ColumnSpan="2"
-                            HorizontalContentAlignment="Stretch"
-                            VerticalContentAlignment="Stretch">
-
-                        <Grid CornerRadius="4">
-                            <Image Source="/Assets/img1.jpg"
-                                   Stretch="UniformToFill"
-                                   Margin="0,-15,0,0" />
-                            <Grid Padding="10"
-                                  HorizontalAlignment="Stretch"
-                                  VerticalAlignment="Stretch"
-                                  RequestedTheme="Dark">
-
-                                <TextBlock Text="Photos"
-                                           HorizontalAlignment="Left"
-                                           VerticalAlignment="Bottom"
-                                           FontSize="12" Margin="-3,0,0,-5" />
-                            </Grid>
-                        </Grid>
-                    </Button>
-
-                    <Button Grid.Column="2">
-                        <Grid Width="96" Height="96">
-                            <Image Source="/Assets/Figma.png"
-                               Width="32"
-                               Height="32" />
-                            <TextBlock Text="Figma"
-                                           HorizontalAlignment="Left"
-                                           VerticalAlignment="Bottom"
-                                           FontSize="12" Margin="6,0,0,6" />
-                        </Grid>
-                    </Button>
-
-
-                    <Button HorizontalContentAlignment="Stretch"
-                            VerticalContentAlignment="Stretch"
-                            Grid.ColumnSpan="2" Grid.Row="1">
-
-                        <Grid CornerRadius="3">
-                            <Rectangle Fill="{ThemeResource SmokeFillColorDefaultBrush}"
-                                       Canvas.ZIndex="2" />
-                            <Image Source="/Assets/weather.png"
-                                   Stretch="UniformToFill" />
-                            <Grid Padding="10"
-                                  HorizontalAlignment="Stretch"
-                                  VerticalAlignment="Stretch"
-                                  RequestedTheme="Dark"
-                                  Canvas.ZIndex="3">
-                                <Image Source="/Assets/HeavyDrizzle.png"
-                                   Stretch="UniformToFill" Width="24" Height="24" HorizontalAlignment="Right" Margin="0,0,0,10" />
-                                <StackPanel Orientation="Vertical">
-                                    <TextBlock Text="Warsaw, Poland"
-                                               FontSize="12"
-                                               FontWeight="SemiBold"
-                                               TextWrapping="Wrap" />
-                                    <TextBlock Text="Rains"
-                                               TextWrapping="Wrap"
-                                               FontSize="12"
-                                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
-                                </StackPanel>
-
-                                <TextBlock Text="Weather"
-                                           HorizontalAlignment="Left"
-                                           VerticalAlignment="Bottom"
-                                           FontSize="12"  Margin="-3,0,0,-5" />
-
-                                <TextBlock Text="15°C"
-                                           HorizontalAlignment="Right"
-                                           VerticalAlignment="Bottom"
-                                           Style="{StaticResource SubtitleTextBlockStyle}" />
-
-
-                            </Grid>
-                        </Grid>
-
-
-
-                    </Button>
-
-
-                </Grid>
+                <TextBox Text="Get Real" Grid.Row="0" Background="{x:Null}" BorderBrush="{x:Null}" HorizontalContentAlignment="Left" Padding="3,4,6,6" FontFamily="Segoe UI Variable Display Light" FontSize="14" FontWeight="Bold" />
+                <GridView x:Name="TileGridView1" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" CanDragItems="True" IsItemClickEnabled="True" AllowDrop="True" CanReorderItems="True" ItemTemplateSelector="{StaticResource whichtile}" Grid.Row="1" SelectionMode="None">
+                    <GridView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <ItemsWrapGrid x:Name="MaxItemsWrapGrid"
+                           MaximumRowsOrColumns="3"
+                           Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </GridView.ItemsPanel>
+                </GridView>
             </Grid>
 
 
-        </StackPanel>
+        </ScrollViewer>
         <ListView ItemContainerStyle="{StaticResource ListViewItemContainerStyle1}" x:FieldModifier="public" CanDragItems="True" IsItemClickEnabled="True" x:Name="AllAppsListView" ItemsSource="{Binding Source={StaticResource cvs}}" Grid.Column="1" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="0,20,0,0" ItemTemplateSelector="{StaticResource apporfolder}">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>

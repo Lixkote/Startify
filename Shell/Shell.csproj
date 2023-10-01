@@ -124,11 +124,21 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Shell\ShellUtils\IWindowPrivate.cs" />
     <Compile Include="Shell\ShellUtils\StartEntrySelector.cs" />
+    <Compile Include="Shell\ShellUtils\TileTemplateSelector.cs" />
     <Compile Include="Shell\Start\SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Shell\Start\StartPlaceholder.xaml.cs">
       <DependentUpon>StartPlaceholder.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Shell\Start\Tiles\Tile1.xaml.cs">
+      <DependentUpon>Tile1.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Shell\Start\Tiles\Tile2.xaml.cs">
+      <DependentUpon>Tile2.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Shell\Start\Tiles\Tile3.xaml.cs">
+      <DependentUpon>Tile3.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -137,6 +147,7 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\appplaceholder.png" />
     <Content Include="Assets\bye.png" />
     <Content Include="Assets\Edge.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -271,6 +282,18 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Shell\Start\StartPlaceholder.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Shell\Start\Tiles\Tile1.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Shell\Start\Tiles\Tile2.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Shell\Start\Tiles\Tile3.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

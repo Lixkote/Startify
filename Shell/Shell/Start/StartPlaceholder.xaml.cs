@@ -133,28 +133,7 @@ namespace ShellApp.Shell.Start
                 await bitmapImage.SetSourceAsync(imageStream);
                 UserAV.Source = bitmapImage;
             }
-            // Get the current theme of the app
-            var currentTheme = Application.Current.RequestedTheme;
-            if (IsColorizationEnabled.Text == "1" && currentTheme == ApplicationTheme.Dark)
-            {
-                try
-                {
-                    // Get the current system accent color
-                    var uiSettings = new UISettings();
-                    var accentColor = uiSettings.GetColorValue(UIColorType.AccentDark2);
 
-                    // Set the TintColor and FallbackColor of the AcrylicBrush to the system accent color
-                    ((AcrylicBrush)Resources["halal"]).TintColor = accentColor;
-                    ((AcrylicBrush)Resources["halal"]).FallbackColor = accentColor;
-
-                    // Set the background of the startbackground element to the modified AcrylicBrush
-                    startbackground.Background = (AcrylicBrush)Resources["halal"];
-                }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine("Error applying accent color" + ex.Message);
-                }
-            }
             // Cool acrylic demo
             // startbackground.Background = (AcrylicBrush)Resources["CustomAcrylicInAppLuminosity"];
             originalBackground = startbackground.Background;
