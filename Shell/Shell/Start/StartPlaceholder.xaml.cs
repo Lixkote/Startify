@@ -240,5 +240,34 @@ namespace ShellApp.Shell.Start
             }
         }
 
+        private void MenuFlyoutItem_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void MenuFlyoutItem_Click_1(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void LargeSizeMenuItem2_Click(object sender, RoutedEventArgs e)
+        {
+            GridViewItem targetitem = sender as GridViewItem;
+            if (targetitem != null)
+            {
+                // Assuming "Tile1" is defined in XAML as a DataTemplate
+                targetitem.ContentTemplate = this.Resources["Tile2"] as DataTemplate;
+            }
+        }
+
+        private void SmallSizeMenuItem2_Click(object sender, RoutedEventArgs e)
+        {
+            GridViewItem targetitem = sender as GridViewItem;
+            if (targetitem != null)
+            {
+                // Assuming "Tile1" is defined in XAML as a DataTemplate
+                targetitem.ContentTemplate = this.Resources["Tile1"] as DataTemplate;
+            }
+        }
     }
 }

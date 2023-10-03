@@ -63,13 +63,31 @@ namespace WPF.Helpers.ProgramsApps
                                     // Add the package name to the HashSet
                                     addedPackages.Add(packageName);
 
-                                    // Add the app entry to the Programs collection
-                                    Programs.Add(new StartMenuLink()
+                                    // Create a StartMenuLink instance without the Icon initially
+                                    var startMenuLink = new StartMenuLink()
                                     {
                                         Title = appListEntry.DisplayInfo.DisplayName,
-                                        Icon = new Windows.UI.Xaml.Media.Imaging.BitmapImage(package.Logo),
                                         PathUWP = package.Id.FamilyName
-                                    });
+                                    };
+
+                                    try
+                                    {
+                                        // If either check fails, you can handle it here or set a default icon
+                                        // For example:
+                                        startMenuLink.Icon = new Windows.UI.Xaml.Media.Imaging.BitmapImage(package.Logo);
+                                    }
+                                    catch
+                                    {
+                                        // If either check fails, you can handle it here or set a default icon
+                                        // For example:
+                                        startMenuLink.Icon = new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///Assets/UnplatedFolder.png"));
+                                    }
+
+                                    // Add the StartMenuLink to Programs
+                                    Programs.Add(startMenuLink);
+
+
+
                                 }
                             }
                         }

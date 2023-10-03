@@ -79,16 +79,37 @@ namespace WPF.Helpers
                     string rawIconPath = "";
                     int index = shortcut1.IconIndex;
                     if (index == -1) index = 0;
-                    try
+
+                    if (shortcut1.StringData != null)
                     {
-                        target = new Uri(shortcut1.StringData.RelativePath).AbsolutePath;
-                        if (String.IsNullOrWhiteSpace(target)) target = GetShortcutTargetAlt(file);
+                        try
+                        {
+                            target = new Uri(shortcut1.StringData.RelativePath).AbsolutePath;
+                            if (String.IsNullOrWhiteSpace(target))
+                            {
+                                target = GetShortcutTargetAlt(file);
+                            }
+                        }
+                        catch
+                        {
+                            target = GetShortcutTargetAlt(file);
+                        }
+
+                        try
+                        {
+                            rawIconPath = shortcut1.StringData.IconLocation;
+                        }
+                        catch
+                        {
+                            // Handle the exception or leave it empty if no specific action is required.
+                        }
                     }
-                    catch { target = GetShortcutTargetAlt(file); }
-                    try { rawIconPath = shortcut1.StringData.IconLocation; }
-                    catch { }
+
                     string icn = "";
                     Icon icon = null;
+
+                    // Rest of your code here
+
 
                     if (!String.IsNullOrWhiteSpace(rawIconPath))
                     {
