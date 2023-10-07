@@ -2,6 +2,7 @@
 using Microsoft.Toolkit.Uwp.Notifications;
 using Microsoft.Toolkit.Wpf.UI.XamlHost;
 using Microsoft.Win32;
+using Shell.Shell.Start.Tiles;
 using ShellApp;
 using ShellApp.Shell.Start;
 using System;
@@ -48,7 +49,7 @@ namespace WPF.Views
         Helpers.RegistryMonitor ThemeListener;
         Helpers.ProgramsApps.LaunchAppProgram AppLauncher = new Helpers.ProgramsApps.LaunchAppProgram();
         Helpers.ProgramsApps.ProgramGetHelper AppHelper = new Helpers.ProgramsApps.ProgramGetHelper();
-        Helpers.ProgramsApps.TileGetHelper TileAppHelper = new Helpers.ProgramsApps.TileGetHelper();
+        TilesLoadHelper TileAppHelper = new Helpers.TilesLoadHelper();
         Helpers.Launching.Startup startup = new Helpers.Launching.Startup();
         Helpers.StartMenuTools startMenuTools = new Helpers.StartMenuTools();
         public bool applistwasloaded = false;
@@ -60,7 +61,7 @@ namespace WPF.Views
         const uint EWX_LOGOFF = 0x00000000;
 
         ObservableCollection<StartMenuEntry> Programs = new ObservableCollection<StartMenuEntry>();
-        ObservableCollection<StartMenuTile> Tiles = new ObservableCollection<StartMenuTile>();
+        ObservableCollection<TileGroup> TileGroups = new ObservableCollection<TileGroup>();
         public StartMenu()
         {
             // Initialize Startify
@@ -409,14 +410,12 @@ namespace WPF.Views
 
         public void LoadTiles()
         {
+            TileGroups = new ObservableCollection<TileGroup>();
             var startPlaceholder = StartMenuIslandh.Child as ShellApp.Shell.Start.StartPlaceholder;
+            TileAppHelper.LoadTileGroups(TileGroups);
 
-            string TilesDir = Environment.GetEnvironmentVariable("programdata") + @"\Startify\Tiles\";
-            TileAppHelper.GetTiles(TilesDir, Tiles);
-
-            var tilegridview = startPlaceholder.FindName("TileGridView1") as Windows.UI.Xaml.Controls.GridView;
-            tilegridview.ItemsSource = Tiles;
-            tilegridview.ItemClick += (sender, e) => TileAppHelper.TileLaunchHandler(sender, e, this, Tiles, false);
+            var tilegridview = startPlaceholder.FindName("TileGroupGridView") as Windows.UI.Xaml.Controls.GridView;
+            tilegridview.ItemsSource = TileGroups;
         }
 
         private void applistloaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)

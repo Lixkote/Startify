@@ -1,4 +1,4 @@
-﻿<UserControl xmlns:my="using:Microsoft.UI.Xaml.Controls"  x:Class="ShellApp.Shell.Start.StartPlaceholder"
+﻿<UserControl xmlns:my1="using:Shell.Shell.Start.Tiles"  xmlns:my="using:Microsoft.UI.Xaml.Controls"  x:Class="ShellApp.Shell.Start.StartPlaceholder"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="using:ShellApp.Shell.Start"
@@ -11,6 +11,9 @@
              mc:Ignorable="d" Height="700" Width="700">
 
     <UserControl.Resources>
+        <DataTemplate x:Key="TileGroupTemplate">
+            <my1:TileGroupControl />
+        </DataTemplate>
         <DataTemplate x:Key='Tile1'>
             <Button
                                  CornerRadius="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="0,0,0,0">
@@ -22,22 +25,12 @@
         <DataTemplate x:Key='Tile2'>
             <GridViewItem>
                 <GridViewItem.Content>
-                    <Button Grid.Column="1" CornerRadius="5" Padding="0,0,0,0" IsHitTestVisible="False">
-                        <Grid Width="96" Height="96">
-                            <Image Source="{Binding TileIcon}"
-                               Width="32"
-                               Height="32" />
-                            <TextBlock Text="{Binding TileName}"
-                                           HorizontalAlignment="Left"
-                                           VerticalAlignment="Bottom"
-                                           FontSize="12" Margin="6,0,0,6" />
-                        </Grid>
-                    </Button>
+                    <my1:Tile2 />
                 </GridViewItem.Content>
                 <GridViewItem.ContextFlyout>
                     <MenuFlyout>
-                        <MenuFlyoutItem x:Name="SmallSizeMenuItem2" Text="SmallSize" Click="SmallSizeMenuItem2_Click"/>
-                        <MenuFlyoutItem x:Name="LargeSizeMenuItem2" Text="LargeSize" Click="LargeSizeMenuItem2_Click"/>
+                        <MenuFlyoutItem x:Name="SmallSizeMenuItem2" Text="SmallSize"/>
+                        <MenuFlyoutItem x:Name="LargeSizeMenuItem2" Text="LargeSize"/>
                     </MenuFlyout>
                 </GridViewItem.ContextFlyout>
             </GridViewItem>
@@ -295,9 +288,6 @@
         <selector:StartMenuSelector x:Key="apporfolder"
                                  AppD="{StaticResource AppD}"
                                  Folder="{StaticResource Folder}" />
-        <selector:TileTempleteSelector x:Key="whichtile"
-                                 Tile1="{StaticResource Tile1}"
-                                 Tile2="{StaticResource Tile2}" />
     </UserControl.Resources>
 
     <UserControl.RenderTransform>
@@ -479,23 +469,15 @@
                    
                     >
 
-            <Grid Height="Auto"
-                  RowSpacing="16">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="32" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <TextBox Text="Get Real" Grid.Row="0" Background="{x:Null}" BorderBrush="{x:Null}" HorizontalContentAlignment="Left" Padding="3,4,6,6" FontFamily="Segoe UI Variable Display Light" FontSize="14" FontWeight="Bold" />
-                <GridView x:Name="TileGridView1" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" CanDragItems="True" IsItemClickEnabled="True" AllowDrop="True" CanReorderItems="True" ItemTemplateSelector="{StaticResource whichtile}" Grid.Row="1" SelectionMode="None">
-                    <GridView.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <ItemsWrapGrid x:Name="MaxItemsWrapGrid"
-                           MaximumRowsOrColumns="3"
-                           Orientation="Horizontal"/>
-                        </ItemsPanelTemplate>
-                    </GridView.ItemsPanel>
-                </GridView>
-            </Grid>
+            <GridView x:Name="TileGroupGridView" CanDragItems="True" CanReorderItems="True" ItemTemplate="{StaticResource TileGroupTemplate}" SelectionMode="None">
+                <GridView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <ItemsWrapGrid x:Name="MaxItemsWrapGrid"
+               Orientation="Vertical"/>
+                    </ItemsPanelTemplate>
+                </GridView.ItemsPanel>
+            </GridView>
+            
 
 
         </ScrollViewer>

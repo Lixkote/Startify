@@ -9,15 +9,15 @@
     d:DesignHeight="96"
     d:DesignWidth="96">
 
-    <Button Grid.Column="1" CornerRadius="5" Padding="0,0,0,0">
+    <Button Grid.Column="1" CornerRadius="5" Padding="0,0,0,0" IsHitTestVisible="False">
         <Grid Width="96" Height="96">
             <Image Source="/Assets/appplaceholder.png"
-                               Width="32"
-                               Height="32" />
-            <TextBlock Text="AppName"
-                                           HorizontalAlignment="Left"
-                                           VerticalAlignment="Bottom"
-                                           FontSize="12" Margin="6,0,0,6" />
+           Width="32"
+           Height="32" />
+            <TextBlock Text="{Binding DisplayName}"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Bottom"
+                       FontSize="12" Margin="6,0,0,6" />
         </Grid>
     </Button>
 </UserControl>

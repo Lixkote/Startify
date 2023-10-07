@@ -7,24 +7,30 @@ using System.Windows.Media;
 
 namespace WPF.Helpers
 {
-    internal abstract class StartMenuTile
+    public class TileGroup
     {
-        public string TileName { get; set; }
+        public string Name { get; set; }
+        public List<Tile> Tiles { get; set; }
+
+        public TileGroup()
+        {
+            Tiles = new List<Tile>();
+        }
+    }
+
+    public class Tile
+    {
+        public string DisplayName { get; set; }
         public string Path { get; set; }
-        public string Link { get; set; }    
         public string PathUWP { get; set; }
-        public Windows.UI.Xaml.Media.Imaging.BitmapImage TileIcon { get; set; }
+        public string Size { get; set; }
+        public Windows.UI.Xaml.Media.Imaging.BitmapImage Icon { get; set; }
+        public string IsLiveTileEnabled { get; set; }
+        public string TileCustomColor { get; set; }
     }
-    internal class StartMenuTileDirectory : StartMenuTileLink
+
+    public class Folder : Tile
     {
-        public bool HasChildren { get; set; }
-        public ObservableCollection<StartMenuTileLink> Links { get; set; }
-        public ObservableCollection<StartMenuTileDirectory> Directories { get; set; }
-    }
-    internal class StartMenuTileLink : StartMenuTile
-    {
-        public string Link { get; set; }
-        public string LinkUWP { get; set; }
-        public bool AllowOpenLocation { get; set; }
+        public List<Tile> Tiles { get; set; }
     }
 }

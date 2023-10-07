@@ -140,6 +140,9 @@
     <Compile Include="Shell\Start\Tiles\Tile3.xaml.cs">
       <DependentUpon>Tile3.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Shell\Start\Tiles\TileGroupControl.xaml.cs">
+      <DependentUpon>TileGroupControl.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -294,6 +297,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Shell\Start\Tiles\Tile3.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Shell\Start\Tiles\TileGroupControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

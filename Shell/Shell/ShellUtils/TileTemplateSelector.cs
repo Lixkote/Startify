@@ -13,14 +13,6 @@ namespace Shell.Shell.ShellUtils
         public DataTemplate Tile1 { get; set; }
         public DataTemplate Tile2 { get; set; }
         public DataTemplate Tile3 { get; set; }
-        internal abstract class StartMenuTile
-        {
-            public string Alph { get { return Title[0].ToString(); } }
-            public string Title { get; set; }
-            public string Path { get; set; }
-            public string PathUWP { get; set; }
-            public Windows.UI.Xaml.Media.Imaging.BitmapImage Icon { get; set; }
-        }
         protected override DataTemplate SelectTemplateCore(object item)
         {
             if (item.ToString() == "WPF.Helpers.Tile1")
