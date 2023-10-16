@@ -91,6 +91,7 @@ namespace WPF.Helpers
                                 DisplayName = tileElement.Element("DisplayName")?.Value,
                                 Path = tileElement.Element("Path")?.Value,
                                 PathUWP = tileElement.Element("PathUWP")?.Value,
+                                Icon = new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri(uriString: IconHelper.GetFileIcon(tileElement.Element("Path")?.Value))),
                                 Size = tileElement.Element("Size")?.Value,
                                 IsLiveTileEnabled = tileElement.Element("IsLiveTileEnabled")?.Value,
                                 TileCustomColor = tileElement.Element("TileCustomColor")?.Value

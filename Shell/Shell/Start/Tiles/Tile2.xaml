@@ -11,7 +11,7 @@
 
     <Button Grid.Column="1" CornerRadius="5" Padding="0,0,0,0" IsHitTestVisible="False">
         <Grid Width="96" Height="96">
-            <Image Source="/Assets/appplaceholder.png"
+            <Image Source="{Binding Icon}"
            Width="32"
            Height="32" />
             <TextBlock Text="{Binding DisplayName}"
