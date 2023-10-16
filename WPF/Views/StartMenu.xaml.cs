@@ -78,12 +78,21 @@ namespace WPF.Views
 
             StartListener.StartTriggered += OnStartTriggered;
             StartListener.ListenerErrorHappened += StartifyErrorOccured;
+            TileAppHelper.CouldNotLoadTiles += DisableTiles;
             StartListener.FindAndActivateWindow();
             startMenuTools.AlignStartifyWithTaskbar(this);
             var startPlaceholder = StartMenuIslandh.Child as ShellApp.Shell.Start.StartPlaceholder;
             // Do this so the app wont wait for user start button press on startup.
             Show();
             Hide();
+        }
+
+        private void DisableTiles(object sender, EventArgs e)
+        {
+            var startPlaceholder = StartMenuIslandh.Child as ShellApp.Shell.Start.StartPlaceholder;
+            var StartBackground = startPlaceholder.FindName("startbackground") as Windows.UI.Xaml.Controls.Grid;
+            StartBackground.Width = 300;
+            ShowStolenTiles();
         }
 
         private void ApplyNewAccent(object sender, EventArgs e)
@@ -133,6 +142,32 @@ namespace WPF.Views
         private void StartifyErrorOccured(object sender, EventArgs e)
         {
             ShowErrorNotification();
+        }
+
+
+        public async void ShowStolenTiles()
+        {
+            // Get the path to the "Assets" folder in the current running directory
+            string assetsFolderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets");
+
+            // Specify the file name you want to access
+            string fileName = "error.png";
+
+            // Combine the folder path with the file name to get the full file path
+            string filePath = Path.Combine(assetsFolderPath, fileName);
+
+            // Create a URI object from the file path
+            Uri fileUri = new Uri(filePath);
+
+            // Get the URI as a string
+            string uriString = fileUri.ToString();
+
+            // Show the "everything is ok" toast
+            new ToastContentBuilder()
+                .AddInlineImage(new Uri(uriString))
+                .AddText("Tiles disabled.")
+                .AddText("We could not find or load the tiles configuration file.")
+                .Show();
         }
 
 

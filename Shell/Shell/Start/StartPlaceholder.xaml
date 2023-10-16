@@ -300,7 +300,6 @@
           BorderBrush="{ThemeResource SurfaceStrokeColorDefaultBrush}"
           BorderThickness="1,1,1,1"
           CornerRadius="10"
-          Translation="0,0,128"
           Width="650"
           Height="650"
           HorizontalAlignment="Left"

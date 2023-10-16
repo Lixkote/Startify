@@ -71,6 +71,7 @@ namespace WPF.Helpers
                 }
             }
         }
+        public event EventHandler<EventArgs> CouldNotLoadTiles;
         public void LoadTileGroups(ObservableCollection<TileGroup> TileGroupscollection)
         {
             string configFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "Startify", "Tiles", "TileLayout.xml");
@@ -104,11 +105,13 @@ namespace WPF.Helpers
                 catch (Exception ex)
                 {
                     MessageBox.Show("Error loading tiles Configuration XML: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    CouldNotLoadTiles(this, null);
                 }
             }
             else
             {
                 MessageBox.Show("Tiles configuration file not found.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                CouldNotLoadTiles(this, null);
             }
         }
 
