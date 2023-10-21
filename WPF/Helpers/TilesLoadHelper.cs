@@ -1,5 +1,6 @@
 ﻿using Shell.Shell.Start.Tiles;
 using ShellApp;
+using StartifyBackend.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -74,7 +75,7 @@ namespace WPF.Helpers
         public event EventHandler<EventArgs> CouldNotLoadTiles;
         public void LoadTileGroups(ObservableCollection<TileGroup> TileGroupscollection)
         {
-            string configFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "Startify", "Tiles", "TileLayout.xml");
+            string configFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Startify", "PinnedTiles", "TileLayout.xml");
 
             if (File.Exists(configFile))
             {
@@ -104,13 +105,13 @@ namespace WPF.Helpers
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Error loading tiles Configuration XML: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    Logger.LogError("Error loading tiles Configuration XML: " + ex.Message);
                     CouldNotLoadTiles(this, null);
                 }
             }
             else
             {
-                MessageBox.Show("Tiles configuration file not found.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Logger.LogError("Tiles configuration file not found.");
                 CouldNotLoadTiles(this, null);
             }
         }

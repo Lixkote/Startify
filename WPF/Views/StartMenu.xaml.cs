@@ -5,6 +5,7 @@ using Microsoft.Win32;
 using Shell.Shell.Start.Tiles;
 using ShellApp;
 using ShellApp.Shell.Start;
+using StartifyBackend.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -68,13 +69,13 @@ namespace WPF.Views
             InitializeComponent();
             StartListener = new StartMenuListener();
 
-            // AccentListener = new RegistryMonitor(Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize\\ColorPrevalence"));
-            // AccentListener.RegChanged += new EventHandler(ApplyNewAccent);
-            // AccentListener.Start();
+            AccentListener = new RegistryMonitor(RegistryHive.CurrentUser, "Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize");
+            AccentListener.RegChanged += new EventHandler(ApplyNewAccent);
+            AccentListener.Start();
 
-            // ThemeListener = new RegistryMonitor(Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize\\SystemUsesLightTheme"));
-            // ThemeListener.RegChanged += new EventHandler(ApplyNewShellTheme);
-            // ThemeListener.Start();
+            ThemeListener = new RegistryMonitor(RegistryHive.CurrentUser, "Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize");
+            ThemeListener.RegChanged += new EventHandler(ApplyNewShellTheme);
+            ThemeListener.Start();
 
             StartListener.StartTriggered += OnStartTriggered;
             StartListener.ListenerErrorHappened += StartifyErrorOccured;
@@ -85,6 +86,7 @@ namespace WPF.Views
             // Do this so the app wont wait for user start button press on startup.
             Show();
             Hide();
+            Logger.LogError("very example test error");
         }
 
         private void DisableTiles(object sender, EventArgs e)
@@ -95,9 +97,35 @@ namespace WPF.Views
             ShowStolenTiles();
         }
 
+        private void ThemingSetup()
+        {
+            try
+            {
+                int themeValue2 = (int)Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize").GetValue("SystemUsesLightTheme");
+
+                // Use the Dispatcher to run the UI-related code on the UI thread
+                Dispatcher.Invoke(() =>
+                {
+                    var startPlaceholder = StartMenuIslandh.Child as ShellApp.Shell.Start.StartPlaceholder;
+
+                    if (themeValue2 == 1)
+                    {
+                        startPlaceholder.RequestedTheme = Windows.UI.Xaml.ElementTheme.Light;
+                    }
+                    else if (themeValue2 == 0)
+                    {
+                        startPlaceholder.RequestedTheme = Windows.UI.Xaml.ElementTheme.Dark;
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show("Apply shell theme failed: " + ex.ToString());
+            }
+        }
+
         private void ApplyNewAccent(object sender, EventArgs e)
         {
-            System.Windows.MessageBox.Show("New accent was applied");
             int themeValue = (int)Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize").GetValue("ColorPrevalence");
             if (themeValue == 1)
             {
@@ -112,7 +140,6 @@ namespace WPF.Views
         }
         private void ApplyNewShellTheme(object sender, EventArgs e)
         {
-            System.Windows.MessageBox.Show("New theme was applied");
             try
             {
                 int themeValue2 = (int)Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize").GetValue("SystemUsesLightTheme");
@@ -165,7 +192,7 @@ namespace WPF.Views
             // Show the "everything is ok" toast
             new ToastContentBuilder()
                 .AddInlineImage(new Uri(uriString))
-                .AddText("Tiles disabled.")
+                .AddText("Tiles functionality disabled.")
                 .AddText("We could not find or load the tiles configuration file.")
                 .Show();
         }
@@ -441,6 +468,7 @@ namespace WPF.Views
             startPlaceholder.UninstallSettingsShouldOpen += async (sender, e) => await OpenUninstall();
             ShowNotification();
             LoadTiles();
+            ThemingSetup();
         }
 
         public void LoadTiles()

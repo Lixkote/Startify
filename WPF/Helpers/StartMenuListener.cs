@@ -7,6 +7,7 @@ using System.Text;
 using System.Windows.Input;
 using System.Threading;
 using WPF.Views;
+using StartifyBackend.Helpers;
 
 namespace WPF.Helpers
 {
@@ -81,8 +82,7 @@ namespace WPF.Helpers
             }
             else
             {
-                MessageBox.Show("Startify had an issue hooking the windows start button, and might not work properly.");
-                ListenerErrorHappened(this, null);
+                Logger.LogError("Startify had an issue hooking the windows start button, and might not work properly.");
             }
         }
 
@@ -103,8 +103,8 @@ namespace WPF.Helpers
             }
             else
             {
-                Debug.WriteLine("Startify had an issue closing the windows start menu, and might not work properly.");
-                ListenerErrorHappened(this, null);
+                Logger.LogError("Startify had an issue closing the windows start menu, and might not work properly.");
+                Logger.LogError("This might also mean that user is using a Windows 11 Start Menu replacement app like StartAllBack.");
             }
         }
 
@@ -164,7 +164,7 @@ namespace WPF.Helpers
                     {
                         // Introduce a small delay (e.g., 100 milliseconds) to ensure the key is held for a minimum time
 
-                        if (stopwatch.ElapsedMilliseconds <= 200)
+                        if (stopwatch.ElapsedMilliseconds <= 100)
                         {
                             bool anyKeyPressed = false;
 
