@@ -12,7 +12,7 @@
 
     <UserControl.Resources>
         <DataTemplate x:Key="TileGroupTemplate">
-            <my1:TileGroupControl />
+            <my1:TileGroupControl Name="TileGroupCTRL" TileClicked="TileGroupCTRL_TileClicked" />
         </DataTemplate>
         <DataTemplate x:Key='Tile1'>
             <Button
@@ -468,13 +468,29 @@
                    
                     >
 
-            <GridView x:Name="TileGroupGridView" CanDragItems="True" CanReorderItems="True" ItemTemplate="{StaticResource TileGroupTemplate}" SelectionMode="None">
+            <GridView x:Name="TileGroupGridView" SelectionMode="None" CanDragItems="True" IsItemClickEnabled="True" CanReorderItems="True" AllowDrop="True" ItemTemplate="{StaticResource TileGroupTemplate}" >
                 <GridView.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <ItemsWrapGrid x:Name="MaxItemsWrapGrid"
+                        <ItemsWrapGrid x:Name="MaxItemsWrapGrid" CanDrag="True" AllowDrop="True" 
                Orientation="Vertical"/>
                     </ItemsPanelTemplate>
                 </GridView.ItemsPanel>
+                <GridView.ItemContainerStyle>
+                    <Style TargetType="GridViewItem">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="GridViewItem">
+                                    <Grid
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}">
+                                        <ContentPresenter />
+                                    </Grid>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </GridView.ItemContainerStyle>
             </GridView>
             
 

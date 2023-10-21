@@ -13,12 +13,12 @@
 
     <UserControl.Resources>
         <DataTemplate x:Key='Tile1'>
-            <my1:Tile1 />
+            <my1:Tile1 AllowDrop="True" CanDrag="True"></my1:Tile1>
         </DataTemplate>
         <DataTemplate x:Key='Tile2'>
             <GridViewItem>
                 <GridViewItem.Content>
-                    <my1:Tile2 />
+                    <my1:Tile2 AllowDrop="True" CanDrag="True"/>
                 </GridViewItem.Content>
                 <GridViewItem.ContextFlyout>
                     <MenuFlyout>
@@ -28,8 +28,8 @@
                 </GridViewItem.ContextFlyout>
             </GridViewItem>
         </DataTemplate>
-        <DataTemplate x:Key='Tile3'>
-            <my1:Tile3 />
+        <DataTemplate x:Key='Tile3' >
+            <my1:Tile3 AllowDrop="True" CanDrag="True"/>
         </DataTemplate>
         <selector:TileTempleteSelector x:Key="whichtile"
                                  Tile1="{StaticResource Tile1}"
@@ -44,14 +44,15 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <TextBox x:Name="TileGridViewGroupName" Text="{Binding Name}" Grid.Row="0" Background="{x:Null}" BorderBrush="{x:Null}" HorizontalContentAlignment="Left" Padding="3,4,6,6" FontFamily="Segoe UI Variable Display Light" FontSize="14" FontWeight="Bold" />
-        <GridView x:Name="TileGridView" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" CanDragItems="True" IsItemClickEnabled="True" AllowDrop="True" CanReorderItems="True" Grid.Row="1" SelectionMode="None" ItemsSource="{Binding Tiles}" ItemTemplateSelector="{StaticResource whichtile}">
+        <GridView x:Name="TileGridView" ItemClick="TileGridView_ItemClick" SelectionMode="None" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" CanDragItems="True" IsItemClickEnabled="True" AllowDrop="True" CanReorderItems="True" Grid.Row="1" ItemsSource="{Binding Tiles}" ItemTemplateSelector="{StaticResource whichtile}">
             <GridView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <ItemsWrapGrid x:Name="MaxItemsWrapGrid"
-               MaximumRowsOrColumns="3"
+               MaximumRowsOrColumns="3" CanDrag="True" AllowDrop="True" 
                Orientation="Horizontal"/>
                 </ItemsPanelTemplate>
             </GridView.ItemsPanel>
         </GridView>
+        
     </Grid>
 </UserControl>

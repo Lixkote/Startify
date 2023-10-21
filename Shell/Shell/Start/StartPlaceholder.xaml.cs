@@ -1,4 +1,5 @@
 ﻿using Shell.Shell.ShellUtils;
+using Shell.Shell.Start.Tiles;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -32,6 +33,7 @@ namespace ShellApp.Shell.Start
     {
         // Declare the event
         public event EventHandler<ItemClickEventArgs> DirectoryChildClicked;
+        public event EventHandler<ItemClickEventArgs> TileClickedMain;
         public event EventHandler<ItemClickEventArgs> ErrorHappened;
 
         public event EventHandler<RoutedEventArgs> UninstallSettingsShouldOpen;
@@ -47,6 +49,7 @@ namespace ShellApp.Shell.Start
             this.InitializeComponent();
             this.Loaded += Start_Loaded;
             this.ErrorHappened += errornotif;
+
         }
 
         private void errornotif(object sender, ItemClickEventArgs e)
@@ -268,6 +271,12 @@ namespace ShellApp.Shell.Start
                 // Assuming "Tile1" is defined in XAML as a DataTemplate
                 targetitem.ContentTemplate = this.Resources["Tile1"] as DataTemplate;
             }
+        }
+
+        public void TileGroupCTRL_TileClicked(object sender, ItemClickEventArgs e)
+        {
+            // Call the OnDirectoryChildClicked method to raise the event
+            TileClickedMain?.Invoke(sender, e);
         }
     }
 }

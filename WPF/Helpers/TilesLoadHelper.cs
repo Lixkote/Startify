@@ -31,47 +31,55 @@ namespace WPF.Helpers
             var firstApp = apps.FirstOrDefault();
             return firstApp;
         }
-        public async void TileLaunchHandler(object sender, ItemClickEventArgs e, Window window, ObservableCollection<Tile> Programs, bool runasadmin)
+        public async void TileLaunchHandler(object sender, ItemClickEventArgs e, Window window, bool runasadmin)
         {
             Tile clickedItem = e.ClickedItem as Tile;
-            // Get the index of the clicked item in the ObservableCollection
-            int index = Programs.IndexOf(clickedItem);
 
-            // Get the path of the clicked item from the ObservableCollection
-            string path = Programs[index].Path;
-            string pathuwp = Programs[index].PathUWP;
-
-            // Do something with the index and path
-            window.Hide();
-            if (path != null)
+            if (clickedItem != null)
             {
-                if (runasadmin == false)
+                string path = clickedItem.Path;
+                string pathuwp = clickedItem.PathUWP;
+
+                window.Hide();
+
+                if (path != null)
                 {
-                    Process.Start(new ProcessStartInfo(path) { UseShellExecute = true });
-                }
-                else if (runasadmin == true)
-                {
-                    ProcessStartInfo startInfo = new ProcessStartInfo(path)
+                    if (path != "")
                     {
-                        UseShellExecute = true,
-                        Verb = "runas" // This will request admin privileges
-                    };
-                    Process.Start(startInfo);
+                        if (runasadmin == false)
+                        {
+                            Process.Start(new ProcessStartInfo(path) { UseShellExecute = true });
+                        }
+                        else if (runasadmin == true)
+                        {
+                            ProcessStartInfo startInfo = new ProcessStartInfo(path)
+                            {
+                                UseShellExecute = true,
+                                Verb = "runas" // This will request admin privileges
+                            };
+                            Process.Start(startInfo);
+                        }
+                    }
                 }
-            }
-            if (pathuwp != null)
-            {
-                var app = await GetAppByPackageFamilyNameAsync(pathuwp);
-                if (app != null)
+                if (pathuwp != null)
                 {
-                    await app.LaunchAsync();
-                }
-                else
-                {
-                    System.Windows.MessageBox.Show("This UWP app couldn't be launched.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    if (pathuwp != "")
+                    {
+                        var app = await GetAppByPackageFamilyNameAsync(pathuwp);
+                        if (app != null)
+                        {
+                            await app.LaunchAsync();
+                        }
+                        else
+                        {
+                            System.Windows.MessageBox.Show("This UWP app couldn't be launched.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                    }
                 }
             }
         }
+
+
         public event EventHandler<EventArgs> CouldNotLoadTiles;
         public void LoadTileGroups(ObservableCollection<TileGroup> TileGroupscollection)
         {
@@ -106,12 +114,13 @@ namespace WPF.Helpers
                 catch (Exception ex)
                 {
                     Logger.LogError("Error loading tiles Configuration XML: " + ex.Message);
+                    Debug.WriteLine("Error loading tiles Configuration XML: " + ex.Message);
                     CouldNotLoadTiles(this, null);
                 }
             }
             else
             {
-                Logger.LogError("Tiles configuration file not found.");
+                Debug.WriteLine("Tiles configuration file not found.");
                 CouldNotLoadTiles(this, null);
             }
         }

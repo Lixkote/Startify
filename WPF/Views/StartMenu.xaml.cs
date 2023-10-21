@@ -428,6 +428,7 @@ namespace WPF.Views
 
             var startPlaceholder = StartMenuIslandh.Child as ShellApp.Shell.Start.StartPlaceholder;
             var allAppsListView = startPlaceholder.FindName("AllAppsListView") as Windows.UI.Xaml.Controls.ListView;
+            var TileGroupGridView = startPlaceholder.FindName("TileGroupGridView") as Windows.UI.Xaml.Controls.GridView;
 
             allAppsListView.ItemClick += (sender, e) => AppLauncher.AppLaunchHandler(sender, e, this, Programs, false);
 
@@ -437,6 +438,7 @@ namespace WPF.Views
                          group p by char.IsDigit(p.Alph[0]) ? "#" : p.Alph into g
                          select g;
             allAppsListView.Loaded += applistloaded;
+            TileGroupGridView.Loaded += TilesLoaded;
 
             var hibernate = startPlaceholder.FindName("HibernateMenuButton") as Windows.UI.Xaml.Controls.MenuFlyoutItem;
             var sleep = startPlaceholder.FindName("SleepMenuButton") as Windows.UI.Xaml.Controls.MenuFlyoutItem;
@@ -479,6 +481,14 @@ namespace WPF.Views
 
             var tilegridview = startPlaceholder.FindName("TileGroupGridView") as Windows.UI.Xaml.Controls.GridView;
             tilegridview.ItemsSource = TileGroups;
+        }
+
+        private void TilesLoaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            // Get the StartPlaceholder object from the WindowsXamlHost element
+            var startPlaceholder = StartMenuIslandh.Child as ShellApp.Shell.Start.StartPlaceholder;
+            // Find the ListView element by its name
+            startPlaceholder.TileClickedMain += (sender, e) => TileAppHelper.TileLaunchHandler(sender, e, this, false);
         }
 
         private void applistloaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)

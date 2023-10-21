@@ -19,9 +19,16 @@ namespace Shell.Shell.Start.Tiles
 {
     public sealed partial class TileGroupControl : UserControl
     {
+        public event EventHandler<ItemClickEventArgs> TileClicked;
         public TileGroupControl()
         {
             this.InitializeComponent();
+        }
+
+        public void TileGridView_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            // Call the OnDirectoryChildClicked method to raise the event
+            TileClicked?.Invoke(sender, e);
         }
     }
 }
