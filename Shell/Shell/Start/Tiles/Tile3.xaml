@@ -9,12 +9,12 @@
     d:DesignHeight="96"
     d:DesignWidth="196">
 
-    <Button Grid.Column="1" CornerRadius="5" Grid.RowSpan="2" Grid.Row="2" Grid.ColumnSpan="2" Padding="0,0,0,0">
+    <Button IsHitTestVisible="False" Width="196" Height="96" Grid.Column="1" CornerRadius="5" Grid.RowSpan="2" Grid.Row="2" Grid.ColumnSpan="2" Padding="0,0,0,0">
         <Grid Width="196" Height="96">
-            <Image Source="/Assets/appplaceholder.png"
-                                Width="32"
-                                Height="32" />
-            <TextBlock Text="AppName"
+            <Image Source="{Binding Icon}"
+                                Width="48"
+                                Height="48" />
+            <TextBlock Text="{Binding DisplayName}"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Bottom"
                                 FontSize="12" Margin="6,0,0,6" />

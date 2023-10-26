@@ -5,14 +5,12 @@
     xmlns:local="using:Shell.Shell.Start.Tiles"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
-    d:DesignHeight="46"
-    d:DesignWidth="46">
+    mc:Ignorable="d">
 
     <Button
-                                 CornerRadius="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="0,0,0,0">
-        <Image Source="/Assets/appplaceholder.png"
-                                   Width="28"
-                                   Height="28" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="UniformToFill"/>
+                   IsHitTestVisible="False"           Height="46"   Width="46" CornerRadius="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="0,0,0,0">
+        <Image Source="{Binding Icon}"
+                                   Width="32"
+                                   Height="32" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="UniformToFill"/>
     </Button>
 </UserControl>

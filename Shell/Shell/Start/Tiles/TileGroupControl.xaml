@@ -13,7 +13,17 @@
 
     <UserControl.Resources>
         <DataTemplate x:Key='Tile1'>
-            <my1:Tile1 AllowDrop="True" CanDrag="True"></my1:Tile1>
+            <GridViewItem>
+                <GridViewItem.Content>
+                    <my1:Tile1 AllowDrop="True" CanDrag="True"/>
+                </GridViewItem.Content>
+                <GridViewItem.ContextFlyout>
+                    <MenuFlyout>
+                        <MenuFlyoutItem x:Name="SmallSizeMenuItem2" Text="SmallSize"/>
+                        <MenuFlyoutItem x:Name="LargeSizeMenuItem2" Text="LargeSize"/>
+                    </MenuFlyout>
+                </GridViewItem.ContextFlyout>
+            </GridViewItem>
         </DataTemplate>
         <DataTemplate x:Key='Tile2'>
             <GridViewItem>
@@ -29,7 +39,17 @@
             </GridViewItem>
         </DataTemplate>
         <DataTemplate x:Key='Tile3' >
-            <my1:Tile3 AllowDrop="True" CanDrag="True"/>
+            <GridViewItem>
+                <GridViewItem.Content>
+                    <my1:Tile3 AllowDrop="True" CanDrag="True"/>
+                </GridViewItem.Content>
+                <GridViewItem.ContextFlyout>
+                    <MenuFlyout>
+                        <MenuFlyoutItem x:Name="SmallSizeMenuItem2" Text="SmallSize"/>
+                        <MenuFlyoutItem x:Name="LargeSizeMenuItem2" Text="LargeSize"/>
+                    </MenuFlyout>
+                </GridViewItem.ContextFlyout>
+            </GridViewItem>
         </DataTemplate>
         <selector:TileTempleteSelector x:Key="whichtile"
                                  Tile1="{StaticResource Tile1}"
@@ -37,19 +57,17 @@
                                  Tile3="{StaticResource Tile2}"/>
     </UserControl.Resources>
 
-    <Grid Height="Auto"
+    <Grid Width="350" Height="Auto"
       RowSpacing="16">
         <Grid.RowDefinitions>
             <RowDefinition Height="32" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <TextBox x:Name="TileGridViewGroupName" Text="{Binding Name}" Grid.Row="0" Background="{x:Null}" BorderBrush="{x:Null}" HorizontalContentAlignment="Left" Padding="3,4,6,6" FontFamily="Segoe UI Variable Display Light" FontSize="14" FontWeight="Bold" />
-        <GridView x:Name="TileGridView" ItemClick="TileGridView_ItemClick" SelectionMode="None" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" CanDragItems="True" IsItemClickEnabled="True" AllowDrop="True" CanReorderItems="True" Grid.Row="1" ItemsSource="{Binding Tiles}" ItemTemplateSelector="{StaticResource whichtile}">
+        <GridView Loaded="TileGridView_Loaded" x:Name="TileGridView" ItemClick="TileGridView_ItemClick" SelectionMode="None" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" CanDragItems="True" IsItemClickEnabled="True" AllowDrop="True" CanReorderItems="True" Grid.Row="1" ItemsSource="{Binding Tiles}" ItemTemplateSelector="{StaticResource whichtile}">
             <GridView.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <ItemsWrapGrid x:Name="MaxItemsWrapGrid"
-               MaximumRowsOrColumns="3" CanDrag="True" AllowDrop="True" 
-               Orientation="Horizontal"/>
+                    <ItemsWrapGrid Orientation="Horizontal" MaximumRowsOrColumns="3"/>
                 </ItemsPanelTemplate>
             </GridView.ItemsPanel>
         </GridView>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Shell.Shell.ShellUtils;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -23,12 +24,17 @@ namespace Shell.Shell.Start.Tiles
         public TileGroupControl()
         {
             this.InitializeComponent();
+
         }
 
         public void TileGridView_ItemClick(object sender, ItemClickEventArgs e)
         {
             // Call the OnDirectoryChildClicked method to raise the event
             TileClicked?.Invoke(sender, e);
+        }
+
+        private void TileGridView_Loaded(object sender, RoutedEventArgs e)
+        {
         }
     }
 }

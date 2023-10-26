@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Text;
 using System.Windows.Media;
+using static Shell.Shell.ShellUtils.TileTempleteSelector;
 
 namespace WPF.Helpers
 {
@@ -18,7 +19,7 @@ namespace WPF.Helpers
         }
     }
 
-    public class Tile
+    public class Tile : IHasSize
     {
         public string DisplayName { get; set; }
         public string Path { get; set; }

@@ -139,7 +139,6 @@ namespace ShellApp.Shell.Start
 
             // Cool acrylic demo
             // startbackground.Background = (AcrylicBrush)Resources["CustomAcrylicInAppLuminosity"];
-            originalBackground = startbackground.Background;
         }
 
         private async void SettingsButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
