@@ -1,6 +1,5 @@
 ﻿using Shell.Shell.Start.Tiles;
 using ShellApp;
-using StartifyBackend.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -113,7 +112,6 @@ namespace WPF.Helpers
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogError("Error loading tiles Configuration XML: " + ex.Message);
                     Debug.WriteLine("Error loading tiles Configuration XML: " + ex.Message);
                     CouldNotLoadTiles(this, null);
                 }

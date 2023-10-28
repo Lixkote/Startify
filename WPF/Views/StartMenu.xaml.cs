@@ -5,7 +5,6 @@ using Microsoft.Win32;
 using Shell.Shell.Start.Tiles;
 using ShellApp;
 using ShellApp.Shell.Start;
-using StartifyBackend.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -86,7 +85,7 @@ namespace WPF.Views
             // Do this so the app wont wait for user start button press on startup.
             Show();
             Hide();
-            Logger.LogError("very example test error");
+            Debug.WriteLine("very example test error");
         }
 
         private void DisableTiles(object sender, EventArgs e)
