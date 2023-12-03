@@ -179,7 +179,7 @@ namespace WPF.Helpers
                             if (!anyKeyPressed)
                             {
                                 StartTriggered(this, null);
-                                return 1;
+                                FindAndCloseW11StartWindow();
                             }
                         }
                     }
