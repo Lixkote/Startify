@@ -1,8 +1,10 @@
 # Startify
-Tiled, WinUI3 Style and Windows 10-Layouted start menu replacement for Windows 11.
-Before compiling the latest build, you might want to install this installer to make tiles work:
-https://www.mediafire.com/file/36vo44cas5nryxv/StartifyAlpha2123oct.zip/file
 
+Update 2024:
+This will be updated soon, with lots of new features and stability improvements.
+Stay tuned!
+
+Tiled, WinUI3 Style and Windows 10-Layouted start menu replacement for Windows 11.
 Note: this app is still unfinished and prototype, many bugs will and can occur. 
 
 Screenshots:
