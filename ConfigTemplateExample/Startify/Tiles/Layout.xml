@@ -1,0 +1,49 @@
+<!--Startify vNext Tiles Configuration File with description-->
+<!--Warning: This won't work with the old 2023 version of startify, and 2023 startify configs won't work with the 2024's Startify.-->
+<!--Lixkote 2024-->
+<XmlRoot> <!--single root element needed by the xml logic to work properly-->
+<TileGroup Name="Example Group 1"> <!--Definition of the group of tiles with its name.-->
+    <Tiles>
+      <Tile>
+        <PathClassic>C:\Users\lixkote\Startify\Tiles\R11 cpl.lnk</PathClassic> <!--Path to the application's shortcut for win32 applications-->
+        <PathImmersive></PathImmersive> <!--Path to the application's shortcut for UWP or Modern applications-->
+        <Size>Normal</Size> <!--Desired Size of the Tile-->
+        <LiveTileEnabled>false</LiveTileEnabled> <!--Should the live tile be enabled for the application?-->
+		<!--Tile's custom background; Leave empty for default, Hex Color value for custom color background, Path to an image for a image with custom background.-->
+		<CustomTileBackground>#007bff</CustomTileBackground>
+      </Tile>
+	  <Tile>
+        <PathClassic>C:\Users\lixkote\Startify\Tiles\Control Panel.lnk</PathClassic>
+        <PathImmersive></PathImmersive>
+        <Size>Normal</Size>
+        <LiveTileEnabled>false</LiveTileEnabled>
+		<CustomTileBackground></CustomTileBackground>
+      </Tile>
+	  <Tile>
+        <PathClassic>C:\Users\lixkote\Startify\Tiles\Run.lnk</PathClassic>
+        <PathImmersive></PathImmersive>
+        <Size>Normal</Size>
+        <LiveTileEnabled>false</LiveTileEnabled>
+		<CustomTileBackground></CustomTileBackground>
+      </Tile>
+    </Tiles>
+</TileGroup>
+<TileGroup Name="Example Group 2">
+    <Tiles>
+      <Tile>
+        <PathClassic>C:\Users\lixkote\Startify\Tiles\Google Chrome.lnk</PathClassic>
+        <PathImmersive></PathImmersive>
+        <Size>Wide</Size>
+        <LiveTileEnabled>false</LiveTileEnabled>
+		<CustomTileBackground></CustomTileBackground>
+      </Tile>
+	  <Tile>
+        <PathClassic>C:\Users\lixkote\Startify\Tiles\Google Chrome.lnk</PathClassic>
+        <PathImmersive></PathImmersive>
+        <Size>Normal</Size>
+        <LiveTileEnabled>false</LiveTileEnabled>
+		<CustomTileBackground></CustomTileBackground>
+      </Tile>
+    </Tiles>
+</TileGroup>
+</XmlRoot>
