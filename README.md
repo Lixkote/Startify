@@ -37,5 +37,5 @@ Coming later/todo:
 
 Screenshots / Previews:
 
-![Startify Screenshot](https://github.com/Lixkote/Startify/blob/main/tiles.png)
-![Startify Screenshot](https://github.com/Lixkote/Startify/blob/main/notiles.png)
+![Startify Screenshot](https://github.com/Lixkote/Startify/blob/main/Previews/tiles.png)
+![Startify Screenshot](https://github.com/Lixkote/Startify/blob/main/Previews/notiles.png)
