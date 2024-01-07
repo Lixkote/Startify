@@ -3,6 +3,7 @@ using Microsoft.Toolkit.Uwp.Notifications;
 using Microsoft.Toolkit.Wpf.UI.XamlHost;
 using Microsoft.Win32;
 using ModernWpf;
+using ModernWpf.Controls;
 using Shell.Interface.StartMenu;
 using ShellApp;
 using ShellApp.Shell.Start;
@@ -16,6 +17,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security.Policy;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -40,6 +42,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 using File = System.IO.File;
 using MessageBox = ModernWpf.MessageBox;
+using Tile = WPF.Helpers.Tile;
 using Window = System.Windows.Window;
 
 namespace WPF.Views
@@ -392,9 +395,6 @@ namespace WPF.Views
             }
         }
 
-
-
-
         private async void StartMenuActivated(object sender, EventArgs e)
         {
             Show();
@@ -559,12 +559,112 @@ namespace WPF.Views
             tilegridview.ItemsSource = TileGroups;
         }
 
+        public void ReloadTiles()
+        {
+            TileGroups = new ObservableCollection<TileGroup>();
+            var startPlaceholder = StartMenuIslandh.Child as ShellApp.Shell.Start.StartPlaceholder;
+            TileAppHelper.LoadTileGroups(TileGroups);
+
+            var tilegridview = startPlaceholder.FindName("TileGroupGridView") as Windows.UI.Xaml.Controls.GridView;
+            tilegridview.ItemsSource = null;
+            tilegridview.ItemsSource = TileGroups;
+        }
+
         private void TilesLoaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             // Get the StartPlaceholder object from the WindowsXamlHost element
             var startPlaceholder = StartMenuIslandh.Child as ShellApp.Shell.Start.StartPlaceholder;
             // Find the ListView element by its name
             startPlaceholder.TileClickedMain += (sender, e) => TileAppHelper.OpenTileApp(sender, e, this, false);
+            startPlaceholder.TileUnpinnedMain += (sender, e) => UnpinTile(sender, e);
+            startPlaceholder.TilePinnedMain += (sender, e) => PinTile(sender, e);
+        }
+
+        private Tile FindTileByPathClassic(string pathClassicValue)
+        {
+            foreach (var group in TileGroups)
+            {
+                var tile = group.Tiles.FirstOrDefault(t => String.Equals(t.PathClassic, pathClassicValue, StringComparison.OrdinalIgnoreCase));
+                if (tile != null)
+                {
+                    return tile;
+                }
+            }
+
+            return null; // Return null if the tile is not found
+        }
+        public void UnpinTile(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            // Debug statement to check if the method is being called
+            Debug.WriteLine("UnpinTile method called.");
+
+            // Remove the tile from the XML configuration file
+            TileAppHelper.RemoveTileFromXml(sender);
+            // Your input string
+            string input = sender as string;
+
+            // Define the pattern for extracting paths
+            string pattern = @"TilePathClassic:(.*?)TileGroupName:(.*?)$";
+
+            // Use Regex to match the pattern
+            Match match = Regex.Match(input, pattern);
+
+
+            // Check if the match was successful
+            if (match.Success)
+            {
+
+                // Extract the PathClassic value from the string
+                string pathClassicValue = match.Groups[1].Value.Trim();
+
+                // Find the tile with the same PathClassic value
+                var tileToRemove = FindTileByPathClassic(pathClassicValue);
+
+                if (tileToRemove != null)
+                {
+                    // Remove the tile from the XML configuration file
+                    TileAppHelper.RemoveTileFromXml(tileToRemove);
+
+                    // Update the TileGroups collection
+                    var pinnedGroup = TileGroups.FirstOrDefault(group => group.Name == match.Groups[2].Value.Trim());
+                    if (pinnedGroup != null)
+                    {
+                        pinnedGroup.Tiles.Remove(tileToRemove);
+                    }
+                }
+                else
+                {
+                    Debug.WriteLine($"Tile with PathClassic value '{pathClassicValue}' not found.");
+                }
+
+                // Refresh the GridView for the specific group
+                var startPlaceholder = StartMenuIslandh.Child as ShellApp.Shell.Start.StartPlaceholder;
+                var tileGroupGridView = startPlaceholder.FindName("TileGroupGridView") as Windows.UI.Xaml.Controls.GridView;
+
+                // Reset the ItemsSource to trigger a refresh
+                tileGroupGridView.ItemsSource = null;
+                tileGroupGridView.ItemsSource = TileGroups;
+
+                // Debug statement to check if ItemsSource is set again
+                Debug.WriteLine("TileGroupGridView refreshed.");
+
+                // Debug statement to check the status of TileGroups after removal
+                Debug.WriteLine($"TileGroups count after removal: {TileGroups.Count}");
+            }
+        }
+
+        public void PinTile(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            // Debug statement to check if the method is being called
+            Debug.WriteLine("PinTile method called.");
+
+            // Remove the tile from the XML configuration file
+            TileAppHelper.AddTileToXml(sender, TileGroups);
+            // Refresh the GridView for the specific group
+            var startPlaceholder = StartMenuIslandh.Child as ShellApp.Shell.Start.StartPlaceholder;
+            var tileGroupGridView = startPlaceholder.FindName("TileGroupGridView") as Windows.UI.Xaml.Controls.GridView;
+            tileGroupGridView.ItemsSource = null;
+            tileGroupGridView.ItemsSource = TileGroups;
         }
 
         private void applistloaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)

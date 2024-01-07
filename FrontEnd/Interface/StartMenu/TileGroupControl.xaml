@@ -24,10 +24,10 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <TextBox x:Name="TileGridViewGroupName" Text="{Binding Name}" Grid.Row="0" Background="{x:Null}" BorderBrush="{x:Null}" HorizontalContentAlignment="Left" Padding="3,4,6,6" FontFamily="Segoe UI Variable Display Light" FontSize="14" FontWeight="Bold" />
-        <GridView ItemContainerStyle="{StaticResource TileGridViewA}" x:Name="TileGridView" Style="{StaticResource TileGridView}" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" CanDragItems="True" IsItemClickEnabled="False" AllowDrop="True" CanReorderItems="True" Grid.Row="1" ItemsSource="{Binding Tiles}"
+        <GridView ItemContainerStyle="{StaticResource TileGridViewA}" x:Name="TileGridView" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" CanDragItems="True" IsItemClickEnabled="False" AllowDrop="True" CanReorderItems="True" Grid.Row="1" ItemsSource="{Binding Tiles}"
                     SelectionMode="None"
                     ShowsScrollingPlaceholders="False"
-                    IsTabStop="False">
+                    IsTabStop="False" Padding="0,0,0,0">
             <GridView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <ItemsStackPanel Orientation="Horizontal" Width="333"></ItemsStackPanel>
@@ -35,7 +35,7 @@
             </GridView.ItemsPanel>
             <GridView.ItemTemplate>
                 <DataTemplate>
-                    <local:Tile AllowDrop="True" CanDrag="True" Click="Tile_Click" FocusVisualPrimaryBrush="{x:Null}" FocusVisualSecondaryBrush="{x:Null}" Foreground="{x:Null}"></local:Tile>
+                    <local:Tile AllowDrop="True" CanDrag="True" Click="Tile_Click" UnpinTile="Tile_UnpinTile" FocusVisualPrimaryBrush="{x:Null}" FocusVisualSecondaryBrush="{x:Null}" Foreground="{x:Null}"></local:Tile>
                 </DataTemplate>
             </GridView.ItemTemplate>
         </GridView>

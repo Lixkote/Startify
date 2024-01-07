@@ -22,6 +22,7 @@ namespace Shell.Interface.StartMenu
     public sealed partial class TileGroupControl : UserControl
     {
         public event EventHandler<RoutedEventArgs> TileClicked;
+        public event EventHandler<RoutedEventArgs> TileUnpinned;
         public TileGroupControl()
         {
             this.InitializeComponent();
@@ -30,6 +31,12 @@ namespace Shell.Interface.StartMenu
         private void Tile_Click(object sender, RoutedEventArgs e)
         {
             TileClicked?.Invoke(sender, e);
+        }
+
+        private void Tile_UnpinTile(object sender, RoutedEventArgs e)
+        {
+            string TileGroupTileName = "TilePathClassic:" + sender + "TileGroupName:" + TileGridViewGroupName.Text;
+            TileUnpinned?.Invoke(TileGroupTileName, e);
         }
     }
 }

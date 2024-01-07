@@ -5,6 +5,8 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.ApplicationModel.DataTransfer;
+using Windows.Devices.Input;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI;
@@ -23,11 +25,23 @@ namespace Shell.Interface.StartMenu
     public sealed partial class Tile : UserControl
     {
         public event EventHandler<RoutedEventArgs> Click;
+        public event EventHandler<RoutedEventArgs> UnpinTile;
+
+        // Helper method to find the parent of a specific type
+        public static T FindParent<T>(DependencyObject child) where T : DependencyObject
+        {
+            DependencyObject parentObject = VisualTreeHelper.GetParent(child);
+
+            if (parentObject == null) return null;
+
+            T parent = parentObject as T;
+            return parent ?? FindParent<T>(parentObject);
+        }
         public Tile()
         {
             this.InitializeComponent();
-        }
 
+        }
         // Enum for Tile Sizes
         public enum TileSize
         {
@@ -180,10 +194,39 @@ namespace Shell.Interface.StartMenu
             TileSizeWideContextMenuItem.IsChecked = false;
             TileSizeLargeContextMenuItem.IsChecked = true;
         }
-        public void TileButton_Click(object sender, RoutedEventArgs e)
+        private bool isDragging = false;
+
+        private void TileButton_Click(object sender, RoutedEventArgs e)
         {
             string PathUniversal = "Classic Path:" + PathClassic.Text + "Immersive Path:" + PathImmersive.Text;
             Click?.Invoke(PathUniversal, e);
+        }
+
+        private void TileMain_PointerPressed(object sender, PointerRoutedEventArgs e)
+        {
+            string PathUniversal = "Classic Path:" + PathClassic.Text + "Immersive Path:" + PathImmersive.Text;
+            Click?.Invoke(PathUniversal, e);
+        }
+
+        private void TileButton_Holding(object sender, HoldingRoutedEventArgs e)
+        {
+
+        }
+
+        private void TileButton_DragStarting(UIElement sender, DragStartingEventArgs args)
+        {
+            TileButton.IsHitTestVisible = false;
+        }
+
+        private void TileButton_DragLeave(object sender, DragEventArgs e)
+        {
+            TileButton.IsHitTestVisible = true;
+        }
+
+        private void MenuFlyoutItem_Click(object sender, RoutedEventArgs e)
+        {
+            string TileGroupTileName = PathClassic.Text;
+            UnpinTile?.Invoke(TileGroupTileName, e);
         }
     }
 }

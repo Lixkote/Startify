@@ -34,6 +34,8 @@ namespace ShellApp.Shell.Start
         // Declare the event
         public event EventHandler<ItemClickEventArgs> DirectoryChildClicked;
         public event EventHandler<RoutedEventArgs> TileClickedMain;
+        public event EventHandler<RoutedEventArgs> TilePinnedMain;
+        public event EventHandler<RoutedEventArgs> TileUnpinnedMain;
         public event EventHandler<ItemClickEventArgs> ErrorHappened;
 
         public event EventHandler<RoutedEventArgs> UninstallSettingsShouldOpen;
@@ -138,7 +140,7 @@ namespace ShellApp.Shell.Start
             }
 
             // Cool acrylic demo
-            startbackground.Background = (AcrylicBrush)Resources["CustomAcrylicInAppLuminosity"];
+            // startbackground.Background = (AcrylicBrush)Resources["CustomAcrylicInAppLuminosity"];
         }
 
         private async void SettingsButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
@@ -189,11 +191,6 @@ namespace ShellApp.Shell.Start
         }
 
         private void PinToTaskbar_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void PinToStartifyMenuItem_Click(object sender, RoutedEventArgs e)
         {
 
         }
@@ -275,6 +272,17 @@ namespace ShellApp.Shell.Start
         public void TileGroupCTRL_TileClicked(object sender, RoutedEventArgs e)
         {
             TileClickedMain?.Invoke(sender, e);
+        }
+
+        private void TileGroupCTRL_TileUnpinned(object sender, RoutedEventArgs e)
+        {
+
+            TileUnpinnedMain?.Invoke(sender, e);
+        }
+
+        private void StartMenuEntryApp_TilePinned(object sender, RoutedEventArgs e)
+        {
+            TilePinnedMain?.Invoke(sender, e);
         }
     }
 }

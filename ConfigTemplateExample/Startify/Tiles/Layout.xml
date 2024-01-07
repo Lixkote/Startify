@@ -2,7 +2,7 @@
 <!--Warning: This won't work with the old 2023 version of startify, and 2023 startify configs won't work with the 2024's Startify.-->
 <!--Lixkote 2024-->
 <XmlRoot> <!--single root element needed by the xml logic to work properly-->
-<TileGroup Name="Example Group 1"> <!--Definition of the group of tiles with its name.-->
+<TileGroup Name="Example Group 1"> <!--Definition of the group of tiles with its name. The groups NEED to have an name, it ensure the logic is working properly.-->
     <Tiles>
       <Tile>
         <PathClassic>C:\Users\lixkote\Startify\Tiles\R11 cpl.lnk</PathClassic> <!--Path to the application's shortcut for win32 applications-->

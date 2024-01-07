@@ -121,9 +121,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Interface\StartMenu\GridViewEx.cs" />
-    <Compile Include="Interface\StartMenu\GridViewTiled.cs" />
-    <Compile Include="Interface\StartMenu\NewGroupPlaceHolder.cs" />
+    <Compile Include="Interface\StartMenu\StartMenuEntryApp.xaml.cs">
+      <DependentUpon>StartMenuEntryApp.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Interface\StartMenu\Tile.xaml.cs">
       <DependentUpon>Tile.xaml</DependentUpon>
     </Compile>
@@ -237,6 +237,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Interface\StartMenu\StartMenuDefault.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interface\StartMenu\StartMenuEntryApp.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

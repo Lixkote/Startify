@@ -1,0 +1,89 @@
+﻿<UserControl
+    x:Class="Shell.Interface.StartMenu.StartMenuEntryApp"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Shell.Interface.StartMenu"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+    <UserControl.Resources>
+        <SolidColorBrush x:Key="TransparentButtonTextBrush" Color="#00FFFFFF" />
+        <Style x:Key="TextBaseStyle" TargetType="TextBlock" />
+        <Style x:Key="TextStyle_AppListItemName" TargetType="TextBlock" BasedOn="{StaticResource TextBaseStyle}">
+            <Setter Property="TextAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="TextWrapping" Value="NoWrap" />
+            <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+        </Style>
+        <Style x:Key="AllApps_LogoImage_Style" TargetType="Image">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+        <Style x:Key="AllApps_LogoPlateBorder_Style" TargetType="Border">
+            <Setter Property="UseLayoutRounding" Value="True" />
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Background="#00FFFFFF">
+        <Grid.ContextFlyout>
+            <MenuFlyout>
+                <MenuFlyoutItem x:Name="PinToStartifyMenuItem" Text="Pin to Start" Click="PinToStartifyMenuItem_Click">
+                    <MenuFlyoutItem.Icon>
+                        <FontIcon Glyph=""/>
+                    </MenuFlyoutItem.Icon>
+                </MenuFlyoutItem>
+                <MenuFlyoutSubItem Text="More">
+                    <MenuFlyoutItem x:Name="PinToTaskbar" Text="Pin to taskbar" Click="PinToTaskbar_Click">
+                        <MenuFlyoutItem.Icon>
+                            <FontIcon Glyph=""/>
+                        </MenuFlyoutItem.Icon>
+                    </MenuFlyoutItem>
+                    <MenuFlyoutItem x:Name="RunAsAdminItem" Text="Run as an Administrator" Click="RunAsAdminItem_Click">
+                        <MenuFlyoutItem.Icon>
+                            <FontIcon Glyph=""/>
+                        </MenuFlyoutItem.Icon>
+                    </MenuFlyoutItem>
+                    <MenuFlyoutItem x:Name="OpenFileLocation" Text="Open file location" Click="OpenFileLocation_Click">
+                        <MenuFlyoutItem.Icon>
+                            <FontIcon Glyph=""/>
+                        </MenuFlyoutItem.Icon>
+                    </MenuFlyoutItem>
+                </MenuFlyoutSubItem>
+                <MenuFlyoutItem x:Name="UninstallAppMenuItem" Text="Uninstall" Click="UninstallAppMenuItem_Click">
+                    <MenuFlyoutItem.Icon>
+                        <FontIcon Glyph=""/>
+                    </MenuFlyoutItem.Icon>
+                </MenuFlyoutItem>
+            </MenuFlyout>
+        </Grid.ContextFlyout>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.Children>
+            <Border x:Name="LogoBackgroundPlate" Grid.RowSpan="4" VerticalAlignment="Top" Style="{StaticResource AllApps_LogoPlateBorder_Style}">
+                <Border.Child>
+                    <Image x:Name="AppListItemLogo" Source="{Binding Icon}" Style="{StaticResource AllApps_LogoImage_Style}" Width="24" Height="24" Stretch="Fill" />
+                </Border.Child>
+            </Border>
+            <Rectangle x:Name="LogoBorder" Grid.RowSpan="4" VerticalAlignment="Top" Stroke="{ThemeResource TransparentButtonTextBrush}" StrokeThickness="2" />
+            <TextBlock x:Name="AppDisplayName" Text="{Binding Title}" Grid.Column="1" Grid.Row="1" Style="{StaticResource TextStyle_AppListItemName}" Margin="10,0,0,0" Width="180" />
+            <TextBlock x:Name="CollapsedPathInformator" Text="{Binding Path}" Grid.Column="1" Grid.Row="1" Style="{StaticResource TextStyle_AppListItemName}" Margin="10,0,0,0" Width="180" Visibility="Collapsed"/>
+            <TextBlock x:Name="FolderGlyph"
+                Grid.Column="3"
+                Grid.Row="1"
+                VerticalAlignment="Center"/>
+        </Grid.Children>
+    </Grid>
+</UserControl>
