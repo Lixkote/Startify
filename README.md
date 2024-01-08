@@ -1,4 +1,6 @@
-# Startify
+<p align="center">
+    <img src="https://raw.githubusercontent.com/Lixkote/Startify/master/logo.png">
+</p>
 
 Windows 11 Start Menu replacement based on Xamlislands. 
 Currently, it features Windows 10 Layout combined with Windows 11 Theme and Style. 
