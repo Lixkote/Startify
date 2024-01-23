@@ -16,8 +16,8 @@
 	<mp:PhoneIdentity PhoneProductId="bc394c7c-0f21-4466-b2d2-872ccfd00377" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
 	<Properties>
-		<DisplayName>Startify</DisplayName>
-		<PublisherDisplayName>Rectify11</PublisherDisplayName>
+		<DisplayName>Startify (Dummy)</DisplayName>
+		<PublisherDisplayName>Lixkote</PublisherDisplayName>
 		<Logo>Assets\StoreLogo.png</Logo>
 	</Properties>
 
