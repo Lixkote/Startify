@@ -48,7 +48,7 @@ namespace WPF.Helpers
         public const int restorewin = 1;
         public const int closewin = 0;
 
-        public event EventHandler<EventArgs> StartTriggered;
+        public event EventHandler StartTriggered;
         public static IntPtr FindWindowByCaptionAndClass(string caption, string className)
         {
             IntPtr shellTrayWnd = FindWindowExA(IntPtr.Zero, IntPtr.Zero, "Shell_TrayWnd", null);
@@ -117,7 +117,7 @@ namespace WPF.Helpers
             return MouseEvents(code, wParam, lParam, StartTriggered);
         }
 
-        public int MouseEvents(int code, IntPtr wParam, IntPtr lParam, EventHandler<EventArgs> startTriggered)
+        public int MouseEvents(int code, IntPtr wParam, IntPtr lParam, EventHandler startTriggered)
         {
             if (code < 0)
                 return CallNextHookEx(_mouseHook, code, wParam, lParam);

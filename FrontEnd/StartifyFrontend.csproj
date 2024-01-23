@@ -121,6 +121,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Interface\InterfaceUtils\Reveal.cs" />
     <Compile Include="Interface\StartMenuCompact\StartMenuCompact.xaml.cs">
       <DependentUpon>StartMenuCompact.xaml</DependentUpon>
     </Compile>

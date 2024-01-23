@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:WPF"
              xmlns:ui="http://schemas.modernwpf.com/2019"
-             StartupUri="/ViewModels/StartMenu.xaml">
+Startup="Application_Startup" ShutdownMode="OnExplicitShutdown">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

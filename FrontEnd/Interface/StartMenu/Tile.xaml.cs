@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.UI.Xaml.Media;
+using Shell.Shell.ShellUtils;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -26,6 +28,16 @@ namespace Shell.Interface.StartMenu
     {
         public event EventHandler<RoutedEventArgs> Click;
         public event EventHandler<RoutedEventArgs> UnpinTile;
+        public static readonly DependencyProperty GradientStopsProperty =
+        DependencyProperty.Register("GradientStops", typeof(GradientStopCollection), typeof(Reveal), null);
+        Windows.UI.Xaml.Media.Brush GradientBrush;
+
+        public GradientStopCollection GradientStops
+        {
+            get => (GradientStopCollection)GetValue(GradientStopsProperty);
+            set => SetValue(GradientStopsProperty, value);
+        }
+
 
         // Helper method to find the parent of a specific type
         public static T FindParent<T>(DependencyObject child) where T : DependencyObject
@@ -40,7 +52,7 @@ namespace Shell.Interface.StartMenu
         public Tile()
         {
             this.InitializeComponent();
-
+            
         }
         // Enum for Tile Sizes
         public enum TileSize
@@ -227,6 +239,76 @@ namespace Shell.Interface.StartMenu
         {
             string TileGroupTileName = PathClassic.Text;
             UnpinTile?.Invoke(TileGroupTileName, e);
+        }
+
+        Windows.Foundation.Point _revealOffscreenCenter = new Windows.Foundation.Point(-99999999, -99999999);
+
+        private void TileButton_PointerEntered(object sender, PointerRoutedEventArgs e)
+        {
+            if (TileButton != null)
+            {
+                var curPos = e.GetCurrentPoint(TileButton).Position;
+                var pos = new Windows.Foundation.Point(curPos.X / 96, curPos.Y / 96);
+
+                var REVEAL_STOPS = new GradientStopCollection()
+                {
+                    new GradientStop() { Color = Windows.UI.Color.FromArgb(0, 0, 0, 255), Offset = 0.5 },
+                    new GradientStop() { Color = Windows.UI.Color.FromArgb(255, 226, 125, 255), Offset = 1 },
+                };
+
+                RadialGradientBrush OpacityMask = new RadialGradientBrush()
+                {
+                    Center = _revealOffscreenCenter,
+                };
+
+                var gradientBrush = OpacityMask as RadialGradientBrush;
+                if (gradientBrush != null)
+                {
+                    gradientBrush.Center = pos;
+                }
+
+                double halfWidth = 96 / 2;
+                double halfHeight = 96 / 2;
+
+                double curX = curPos.X / 5;
+                double curY = curPos.Y / 5;
+
+                var newBrush = new LinearGradientBrush();
+                newBrush.StartPoint = new Windows.Foundation.Point(curX / 96, curY / 96);
+                newBrush.EndPoint = new Windows.Foundation.Point((halfWidth + curX) / 96, (halfHeight + curY) / 96);
+
+                var gradientStopCollection = new GradientStopCollection()
+                {
+                    new GradientStop() { Color = Windows.UI.Color.FromArgb(0, 16, 70, 0), Offset = 0 },
+                    new GradientStop() { Color = Windows.UI.Color.FromArgb(255, 0, 240, 255), Offset = 0.2 },
+                    new GradientStop() { Color = Windows.UI.Color.FromArgb(255, 0, 255, 148), Offset = 0.4 },
+                    new GradientStop() { Color = Windows.UI.Color.FromArgb(255, 0, 178, 255), Offset = 0.6 },
+                    new GradientStop() { Color = Windows.UI.Color.FromArgb(255, 173, 0, 255), Offset = 0.8 },
+                    new GradientStop() { Color = Windows.UI.Color.FromArgb(0, 13, 95, 0), Offset = 1 }
+                };
+
+
+                // Use the provided GradientStops
+                newBrush.GradientStops = gradientStopCollection;
+
+                GradientBrush = TileButton.BorderBrush;
+                // Update the BorderBrush of the specified TargetButton
+                TileButton.BorderBrush = newBrush;
+            }
+        }
+
+
+        private void TileButton_PointerExited(object sender, PointerRoutedEventArgs e)
+        {
+            if (TileButton != null)
+            {
+                TileButton.BorderBrush = null;
+            }
+        }
+
+        private void TileButton_PointerEntered_1(object sender, PointerRoutedEventArgs e)
+        {
+
         }
     }
 }
