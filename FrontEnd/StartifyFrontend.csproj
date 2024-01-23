@@ -121,9 +121,6 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Interface\StartMenuCompact\StartMenuCompact.xaml.cs">
-      <DependentUpon>StartMenuCompact.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Interface\StartMenu\StartMenuEntryApp.xaml.cs">
       <DependentUpon>StartMenuEntryApp.xaml</DependentUpon>
     </Compile>
@@ -236,10 +233,6 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="Interface\InterfaceResources.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Interface\StartMenuCompact\StartMenuCompact.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
