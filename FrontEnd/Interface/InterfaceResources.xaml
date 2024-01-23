@@ -12,6 +12,8 @@
                                 TintLuminosityOpacity="0.9"
                                 TintColor="#FFF3F3F3"
                                 FallbackColor="#FFEEEEEE" />
+            <SolidColorBrush x:Key="AcrylicOverlayMain" Color="#40FFFFFF"></SolidColorBrush>
+            <SolidColorBrush x:Key="AcrylicOverlayBorder" Color="#0F000000"></SolidColorBrush>
             <media:AcrylicBrush x:Key="CustomAcrylicInAppLuminosity" BackgroundSource="Backdrop"
             TintOpacity="0.8" TintLuminosityOpacity="0.5" TintColor="#6942f5" FallbackColor="SkyBlue" />
 
@@ -24,6 +26,8 @@
                                 TintLuminosityOpacity="0.96"
                                 TintColor="#FF202020"
                                 FallbackColor="#FF1C1C1C" />
+            <SolidColorBrush x:Key="AcrylicOverlayMain" Color="#40FFFFFF"></SolidColorBrush>
+            <SolidColorBrush x:Key="AcrylicOverlayBorder" Color="#19000000"></SolidColorBrush>
             <media:AcrylicBrush x:Key="CustomAcrylicInAppLuminosity" BackgroundSource="Backdrop"
             TintOpacity="0.8" TintLuminosityOpacity="0.5" TintColor="#6942f5" FallbackColor="SkyBlue" />
 
