@@ -8,7 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Height="500"
-    Width="260">
+    Width="260" RequestedTheme="Dark">
     <UserControl.Resources>
         <ResourceDictionary>
 
@@ -16,7 +16,7 @@
 
                 <ResourceDictionary Source="/Interface/InterfaceResources.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            
+
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -30,19 +30,19 @@
             <RowDefinition Height="42*"/>
             <RowDefinition Height="355*"/>
             <RowDefinition Height="42*"/>
-            <RowDefinition Height="39*"/>
+            <RowDefinition Height="45*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="4*"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid x:Name="StartMenuAcrylicOverlay" BorderThickness="0,0,1,0" Background="{ThemeResource AcrylicOverlayMain}" BorderBrush="{ThemeResource AcrylicOverlayBorder}" Grid.RowSpan="10">
-            
+
         </Grid>
-        <TextBlock Margin="12,18,0,0">
+        <TextBlock Margin="18,19,47,350" FontFamily="Segoe UI Variable Small Semibold" FontSize="12" Grid.ColumnSpan="2" Grid.RowSpan="2">
                     Pinned
         </TextBlock>
-        <TextBox CornerRadius="17" Grid.Row="3" TextWrapping="Wrap" Text="Search" Margin="3" VerticalAlignment="Center" Padding="10,5,10,10"/>
+        <TextBox IsEnabled="False" CornerRadius="17" Grid.Row="3" TextWrapping="Wrap" Text="Search" Margin="10,5,10,5" VerticalAlignment="Center" Padding="10,5,10,10"/>
         <Button Style="{ThemeResource DateTimePickerFlyoutButtonStyle}" Grid.Row="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Padding="0,0,0,0" Margin="11,11,9,9">
             <StackPanel Orientation="Horizontal" Margin="0,0,90,0">
                 <TextBlock>
@@ -114,7 +114,7 @@ Padding="0"
 CornerRadius="5"
 Background="Transparent"
 BorderBrush="Transparent" Margin="5,5,5,5" Click="SettingsButton_Click" Grid.Column="1" />
-           
+
         </StackPanel>
         <Button Style="{StaticResource leftmenubuttonstyle}" x:Name="PowerButton" HorizontalAlignment="
     Stretch"
@@ -127,5 +127,5 @@ CornerRadius="5"
 Background="Transparent"
 BorderBrush="Transparent" Margin="5,5,5,5" Click="SettingsButton_Click" Grid.Column="2" Grid.Row="4" />
     </Grid>
-    
+
 </UserControl>

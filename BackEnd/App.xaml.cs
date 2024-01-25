@@ -352,17 +352,5 @@ namespace WPF
                 Debug.WriteLine("Startify has issues unhooking the Windows 11's Start Menu. It may not work correctly until the next system restart.");
             }
         }
-
-
-
-        /////////////////////////////////////////////
-        /// 
-        ///   Tiles stuff      
-        /// 
-        /////////////////////////////////////////////
-        
-
-
-
     }
 }

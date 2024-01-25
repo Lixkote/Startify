@@ -28,6 +28,7 @@ namespace Shell.Interface.StartMenu
     {
         public event EventHandler<RoutedEventArgs> Click;
         public event EventHandler<RoutedEventArgs> UnpinTile;
+        int TileAnimSize = 28;
         public static readonly DependencyProperty GradientStopsProperty =
         DependencyProperty.Register("GradientStops", typeof(GradientStopCollection), typeof(Reveal), null);
         Windows.UI.Xaml.Media.Brush GradientBrush;
@@ -248,7 +249,7 @@ namespace Shell.Interface.StartMenu
             if (TileButton != null)
             {
                 var curPos = e.GetCurrentPoint(TileButton).Position;
-                var pos = new Windows.Foundation.Point(curPos.X / 96, curPos.Y / 96);
+                var pos = new Windows.Foundation.Point(curPos.X / TileAnimSize, curPos.Y / TileAnimSize);
 
                 var REVEAL_STOPS = new GradientStopCollection()
                 {
@@ -267,15 +268,15 @@ namespace Shell.Interface.StartMenu
                     gradientBrush.Center = pos;
                 }
 
-                double halfWidth = 96 / 2;
-                double halfHeight = 96 / 2;
+                double halfWidth = TileAnimSize / 2;
+                double halfHeight = TileAnimSize / 2;
 
                 double curX = curPos.X / 5;
                 double curY = curPos.Y / 5;
 
                 var newBrush = new LinearGradientBrush();
-                newBrush.StartPoint = new Windows.Foundation.Point(curX / 96, curY / 96);
-                newBrush.EndPoint = new Windows.Foundation.Point((halfWidth + curX) / 96, (halfHeight + curY) / 96);
+                newBrush.StartPoint = new Windows.Foundation.Point(curX / TileAnimSize, curY / TileAnimSize);
+                newBrush.EndPoint = new Windows.Foundation.Point((halfWidth + curX) / TileAnimSize, (halfHeight + curY) / TileAnimSize);
 
                 var gradientStopCollection = new GradientStopCollection()
                 {
