@@ -240,18 +240,6 @@
                 <RowDefinition Height="575*"/>
             </Grid.RowDefinitions>
 
-
-            <Button x:Name="ExpandButton" HorizontalAlignment="Stretch"
-                    Height="34"
-                    FontFamily="Segoe Fluent Icons"
-                    FontSize="16"
-                    Style="{StaticResource leftmenubuttonstyle}"
-                    Padding="0"
-                    Content="&#xE700;"
-                    CornerRadius="5"
-                    Background="Transparent"
-                    BorderBrush="Transparent" Width="34" Margin="5,5,5,5" />
-
             <StackPanel Grid.Row="2"
                         Orientation="Vertical"
                         VerticalAlignment="Top" Margin="0,345,0,0">
@@ -378,7 +366,7 @@
                    
                     >
 
-            <GridView x:Name="TileGroupGridView" SelectionMode="None" CanDragItems="True" IsItemClickEnabled="True" CanReorderItems="True" AllowDrop="True" ItemTemplate="{StaticResource TileGroupTemplate}" >
+            <GridView x:Name="TileGroupGridView" SelectionMode="None" CanDragItems="True" IsItemClickEnabled="True" CanReorderItems="True" AllowDrop="True" ItemTemplate="{StaticResource TileGroupTemplate}" Margin="0,0,18,0" >
                 <GridView.ItemsPanel>
                     <ItemsPanelTemplate>
                         <ItemsWrapGrid x:Name="MaxItemsWrapGrid" CanDrag="True" AllowDrop="True" 
@@ -406,8 +394,6 @@
 
 
         </ScrollViewer>
-        <TextBlock TextWrapping="Wrap" Text="⚠️ Startify Internal Build. Only for testing purposes." Grid.Column="2" Margin="10,596,-4,29" Foreground="#FFFFB02E"/>
-        <TextBlock TextWrapping="Wrap" Text="Codename Vitrified" Grid.Column="2" Margin="32,622,-7,7" Foreground="#FF2EFAFF"/>
         <ListView ItemContainerStyle="{StaticResource ListViewItemContainerStyle1}" x:FieldModifier="public" CanDragItems="True" IsItemClickEnabled="True" x:Name="AllAppsListView" ItemsSource="{Binding Source={StaticResource cvs}}" Grid.Column="1" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="0,20,0,0" ItemTemplateSelector="{StaticResource apporfolder}">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>

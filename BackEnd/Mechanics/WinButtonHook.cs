@@ -15,18 +15,25 @@ namespace WPF.Helpers
 {
     internal class WinButtonHook
     {
+        private static HookProc _mouseCallback;
+        private static HookProc _keyCallback;
+        private static GCHandle _gcMouseCallback;
+        private static GCHandle _gcKeyCallback;
         public WinButtonHook()
         {
-            this.MouseCallback += new HookProc(MouseEvents);
-            this.KeyCallback += new HookProc(KeyEvents);
+            _mouseCallback = MouseEvents;
+            _gcMouseCallback = GCHandle.Alloc(_mouseCallback);
+            _keyCallback = KeyEvents;
+            _gcKeyCallback = GCHandle.Alloc(_keyCallback);
+
             using (Process process = Process.GetCurrentProcess())
             using (ProcessModule module = process.MainModule)
             {
                 IntPtr hModule = GetModuleHandle(module.ModuleName);
-                _mouseHook = SetWindowsHookEx(WH_MOUSE_LL, this.MouseCallback, hModule, 0);
-                _keyHook = SetWindowsHookEx(WH_KEY_LL, this.KeyCallback, hModule, 0);
+                _mouseHook = SetWindowsHookEx(WH_MOUSE_LL, _mouseCallback, hModule, 0);
+                _keyHook = SetWindowsHookEx(WH_KEY_LL, _keyCallback, hModule, 0);
             }
-        }
+        }        
         int WH_KEY_LL = 13;
         int WH_MOUSE_LL = 14;
         int HC_ACTION = 0;
