@@ -54,7 +54,14 @@ namespace WPF.Helpers
                     {
                         if (runasadmin == false)
                         {
-                            Process.Start(new ProcessStartInfo(classicPath) { UseShellExecute = true });
+                            try
+                            {
+                                Process.Start(new ProcessStartInfo(classicPath) { UseShellExecute = true });
+                            }
+                            catch(Exception ex)
+                            {
+                                ModernWpf.MessageBox.Show(ex.ToString(), "Sorry, but we couldn't launch this app.", MessageBoxButton.OK, ModernWpf.SymbolGlyph.Asterisk);
+                            }
                         }
                         else if (runasadmin == true)
                         {

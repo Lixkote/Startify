@@ -5,6 +5,8 @@
              xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
              xmlns:data="using:System.Linq.Expressions"
              xmlns:media="using:Windows.UI.Xaml.Media"
+             xmlns:ui="using:CommunityToolkit.WinUI"
+             xmlns:controls="using:CommunityToolkit.WinUI.Controls"
              xmlns:selector="using:Shell.Shell.ShellUtils"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:x1="using:System" xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
@@ -168,8 +170,8 @@
         <ResourceDictionary x:Key="h">
 
             <ResourceDictionary.MergedDictionaries>
-
                 <ResourceDictionary Source="/Interface/InterfaceResources.xaml" />
+                <ResourceDictionary Source="/Interface/StartMenuTiled/SegmentedItem/SegmentedItem.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <Storyboard x:Name="openstartanimation">
                 <DoubleAnimation Storyboard.TargetName="translateTransform"
@@ -228,7 +230,7 @@
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="44" />
-            <ColumnDefinition Width="254" />
+            <ColumnDefinition Width="264" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
@@ -236,48 +238,63 @@
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="44" />
-                <RowDefinition Height="44*" />
+                <RowDefinition Height="80" />
                 <RowDefinition Height="575*"/>
             </Grid.RowDefinitions>
 
+            
+            
+            <controls:Segmented Grid.Row="1" Margin="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectionMode="Single">
+                <controls:SegmentedItem Content="" FontSize="16" IsSelected="True" FontFamily="Segoe Fluent Icons" Height="35" Style="{ThemeResource VerticalSegmentedItemStyle}"/>
+                <controls:SegmentedItem Content="" FontSize="16" FontFamily="Segoe Fluent Icons" Height="35" Style="{StaticResource VerticalSegmentedItemStyle}"/>
+                <controls:Segmented.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Vertical"></StackPanel>
+                    </ItemsPanelTemplate>
+                </controls:Segmented.ItemsPanel>
+            </controls:Segmented>
+            
+            <Button x:Name="UserAV_Button" HorizontalAlignment="Stretch"
+        Height="34"
+        Padding="0"
+        Style="{StaticResource leftmenubuttonstyle}"
+        CornerRadius="5"
+        Background="Transparent"
+        BorderBrush="Transparent" Margin="5,5,5,5" Width="34">
+                <Grid CornerRadius="1000">
+                    <Image x:Name="UserAV" Height="25" Source="/Assets/user-32.png" Width="25" />
+                </Grid>
+                <Button.Flyout>
+                    <MenuFlyout>
+                        <MenuFlyoutItem x:Name="AccountSettingsMenuItem" Text="Change account settings">
+                            <MenuFlyoutItem.Icon>
+                                <FontIcon Glyph=""/>
+                            </MenuFlyoutItem.Icon>
+                        </MenuFlyoutItem>
+                        <MenuFlyoutItem x:Name="LockMenuItem"  Text="Lock">
+                            <MenuFlyoutItem.Icon>
+                                <FontIcon Glyph=""/>
+                            </MenuFlyoutItem.Icon>
+                        </MenuFlyoutItem>
+                        <MenuFlyoutItem x:Name="SignOutMenuItem"  Text="Sign out">
+                            <MenuFlyoutItem.Icon>
+                                <FontIcon Glyph=""/>
+                            </MenuFlyoutItem.Icon>
+                        </MenuFlyoutItem>
+                    </MenuFlyout>
+                </Button.Flyout>
+            </Button>
+
             <StackPanel Grid.Row="2"
                         Orientation="Vertical"
-                        VerticalAlignment="Top" Margin="0,345,0,0">
+                        VerticalAlignment="Bottom" Margin="0,345,0,0">
 
-                <Button x:Name="UserAV_Button" HorizontalAlignment="Stretch"
-                        Height="34"
-                        Padding="0"
-                        Style="{StaticResource leftmenubuttonstyle}"
-                        CornerRadius="5"
-                        Background="Transparent"
-                        BorderBrush="Transparent" Margin="5,5,5,5">
-                    <Grid CornerRadius="1000">
-                        <Image x:Name="UserAV" Height="20" Source="/Assets/user-32.png" Width="20" />
-                    </Grid>
-                    <Button.Flyout>
-                        <MenuFlyout>
-                            <MenuFlyoutItem x:Name="AccountSettingsMenuItem" Text="Change account settings">
-                                <MenuFlyoutItem.Icon>
-                                    <FontIcon Glyph=""/>
-                                </MenuFlyoutItem.Icon>
-                            </MenuFlyoutItem>
-                            <MenuFlyoutItem x:Name="LockMenuItem"  Text="Lock">
-                                <MenuFlyoutItem.Icon>
-                                    <FontIcon Glyph=""/>
-                                </MenuFlyoutItem.Icon>
-                            </MenuFlyoutItem>
-                            <MenuFlyoutItem x:Name="SignOutMenuItem"  Text="Sign out">
-                                <MenuFlyoutItem.Icon>
-                                    <FontIcon Glyph=""/>
-                                </MenuFlyoutItem.Icon>
-                            </MenuFlyoutItem>
-                        </MenuFlyout>
-                    </Button.Flyout>
-                </Button>
+                
 
                 <Button x:Name="DocumentsButton" HorizontalAlignment="Stretch"
                         Height="34"
                         FontFamily="Segoe Fluent Icons"
+                        Visibility="Collapsed"
                         Style="{StaticResource leftmenubuttonstyle}"
                         FontSize="16"
                         Content="&#xE8A5;"
@@ -289,6 +306,7 @@
                 <Button x:Name="ImagesButton" HorizontalAlignment="
                             Stretch"
                         Height="34"
+                        Visibility="Collapsed"
                         Style="{StaticResource leftmenubuttonstyle}"
                         FontFamily="Segoe Fluent Icons"
                         FontSize="16"
@@ -307,6 +325,7 @@
                         Content="&#xE713;"
                         Padding="0"
                         CornerRadius="5"
+                        Visibility="Collapsed"
                         Background="Transparent"
                         BorderBrush="Transparent" Margin="5,5,5,5" Click="SettingsButton_Click" />
 
@@ -360,6 +379,7 @@
 
         </Grid>
 
+        <Grid x:Name="StartMenuAcrylicOverlay" BorderThickness="1,0,0,0" Background="{ThemeResource AcrylicOverlayMain}" BorderBrush="{ThemeResource AcrylicOverlayBorder}" Grid.Column="1" Grid.ColumnSpan="2"/>
 
         <ScrollViewer Grid.Column="2"
                     Padding="17,30,0,0"
@@ -394,7 +414,7 @@
 
 
         </ScrollViewer>
-        <ListView ItemContainerStyle="{StaticResource ListViewItemContainerStyle1}" x:FieldModifier="public" CanDragItems="True" IsItemClickEnabled="True" x:Name="AllAppsListView" ItemsSource="{Binding Source={StaticResource cvs}}" Grid.Column="1" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="0,20,0,0" ItemTemplateSelector="{StaticResource apporfolder}">
+        <ListView ItemContainerStyle="{StaticResource ListViewItemContainerStyle1}" x:FieldModifier="public" CanDragItems="True" IsItemClickEnabled="True" x:Name="AllAppsListView" ItemsSource="{Binding Source={StaticResource cvs}}" Grid.Column="1" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="10,20,0,0" ItemTemplateSelector="{StaticResource apporfolder}">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <ItemsStackPanel AreStickyGroupHeadersEnabled="True"/>

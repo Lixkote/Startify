@@ -9,7 +9,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d" Height="96" Width="96" CanDrag="True" Loaded="TileMain_Loaded">
 
-    <Button x:Name="TileButton" PointerMoved="TileButton_PointerEntered" PointerEntered="TileButton_PointerEntered" PointerExited="TileButton_PointerExited" Click="TileButton_Click" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="0,0,0,0" CornerRadius="5" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" BorderThickness="1" BorderBrush="{x:Null}">
+    <Button x:Name="TileButton" Click="TileButton_Click" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="0,0,0,0" CornerRadius="5" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" BorderThickness="1">
         <Button.ContextFlyout>
             <MenuFlyout>
                 <MenuFlyoutItem Text="Unpin from Start" Click="MenuFlyoutItem_Click">
