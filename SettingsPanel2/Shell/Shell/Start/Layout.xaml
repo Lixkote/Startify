@@ -1,0 +1,73 @@
+﻿<Page
+    x:Class="Shell.Shell.Start.Layout"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Shell.Shell.Start"
+        xmlns:system="using:System"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls" 
+    xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" Height="660" Width="919">
+
+    <Page.Resources>
+        <Thickness x:Key="ContentUpAndDownNormalSpacing">0,12,0,12</Thickness>
+        <Thickness x:Key="ContentTopLargeSpacing">0,16,0,0</Thickness>
+        <Thickness x:Key="ContentLeftWideSpacing">36,0,0,0</Thickness>
+        <system:Double x:Key="GridWideSpacing">56</system:Double>
+        <Thickness x:Key="HyperlinkButtonMargin">-12,0,0,0</Thickness>
+        <Thickness x:Key="ContentLeftNormalSpacing">12,0,0,0</Thickness>
+        <Thickness x:Key="ContentBottomWideSpacing">0,0,0,24</Thickness>
+        <Thickness x:Key="PageWidePadding">56,24,56,0</Thickness>
+        <Thickness x:Key="ContentBottomNormalSpacing">0,0,0,8</Thickness>
+        <Thickness x:Key="ContentBottomNarrowSpacing">0,0,0,4</Thickness>
+        <Thickness x:Key="ContentBottomLargeSpacing">0,0,0,16</Thickness>
+        <Style x:Key="PageHeader" BasedOn="{StaticResource SubtitleTextBlockStyle}" TargetType="TextBlock">
+            <Setter Property="AutomationProperties.HeadingLevel" Value="Level1" />
+            <Setter Property="Margin" Value="{StaticResource ContentBottomWideSpacing}" />
+        </Style>
+        <Style x:Key="SectionHeader" BasedOn="{StaticResource BodyTextBlockStyle}" TargetType="TextBlock">
+            <Setter Property="AutomationProperties.HeadingLevel" Value="Level2" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Margin" Value="{StaticResource ContentBottomNarrowSpacing}" />
+        </Style>
+    </Page.Resources>
+
+    <Grid Padding="56.1,24,56,0" ColumnSpacing="56" Height="1066">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" MaxWidth="1000" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Grid.Children>
+            <TextBlock Style="{StaticResource PageHeader}" Grid.ColumnSpan="2" Text="Layout" Margin="0,0,0,24.2" Height="30" VerticalAlignment="Bottom" />
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="246"/>
+                    <ColumnDefinition Width="66*"/>
+                    <ColumnDefinition Width="246"/>
+                    <ColumnDefinition Width="351*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="169"/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="169"/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="169"/>
+                </Grid.RowDefinitions>
+                <Image Source="{ThemeResource 10}"/>
+                <Image Source="{ThemeResource 11c}" Grid.Column="2"/>
+                <Image Source="{ThemeResource 8}" Grid.Row="2"/>
+
+                <RadioButton Grid.Row="1" HorizontalAlignment="Stretch" IsChecked="True" Content="Windows 10 Style"></RadioButton>
+                <RadioButton Grid.Column="2" HorizontalAlignment="Stretch" IsEnabled="False" Content="Windows 11 Compact Style" Grid.Row="1"></RadioButton>
+                <RadioButton HorizontalAlignment="Stretch" Content="Fullscreen Style" IsEnabled="False" Grid.Row="3"/>
+            </Grid>
+
+        </Grid.Children>
+    </Grid>
+</Page>

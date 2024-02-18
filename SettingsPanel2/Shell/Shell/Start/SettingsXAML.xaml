@@ -1,0 +1,50 @@
+﻿<UserControl xmlns:my="using:Microsoft.UI.Xaml.Controls"  x:Class="ShellApp.Shell.Start.SettingsXAML"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="using:ShellApp.Shell.Start"
+             xmlns:data="using:System.Linq.Expressions"
+             xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" Height="660" Width="919" Loaded="UserControl_Loaded">
+
+    <UserControl.Resources>
+
+    </UserControl.Resources>
+
+
+
+    <Grid>
+        <muxc:NavigationView IsBackButtonVisible="Collapsed" SelectionChanged="nvSample_SelectionChanged" IsSettingsVisible="True">
+            <muxc:NavigationView.MenuItems>
+                <muxc:NavigationViewItem Content="Type" Tag="Layout">
+                    <muxc:NavigationViewItem.Icon>
+                        <FontIcon Glyph=""></FontIcon>
+                    </muxc:NavigationViewItem.Icon>
+                </muxc:NavigationViewItem>
+                <muxc:NavigationViewItem Content="General" Tag="General">
+                    <muxc:NavigationViewItem.Icon>
+                        <FontIcon Glyph=""></FontIcon>
+                    </muxc:NavigationViewItem.Icon>
+                </muxc:NavigationViewItem>
+                <muxc:NavigationViewItem Content="Folders" Tag="Folders">
+                    <muxc:NavigationViewItem.Icon>
+                        <FontIcon Glyph=""></FontIcon>
+                    </muxc:NavigationViewItem.Icon>
+                </muxc:NavigationViewItem>
+                <muxc:NavigationViewItem Content="Styling" Tag="Styling">
+                    <muxc:NavigationViewItem.Icon>
+                        <FontIcon Glyph=""></FontIcon>
+                    </muxc:NavigationViewItem.Icon>
+                </muxc:NavigationViewItem>
+                <muxc:NavigationViewItem Content="Advanced Settings" Tag="Advanced">
+                    <muxc:NavigationViewItem.Icon>
+                        <FontIcon Glyph=""></FontIcon>
+                    </muxc:NavigationViewItem.Icon>
+                </muxc:NavigationViewItem>
+            </muxc:NavigationView.MenuItems>
+            <Frame x:Name="contentFrame"/>
+        </muxc:NavigationView>
+    </Grid>
+
+</UserControl>
