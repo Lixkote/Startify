@@ -110,80 +110,24 @@ namespace WPF.Views
             startPlaceholder.TileClickedMain += (sender, e) => TileAppHelper.OpenTileApp(sender, e, this, false);
             startPlaceholder.TileUnpinnedMain += (sender, e) => UnpinTile(sender, e);
             allAppsListViewBase.TilePinnedMain += (sender, e) => PinTile(sender, e);
-        }
-
-        private Tile FindTileByPathClassic(string pathClassicValue)
-        {
-            foreach (var group in TileGroups)
-            {
-                var tile = group.Tiles.FirstOrDefault(t => String.Equals(t.PathClassic, pathClassicValue, StringComparison.OrdinalIgnoreCase));
-                if (tile != null)
-                {
-                    return tile;
-                }
-            }
-
-            return null; // Return null if the tile is not found
+            startPlaceholder.TileGroupRenamedMain += (sender, e) => ChangeGroupName(sender, e);
         }
 
         public void UnpinTile(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             // Debug statement to check if the method is being called
             Debug.WriteLine("UnpinTile method called.");
+            TileAppHelper.RemoveTileFromXml(sender, TileGroups);
+            var startPlaceholder = StartMenuIslandh.Child as Shell.Interface.StartMenu11.StartMenu;
+            var tileGroupGridView = startPlaceholder.FindName("TileGroupGridView") as Windows.UI.Xaml.Controls.GridView;
+            LoadTiles();
+            tileGroupGridView.ItemsSource = null;
+            tileGroupGridView.ItemsSource = TileGroups;
+        }
 
-            // Remove the tile from the XML configuration file
-            TileAppHelper.RemoveTileFromXml(sender);
-            // Your input string
-            string input = sender as string;
-
-            // Define the pattern for extracting paths
-            string pattern = @"TilePathClassic:(.*?)TileGroupName:(.*?)$";
-
-            // Use Regex to match the pattern
-            Match match = Regex.Match(input, pattern);
-
-
-            // Check if the match was successful
-            if (match.Success)
-            {
-
-                // Extract the PathClassic value from the string
-                string pathClassicValue = match.Groups[1].Value.Trim();
-
-                // Find the tile with the same PathClassic value
-                var tileToRemove = FindTileByPathClassic(pathClassicValue);
-
-                if (tileToRemove != null)
-                {
-                    // Remove the tile from the XML configuration file
-                    TileAppHelper.RemoveTileFromXml(tileToRemove);
-
-                    // Update the TileGroups collection
-                    var pinnedGroup = TileGroups.FirstOrDefault(group => group.Name == match.Groups[2].Value.Trim());
-                    if (pinnedGroup != null)
-                    {
-                        pinnedGroup.Tiles.Remove(tileToRemove);
-                    }
-                }
-                else
-                {
-                    Debug.WriteLine($"Tile with PathClassic value '{pathClassicValue}' not found.");
-                }
-
-                // Refresh the GridView for the specific group
-                var startPlaceholder = StartMenuIslandh.Child as Shell.Interface.StartMenu11.StartMenu;
-                var tileGroupGridView = startPlaceholder.FindName("TileGroupGridView") as Windows.UI.Xaml.Controls.GridView;
-
-                // Reset the ItemsSource to trigger a refresh
-                tileGroupGridView.ItemsSource = null;
-                tileGroupGridView.ItemsSource = TileGroups;
-
-                // Debug statement to check if ItemsSource is set again
-                Debug.WriteLine("TileGroupGridView refreshed.");
-
-                // Debug statement to check the status of TileGroups after removal
-                Debug.WriteLine($"TileGroups count after removal: {TileGroups.Count}");
-            }
+        public void ChangeGroupName(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            TileAppHelper.ChangeGroupName(sender, TileGroups);
         }
 
         public void RefreshAppList()
@@ -210,12 +154,10 @@ namespace WPF.Views
         {
             // Debug statement to check if the method is being called
             Debug.WriteLine("PinTile method called.");
-
-            // Remove the tile from the XML configuration file
             TileAppHelper.AddTileToXml(sender, TileGroups);
-            // Refresh the GridView for the specific group
             var startPlaceholder = StartMenuIslandh.Child as Shell.Interface.StartMenu11.StartMenu;
             var tileGroupGridView = startPlaceholder.FindName("TileGroupGridView") as Windows.UI.Xaml.Controls.GridView;
+            LoadTiles();
             tileGroupGridView.ItemsSource = null;
             tileGroupGridView.ItemsSource = TileGroups;
         }
@@ -338,7 +280,7 @@ namespace WPF.Views
             Engine.FailedToLoadTiles += DisableTiles;
             Engine.ApplyNewAccent += ApplyNewAccent;
             Engine.ApplyNewShellTheme += ApplyNewShellTheme;
-            Engine.StartTrigger += OnStartTriggered;
+            Engine.StartTrigger += ToggleStartMenu;
 
             // Mandatory alignment stuff and so on
             Show();
@@ -451,68 +393,49 @@ namespace WPF.Views
             }
         }
 
-        async void OnStartTriggered(object sender, EventArgs e)
+        public async void ToggleStartMenu(object sender, EventArgs e)
         {
             try
             {
-                // Toggle visibility
-                var newVisibility = Visibility == Visibility.Visible ? Visibility.Hidden : Visibility.Visible;
-
-                // Handle hiding animation
-                if (newVisibility == Visibility.Hidden)
-                {
-                    var startPlaceholder = StartMenuIslandh.Child as Shell.Interface.StartMenu11.StartMenu;
-                    if (startPlaceholder != null)
-                    {
-                        await startPlaceholder.StartCloseStartAnimation(); // Wait for the animation
-                        Hide(); // Hide the window
-                    }
-                }
-
-                // Update visibility
-                Visibility = newVisibility;
-
-                // Handle showing
                 if (Visibility == Visibility.Visible)
                 {
-                    Show(); // Show the window
-                    WindowActivator.ActivateWindow(new System.Windows.Interop.WindowInteropHelper(StartMenu11Host).Handle); // Activate window
-                    RefreshAppList(); // Refresh the app list
-                    this.Focus(); // Focus on the window
+                    HideStartMenu(sender, e);
+                }
+                else
+                {
+                    ShowStartMenu(sender, e);
                 }
             }
             catch (Exception ex)
             {
-                // Handle any exceptions
-                Console.WriteLine($"Error in OnStartTriggered: {ex.Message}");
+                HandleError(ex);
             }
         }
 
-
-        private async void StartMenuActivated(object sender, EventArgs e)
+        public async void ShowStartMenu(object sender, EventArgs e)
         {
             Show();
+            WindowActivator.ActivateWindow(new System.Windows.Interop.WindowInteropHelper(StartMenu11Host).Handle); // Activate window
             var startPlaceholder = StartMenuIslandh.Child as Shell.Interface.StartMenu11.StartMenu;
-            Task animationTask = startPlaceholder.StartOpenStartAnimation();
-            await animationTask; // wait for the animation task to finish
+            await startPlaceholder.StartOpenStartAnimation(); // Wait for the animation
+            RefreshAppList();
             this.Focus();
         }
 
-        private async void StartMenuDeactivated(object sender, EventArgs e)
+        public async void HideStartMenu(object sender, EventArgs e)
         {
             var startPlaceholder = StartMenuIslandh.Child as Shell.Interface.StartMenu11.StartMenu;
-            Task animationTask = startPlaceholder.StartCloseStartAnimation();
-            await animationTask; // wait for the animation task to finish
+            await startPlaceholder.StartCloseStartAnimation(); // Wait for the animation
             Hide();
         }
 
-        private async void startmenubasewindow_LostFocus(object sender, RoutedEventArgs e)
+        private void HandleError(Exception ex)
         {
-            var startPlaceholder = StartMenuIslandh.Child as Shell.Interface.StartMenu11.StartMenu;
-            Task animationTask = startPlaceholder.StartCloseStartAnimation();
-            await animationTask; // wait for the animation task to finish
-            Hide();
+            // Handle any exceptions
+            Console.WriteLine($"Error: {ex.Message}");
         }
+
+
 
         private async Task CloseStartify()
         {

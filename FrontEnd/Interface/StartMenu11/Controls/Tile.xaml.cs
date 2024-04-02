@@ -211,13 +211,13 @@ namespace Shell.Interface.StartMenu11.Controls
 
         private void TileButton_Click(object sender, RoutedEventArgs e)
         {
-            string PathUniversal = "Classic Path:" + PathClassic.Text + "Immersive Path:" + PathImmersive.Text;
+            string PathUniversal = "Classic Path:" + PathClassic.Text + "Immersive Path:" + "";
             Click?.Invoke(PathUniversal, e);
         }
 
         private void TileMain_PointerPressed(object sender, PointerRoutedEventArgs e)
         {
-            string PathUniversal = "Classic Path:" + PathClassic.Text + "Immersive Path:" + PathImmersive.Text;
+            string PathUniversal = "Classic Path:" + PathClassic.Text + "Immersive Path:" + "";
             Click?.Invoke(PathUniversal, e);
         }
 

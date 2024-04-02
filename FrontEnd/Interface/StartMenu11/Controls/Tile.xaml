@@ -17,7 +17,7 @@
                         <FontIcon Glyph=""/>
                     </MenuFlyoutItem.Icon>
                 </MenuFlyoutItem>
-                <MenuFlyoutSubItem Text="Resize">
+                <MenuFlyoutSubItem Text="Resize" IsEnabled="False">
                     <ToggleMenuFlyoutItem x:Name="TileSizeSmallContextMenuItem" Text="Small" IsChecked="False" Click="TileSizeSmallContextMenuItem_Click">
                         <MenuFlyoutItem.Icon>
                             <FontIcon Glyph=""/>
@@ -80,12 +80,9 @@
             <TextBlock x:Name="TileColorInternal"
                        VerticalAlignment="Bottom"
                        FontSize="12" Margin="6,0,0,6" Text="{Binding CustomTileBackground}" Visibility="Collapsed"/>
-            <TextBlock x:Name="PathImmersive"
-                       VerticalAlignment="Bottom"
-                       FontSize="12" Margin="6,0,0,6" Text="{Binding PathImmersive}" Visibility="Collapsed"/>
             <TextBlock x:Name="PathClassic"
                        VerticalAlignment="Bottom"
-                       FontSize="12" Margin="6,0,0,6" Text="{Binding PathClassic}" Visibility="Collapsed"/>
+                       FontSize="12" Margin="6,0,0,6" Text="{Binding AppPath}" Visibility="Collapsed"/>
         </Grid>
     </Button>
 

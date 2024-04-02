@@ -23,6 +23,7 @@ namespace Shell.Interface.StartMenu11.Controls
     {
         public event EventHandler<RoutedEventArgs> TileClicked;
         public event EventHandler<RoutedEventArgs> TileUnpinned;
+        public event EventHandler<RoutedEventArgs> TileGroupNameChanged;
         public TileGroupControl()
         {
             this.InitializeComponent();
@@ -37,6 +38,11 @@ namespace Shell.Interface.StartMenu11.Controls
         {
             string TileGroupTileName = "TilePathClassic:" + sender + "TileGroupName:" + TileGridViewGroupName.Text;
             TileUnpinned?.Invoke(TileGroupTileName, e);
+        }
+
+        private void TileGridViewGroupName_LostFocus(object sender, RoutedEventArgs e)
+        {
+            TileGroupNameChanged?.Invoke(sender, e);
         }
     }
 }

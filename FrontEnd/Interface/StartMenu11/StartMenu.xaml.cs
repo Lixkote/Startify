@@ -35,6 +35,7 @@ namespace Shell.Interface.StartMenu11
         public event EventHandler<ItemClickEventArgs> DirectoryChildClicked;
         public event EventHandler<RoutedEventArgs> TileClickedMain;
         public event EventHandler<RoutedEventArgs> TilePinnedMain;
+        public event EventHandler<RoutedEventArgs> TileGroupRenamedMain;
         public event EventHandler<RoutedEventArgs> TileUnpinnedMain;
         public event EventHandler<ItemClickEventArgs> ErrorHappened;
 
@@ -60,63 +61,76 @@ namespace Shell.Interface.StartMenu11
 
         private bool IsFolderOpened = false;
 
-        public Task StartCloseStartAnimation()
+        private Storyboard currentAnimation;
+
+        public Task ToggleStartAnimation()
         {
-            TaskCompletionSource<bool> animationCompletionSource = new TaskCompletionSource<bool>();
-
-            try
+            if (currentAnimation != null)
             {
-                // Ensure that "closestartanimation" is properly initialized.
-                if (closestartanimation != null)
+                // If an animation is currently executing, reverse it
+                currentAnimation.Stop();
+                currentAnimation.AutoReverse = !currentAnimation.AutoReverse;
+                currentAnimation.Begin();
+            }
+            else
+            {
+                // Otherwise, start the appropriate animation
+                if (Visibility == Visibility.Visible)
                 {
-                    closestartanimation.Completed += (sender, args) =>
-                    {
-                        animationCompletionSource.TrySetResult(true);
-                    };
-
-                    closestartanimation.Begin();
+                    return StartCloseStartAnimation();
                 }
                 else
                 {
-                    animationCompletionSource.TrySetException(new InvalidOperationException("Animation not properly initialized."));
+                    return StartOpenStartAnimation();
                 }
             }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex);
-            }
 
-            return animationCompletionSource.Task;
+            return Task.CompletedTask;
+        }
+
+        public Task StartCloseStartAnimation()
+        {
+            currentAnimation = closestartanimation;
+            return StartAnimation(closestartanimation, "closestartanimation");
         }
 
         public Task StartOpenStartAnimation()
         {
+            currentAnimation = openstartanimation;
+            return StartAnimation(openstartanimation, "openstartanimation");
+        }
+
+        private Task StartAnimation(Storyboard animation, string animationName)
+        {
             TaskCompletionSource<bool> animationCompletionSource = new TaskCompletionSource<bool>();
 
             try
             {
-                // Ensure that "closestartanimation" is properly initialized.
-                if (openstartanimation != null)
+                // Ensure that the animation is properly initialized.
+                if (animation != null)
                 {
-                    openstartanimation.Completed += (sender, args) =>
+                    animation.Completed += (sender, args) =>
                     {
                         animationCompletionSource.TrySetResult(true);
                     };
 
-                    openstartanimation.Begin();
+                    animation.Begin();
                 }
                 else
                 {
-                    animationCompletionSource.TrySetException(new InvalidOperationException("Animation not properly initialized."));
+                    animationCompletionSource.TrySetException(new InvalidOperationException($"{animationName} not properly initialized."));
                 }
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex);
+                animationCompletionSource.TrySetException(ex);
             }
 
             return animationCompletionSource.Task;
         }
+
+
 
         private async void Start_Loaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
@@ -254,6 +268,11 @@ namespace Shell.Interface.StartMenu11
         {
 
             TileUnpinnedMain?.Invoke(sender, e);
+        }
+
+        private void TileGroupCTRL_TileGroupNameChanged(object sender, RoutedEventArgs e)
+        {
+            TileGroupRenamedMain?.Invoke(sender, e);
         }
     }
 }

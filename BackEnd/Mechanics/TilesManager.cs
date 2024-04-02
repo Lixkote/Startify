@@ -118,11 +118,11 @@ namespace WPF.Helpers
                             Name = tileGroupElement.Attribute("Name")?.Value,
                             Tiles = tileGroupElement.Descendants("Tile").Select(tileElement => new Tile
                             {
-                                DisplayName = Path.GetFileNameWithoutExtension(tileElement.Element("PathClassic")?.Value),
-                                PathClassic = tileElement.Element("PathClassic")?.Value,
-                                PathImmersive = tileElement.Element("PathImmersive")?.Value,
-                                Icon = new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri(uriString: IconHelper.GetFileIcon(tileElement.Element("PathClassic")?.Value))),
-                                Size = tileElement.Element("Size")?.Value,
+                                DisplayName = Path.GetFileNameWithoutExtension(tileElement.Element("AppPath")?.Value),
+                                AppPath = tileElement.Element("AppPath")?.Value,
+                                Icon = new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri(uriString: IconHelper.GetFileIcon(tileElement.Element("AppPath")?.Value))),
+                                // Size = tileElement.Element("Size")?.Value,
+                                Size = "Normal",
                                 LiveTileEnabled = tileElement.Element("LiveTileEnabled")?.Value,
                                 CustomTileBackground = tileElement.Element("CustomTileBackground")?.Value
                             }).ToList()
@@ -133,83 +133,58 @@ namespace WPF.Helpers
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine("Error loading tiles Configuration XML: " + ex.Message);
-                    CouldNotLoadTiles(this, null);
-                }
+                    Debug.WriteLine("Tiles Configuration XML was not found: " + ex.Message);
+                }   
             }
             else
             {
-                Debug.WriteLine("Tiles configuration file not found.");
-                CouldNotLoadTiles(this, null);
+                Debug.WriteLine("Tiles Configuration XML not found, attempting to create a new one.");
+                CreateDefaultConfiguration(configFile);
             }
         }
 
-        public void AddTileToXml(object path, ObservableCollection<TileGroup> tileGroupa)
+        private void CreateDefaultConfiguration(string configFile)
+        {
+            XDocument doc = new XDocument(
+                new XElement("XmlRoot")
+            );
+
+            doc.Save(configFile);
+        }
+
+        public void AddTileToXml(object path, ObservableCollection<TileGroup> tileGroups)
         {
             string configFile = GetConfigFilePath();
             XDocument doc = XDocument.Load(configFile);
-
-            XElement newTileElement = new XElement("Tile",
-                new XElement("PathClassic", path as string),
-                new XElement("PathImmersive", ""),
-                new XElement("Size", "Normal"),
-                new XElement("LiveTileEnabled", "false"),
-                new XElement("CustomTileBackground", "")
-            );
-
-            var tileGroup = doc.Descendants("TileGroup").FirstOrDefault();
-            if (tileGroup == null)
-            {
-                Debug.WriteLine($"TileGroup not found in XML.");
-                return;
-            }
+            XElement rootElement = doc.Root;
 
             try
             {
-                // Ensure that there is a "Tiles" element under the TileGroup
-                var tilesElement = tileGroup.Element("Tiles");
-                if (tilesElement == null)
+                // Find an existing tile group or create a new one if not found
+                XElement tileGroupElement = rootElement.Elements("TileGroup")
+                                                       .FirstOrDefault(e => e.Attribute("Name")?.Value == "Default");
+
+                if (tileGroupElement == null)
                 {
-                    tilesElement = new XElement("Tiles");
-                    tileGroup.Add(tilesElement);
+                    // Create a new tile group element
+                    tileGroupElement = new XElement("TileGroup",
+                        new XAttribute("Name", "Default")
+                    );
+                    rootElement.Add(tileGroupElement);
                 }
 
-                // Add the new tile to the Tiles collection
-                tilesElement.Add(newTileElement);
+                // Add new tile to the existing or newly created tile group
+                tileGroupElement.Add(
+                    new XElement("Tile",
+                        new XElement("AppPath", path as string),
+                        new XElement("Size", "Normal"),
+                        new XElement("LiveTileEnabled", "false"),
+                        new XElement("CustomTileBackground", "")
+                    )
+                );
+
+                // Save changes to the XML document
                 doc.Save(configFile);
-
-                // Update the TileList with the added tile
-                foreach (XElement tileElementa in tilesElement.Descendants("Tile"))
-                {
-                    Tile tile = new Tile
-                    {
-                        DisplayName = Path.GetFileNameWithoutExtension(tileElementa.Element("PathClassic")?.Value),
-                        PathClassic = tileElementa.Element("PathClassic")?.Value,
-                        PathImmersive = tileElementa.Element("PathImmersive")?.Value,
-                        Icon = new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri(uriString: IconHelper.GetFileIcon(tileElementa.Element("PathClassic")?.Value))),
-                        Size = tileElementa.Element("Size")?.Value,
-                        LiveTileEnabled = tileElementa.Element("LiveTileEnabled")?.Value,
-                        CustomTileBackground = tileElementa.Element("CustomTileBackground")?.Value
-                    };
-
-                    // Assuming tileGroupa is ObservableCollection<TileGroup>
-                    var existingGroup = tileGroupa.FirstOrDefault();
-                    if (existingGroup != null)
-                    {
-                        existingGroup.Tiles.Add(tile);
-                    }
-                    else
-                    {
-                        // Create a new TileGroup if it doesn't exist
-                        TileGroup newGroup = new TileGroup
-                        {
-                            Name = tileGroup.Attribute("Name")?.Value,
-                            Tiles = { tile }
-                        };
-                        tileGroupa.Add(newGroup);
-                    }
-                }
-
                 Debug.WriteLine("Tile added to XML and TileList successfully.");
             }
             catch (Exception ex)
@@ -218,55 +193,115 @@ namespace WPF.Helpers
             }
         }
 
-
-
-
-        public void RemoveTileFromXml(object sender)
+        public void ChangeGroupName(object sender, ObservableCollection<TileGroup> tileGroups)
         {
-            // Your input string
-            string input = sender.ToString();
+            var groupNameBox = sender as Shell.Interface.StartMenu11.Controls.TileGroupNameBox;
+            string newGroupName = groupNameBox.Text;
 
-            // Define the pattern for extracting paths
+            // Get the DataContext of the TextBox, which should be the TileGroup object
+            var tileGroup = groupNameBox.DataContext as TileGroup;
+
+            if (tileGroup == null)
+            {
+                Debug.WriteLine("DataContext is not TileGroup.");
+                return;
+            }
+
+            // Store the original name before changing
+            string originalName = tileGroup.Name;
+
+            if (string.IsNullOrEmpty(newGroupName))
+            {
+                Debug.WriteLine("New group name is empty or null.");
+                return;
+            }
+
+            // Update the name in the TileGroup object
+            tileGroup.Name = newGroupName;
+            Debug.WriteLine($"Group name updated from '{originalName}' to '{newGroupName}'.");
+
+            // Update the name in the layout XML file
+            UpdateGroupNameInXml(originalName, newGroupName);
+
+            // Optionally, you can update the collection if necessary
+            // (not needed if ObservableCollection is bound to UI and Two-Way binding is enabled)
+            // var index = tileGroups.IndexOf(tileGroup);
+            // tileGroups[index] = tileGroup;
+        }
+
+        private void UpdateGroupNameInXml(string originalName, string newGroupName)
+        {
+            string configFile = GetConfigFilePath();
+            XDocument doc = XDocument.Load(configFile);
+
+            var tileGroupElement = doc.Descendants("TileGroup")
+                                      .FirstOrDefault(group => group.Attribute("Name")?.Value == originalName);
+
+            if (tileGroupElement != null)
+            {
+                tileGroupElement.Attribute("Name").Value = newGroupName;
+                doc.Save(configFile);
+                Debug.WriteLine($"Group name updated in XML from '{originalName}' to '{newGroupName}'.");
+            }
+            else
+            {
+                Debug.WriteLine($"TileGroup '{originalName}' not found in the XML.");
+            }
+        }
+
+
+
+
+
+        public void RemoveTileFromXml(object path, ObservableCollection<TileGroup> tileGroups)
+        {
+            string input = path.ToString();
+
             string pattern = @"TilePathClassic:(.*?)TileGroupName:(.*?)$";
-
-            // Use Regex to match the pattern
             Match match = Regex.Match(input, pattern);
 
-            // Check if the match was successful
             if (match.Success)
             {
                 string targetGroupName = match.Groups[2].Value.Trim();
-                string TargetTilePathClassic = match.Groups[1].Value.Trim();
+                string targetTilePathClassic = match.Groups[1].Value.Trim();
 
                 string configFile = GetConfigFilePath();
                 XDocument doc = XDocument.Load(configFile);
 
-                // Adjust the targetGroupName based on your application logic to get the actual group name
+                XElement rootElement = doc.Root;
 
-                var tileGroup = doc.Descendants("TileGroup").FirstOrDefault(group => group.Attribute("Name")?.Value == targetGroupName);
-
-                if (tileGroup == null)
+                try
                 {
-                    Debug.WriteLine($"TileGroup '{targetGroupName}' not found in XML.");
-                    return;
+                    XElement tileGroupElement = rootElement.Elements("TileGroup")
+                                                           .FirstOrDefault(e => e.Attribute("Name")?.Value == targetGroupName);
+
+                    if (tileGroupElement == null)
+                    {
+                        Debug.WriteLine($"TileGroup '{targetGroupName}' not found in XML.");
+                        return;
+                    }
+
+                    var tileElement = tileGroupElement.Elements("Tile")
+                                                       .FirstOrDefault(t => String.Equals(t.Element("AppPath")?.Value, targetTilePathClassic, StringComparison.OrdinalIgnoreCase));
+
+                    if (tileElement != null)
+                    {
+                        tileElement.Remove();
+                        doc.Save(configFile);
+                        Debug.WriteLine("Tile removed from XML successfully.");
+                    }
+                    else
+                    {
+                        Debug.WriteLine($"Tile '{targetTilePathClassic}' not found in XML.");
+                    }
                 }
-
-                var tileElement = tileGroup.Elements("Tiles")
-                    .Elements("Tile")
-                    .FirstOrDefault(t => String.Equals(t.Element("PathClassic")?.Value, TargetTilePathClassic, StringComparison.OrdinalIgnoreCase));
-
-                if (tileElement != null)
+                catch (Exception ex)
                 {
-                    tileElement.Remove();
-                    doc.Save(configFile);
-                    Debug.WriteLine("Tile removed from XML successfully.");
-                }
-                else
-                {
-                    Debug.WriteLine($"Tile '{TargetTilePathClassic}' not found in XML.");
+                    Debug.WriteLine($"Error removing tile from XML: {ex.Message}");
                 }
             }
         }
+
 
         public string GetConfigFilePath()
         {

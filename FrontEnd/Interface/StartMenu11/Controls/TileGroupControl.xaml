@@ -3,7 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Shell.Interface.StartMenu11.Controls"
-                 xmlns:controls="using:CommunityToolkit.WinUI.Controls"
+    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
@@ -23,17 +23,9 @@
             <RowDefinition Height="50" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <local:TileGroupNameBox x:Name="TileGridViewGroupName" Grid.Row="0"  HorizontalContentAlignment="Left" Height="36" Width="293" HorizontalAlignment="Left" Margin="0,5,0,5" VerticalAlignment="Center" />
-        <GridView ItemContainerStyle="{StaticResource TileGridViewA}" x:Name="TileGridView" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" CanDragItems="True" IsItemClickEnabled="False" AllowDrop="True" CanReorderItems="True" Grid.Row="1" ItemsSource="{Binding Tiles}"
-                    SelectionMode="None"
-                    ShowsScrollingPlaceholders="False"
-                    IsTabStop="False" Padding="0,0,0,0">
-            <GridView.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <controls:StaggeredPanel DesiredColumnWidth="94" ColumnSpacing="-12" RowSpacing="5" x:Name="MaxItemsWrapGrid" CanDrag="True" AllowDrop="True" 
-               />
-                </ItemsPanelTemplate>
-            </GridView.ItemsPanel>
+        <local:TileGroupNameBox x:Name="TileGridViewGroupName" Grid.Row="0" LostFocus="TileGridViewGroupName_LostFocus" HorizontalContentAlignment="Left" Height="36" Width="293" HorizontalAlignment="Left" Margin="0,5,0,5" VerticalAlignment="Center" />
+        <GridView  x:Name="TileGridView" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" CanDragItems="True" IsItemClickEnabled="False" AllowDrop="True" CanReorderItems="True" Grid.Row="1" ItemsSource="{Binding Tiles}"
+                    SelectionMode="None">
             <GridView.ItemTemplate>
                 <DataTemplate>
                     <local:Tile AllowDrop="True" CanDrag="True" Click="Tile_Click" UnpinTile="Tile_UnpinTile" FocusVisualPrimaryBrush="{x:Null}" FocusVisualSecondaryBrush="{x:Null}" Foreground="{x:Null}"></local:Tile>

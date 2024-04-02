@@ -9,7 +9,6 @@
         mc:Ignorable="d"
         Title="StartMenu11"
         WindowStyle="None"
-        PreviewKeyDown="LaunchWindowsSearch"
         AllowsTransparency="True"
         Background="Transparent"
         ResizeMode="NoResize"
@@ -17,7 +16,7 @@
         Topmost="True"
         Width="700"
         Visibility="Hidden" 
-        Height="700" Activated="StartMenuActivated" Deactivated="StartMenuDeactivated">
+        Height="700" Activated="ShowStartMenu" Deactivated="HideStartMenu">
 
     <Window.RenderTransform>
         <TranslateTransform x:Name="translateTransform" />

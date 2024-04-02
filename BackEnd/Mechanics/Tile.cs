@@ -21,8 +21,7 @@ namespace WPF.Helpers
     public class Tile
     {
         public string DisplayName { get; set; }
-        public string PathClassic { get; set; }
-        public string PathImmersive { get; set; }
+        public string AppPath { get; set; }
         public string Size { get; set; }
         public Windows.UI.Xaml.Media.Imaging.BitmapImage Icon { get; set; }
         public string LiveTileEnabled { get; set; }
