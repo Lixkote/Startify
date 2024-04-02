@@ -179,7 +179,10 @@ namespace WPF
                 }
                 else
                 {
-                    MessageBox.Show("Configuration file not found: " + configFilePath);
+                    // ModernWpf.MessageBox.Show("Configuration file missing. Default(Standard) hooking type will be used.", "Startify Misconfiguration Detected", MessageBoxButton.OK, SymbolGlyph.Warning, MessageBoxResult.OK);
+                    StartListener = new WinButtonHook();
+                    StartListener.StartTriggered += OnStartTriggered;
+                    StartListener.FindAndActivateWindow();
                 }
             }
             catch (Exception ex)
