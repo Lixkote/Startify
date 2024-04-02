@@ -6,7 +6,7 @@ using ModernWpf;
 using ModernWpf.Controls;
 using Shell.Interface.StartMenu;
 using ShellApp;
-using ShellApp.Shell.Start;
+using Shell.Interface.StartMenu11;
 using StartifyBackend.Helpers;
 using System;
 using System.Collections.Generic;
@@ -44,13 +44,14 @@ using File = System.IO.File;
 using MessageBox = ModernWpf.MessageBox;
 using Tile = WPF.Helpers.Tile;
 using Window = System.Windows.Window;
+using CommunityToolkit.WinUI;
 
 namespace WPF.Views
 {
     /// <summary>
     /// Interaction logic for StartMenu.xaml
     /// </summary>
-    public partial class StartMenu : System.Windows.Window
+    public partial class StartMenu11 : System.Windows.Window
     {
         // Mandatory definitions under here
         TilesManager TileAppHelper = new Helpers.TilesManager();
@@ -72,7 +73,7 @@ namespace WPF.Views
         
         private void DisableTiles(object sender, EventArgs e)
         {
-            var startPlaceholder = StartMenuIslandh.Child as ShellApp.Shell.Start.StartPlaceholder;
+            var startPlaceholder = StartMenuIslandh.Child as Shell.Interface.StartMenu11.StartMenu;
             var StartBackground = startPlaceholder.FindName("startbackground") as Windows.UI.Xaml.Controls.Grid;
             StartBackground.Width = 300;
             Engine.ShowStolenTiles();
@@ -82,7 +83,7 @@ namespace WPF.Views
         public void LoadTiles()
         {
             TileGroups = new ObservableCollection<TileGroup>();
-            var startPlaceholder = StartMenuIslandh.Child as ShellApp.Shell.Start.StartPlaceholder;
+            var startPlaceholder = StartMenuIslandh.Child as Shell.Interface.StartMenu11.StartMenu;
             TileAppHelper.LoadTileGroups(TileGroups);
 
             var tilegridview = startPlaceholder.FindName("TileGroupGridView") as Windows.UI.Xaml.Controls.GridView;
@@ -92,7 +93,7 @@ namespace WPF.Views
         public void ReloadTiles()
         {
             TileGroups = new ObservableCollection<TileGroup>();
-            var startPlaceholder = StartMenuIslandh.Child as ShellApp.Shell.Start.StartPlaceholder;
+            var startPlaceholder = StartMenuIslandh.Child as Shell.Interface.StartMenu11.StartMenu;
             TileAppHelper.LoadTileGroups(TileGroups);
 
             var tilegridview = startPlaceholder.FindName("TileGroupGridView") as Windows.UI.Xaml.Controls.GridView;
@@ -103,11 +104,12 @@ namespace WPF.Views
         private void TilesLoaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             // Get the StartPlaceholder object from the WindowsXamlHost element
-            var startPlaceholder = StartMenuIslandh.Child as ShellApp.Shell.Start.StartPlaceholder;
+            var startPlaceholder = StartMenuIslandh.Child as Shell.Interface.StartMenu11.StartMenu;
+            var allAppsListViewBase = startPlaceholder.FindName("AllApps") as Shell.Interface.StartMenu11.Controls.AllAppsPaneControl;
             // Find the ListView element by its name
             startPlaceholder.TileClickedMain += (sender, e) => TileAppHelper.OpenTileApp(sender, e, this, false);
             startPlaceholder.TileUnpinnedMain += (sender, e) => UnpinTile(sender, e);
-            startPlaceholder.TilePinnedMain += (sender, e) => PinTile(sender, e);
+            allAppsListViewBase.TilePinnedMain += (sender, e) => PinTile(sender, e);
         }
 
         private Tile FindTileByPathClassic(string pathClassicValue)
@@ -169,7 +171,7 @@ namespace WPF.Views
                 }
 
                 // Refresh the GridView for the specific group
-                var startPlaceholder = StartMenuIslandh.Child as ShellApp.Shell.Start.StartPlaceholder;
+                var startPlaceholder = StartMenuIslandh.Child as Shell.Interface.StartMenu11.StartMenu;
                 var tileGroupGridView = startPlaceholder.FindName("TileGroupGridView") as Windows.UI.Xaml.Controls.GridView;
 
                 // Reset the ItemsSource to trigger a refresh
@@ -188,14 +190,15 @@ namespace WPF.Views
         {
             if (applistwasloaded == true)
             {
-                var startPlaceholder = StartMenuIslandh.Child as ShellApp.Shell.Start.StartPlaceholder;
-                var allAppsListView = startPlaceholder.FindName("AllAppsListView") as Windows.UI.Xaml.Controls.ListView;
+                var startPlaceholder = StartMenuIslandh.Child as Shell.Interface.StartMenu11.StartMenu;
+                var allAppsListViewBase = startPlaceholder.FindName("AllApps") as Windows.UI.Xaml.Controls.UserControl;
+                var allAppsListView = allAppsListViewBase.FindName("AllAppsListView") as Windows.UI.Xaml.Controls.ListView;
                 if (allAppsListView.Items.Count > 0)
                 {
                     var firstItem = allAppsListView.Items[0]; // Get the first item in your data source
                     allAppsListView.ScrollIntoView(firstItem);
                 }
-                var cvs = startPlaceholder.FindName("cvs") as Windows.UI.Xaml.Data.CollectionViewSource;
+                var cvs = allAppsListViewBase.FindName("cvs") as Windows.UI.Xaml.Data.CollectionViewSource;
                 cvs.Source = from p in Programs
                              orderby p.Alph
                              group p by char.IsDigit(p.Alph[0]) ? "#" : p.Alph into g
@@ -211,7 +214,7 @@ namespace WPF.Views
             // Remove the tile from the XML configuration file
             TileAppHelper.AddTileToXml(sender, TileGroups);
             // Refresh the GridView for the specific group
-            var startPlaceholder = StartMenuIslandh.Child as ShellApp.Shell.Start.StartPlaceholder;
+            var startPlaceholder = StartMenuIslandh.Child as Shell.Interface.StartMenu11.StartMenu;
             var tileGroupGridView = startPlaceholder.FindName("TileGroupGridView") as Windows.UI.Xaml.Controls.GridView;
             tileGroupGridView.ItemsSource = null;
             tileGroupGridView.ItemsSource = TileGroups;
@@ -220,7 +223,7 @@ namespace WPF.Views
         private void applistloaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             // Get the StartPlaceholder object from the WindowsXamlHost element
-            var startPlaceholder = StartMenuIslandh.Child as ShellApp.Shell.Start.StartPlaceholder;
+            var startPlaceholder = StartMenuIslandh.Child as Shell.Interface.StartMenu11.StartMenu;
             // Find the ListView element by its name
             startPlaceholder.DirectoryChildClicked += (sender, e) => Launcher.DirectoryAppLaunchHandler(sender, e, this, Programs, false);
             applistwasloaded = true;
@@ -240,8 +243,9 @@ namespace WPF.Views
 
             AppHelper.GetUWPApps(Programs);
 
-            var startPlaceholder = StartMenuIslandh.Child as ShellApp.Shell.Start.StartPlaceholder;
-            var allAppsListView = startPlaceholder.FindName("AllAppsListView") as Windows.UI.Xaml.Controls.ListView;
+            var startPlaceholder = StartMenuIslandh.Child as Shell.Interface.StartMenu11.StartMenu;
+            var allAppsListViewBase = startPlaceholder.FindName("AllApps") as Windows.UI.Xaml.Controls.UserControl;
+            var allAppsListView = allAppsListViewBase.FindName("AllAppsListView") as Windows.UI.Xaml.Controls.ListView;
             var TileGroupGridView = startPlaceholder.FindName("TileGroupGridView") as Windows.UI.Xaml.Controls.GridView;
 
             allAppsListView.ItemClick += (sender, e) => Launcher.AppLaunchHandler(sender, e, this, Programs, false);
@@ -260,9 +264,9 @@ namespace WPF.Views
             var power = startPlaceholder.FindName("PowerMenuButton") as Windows.UI.Xaml.Controls.MenuFlyoutItem;
             var exitmenuitem = startPlaceholder.FindName("ExitStartify") as Windows.UI.Xaml.Controls.MenuFlyoutItem;
 
-            var signout = startPlaceholder.FindName("SignOutMenuItem") as Windows.UI.Xaml.Controls.MenuFlyoutItem;
-            var lockout = startPlaceholder.FindName("LockMenuItem") as Windows.UI.Xaml.Controls.MenuFlyoutItem;
-            var accsetting = startPlaceholder.FindName("AccountSettingsMenuItem") as Windows.UI.Xaml.Controls.MenuFlyoutItem;
+            var signout = startPlaceholder.FindName("signout") as Windows.UI.Xaml.Controls.Button;
+            var lockout = startPlaceholder.FindName("lockout") as Windows.UI.Xaml.Controls.Button;
+            var accsetting = startPlaceholder.FindName("accsetting") as Windows.UI.Xaml.Controls.Button;
 
             var powerKey = Registry.LocalMachine.OpenSubKey("SYSTEM\\CurrentControlSet\\Control\\Power");
             int hibernateValue = (int)powerKey.GetValue("HibernateEnabledDefault");
@@ -325,7 +329,7 @@ namespace WPF.Views
         // If you'll be adding a new start menu layout, you can copy these to the new layout.
         ////////////////////////////////////////////////////////////
 
-        public StartMenu()
+        public StartMenu11()
         {
             // Initialize Normal Tiled Start Menu Layout
             InitializeComponent();
@@ -388,7 +392,7 @@ namespace WPF.Views
                 // Use the Dispatcher to run the UI-related code on the UI thread
                 Dispatcher.Invoke(() =>
                 {
-                    var startPlaceholder = StartMenuIslandh.Child as ShellApp.Shell.Start.StartPlaceholder;
+                    var startPlaceholder = StartMenuIslandh.Child as Shell.Interface.StartMenu11.StartMenu;
 
                     if (themeValue2 == 1)
                     {
@@ -411,12 +415,12 @@ namespace WPF.Views
             int themeValue = (int)Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize").GetValue("ColorPrevalence");
             if (themeValue == 1)
             {
-                var startPlaceholder = StartMenuIslandh.Child as ShellApp.Shell.Start.StartPlaceholder;
+                var startPlaceholder = StartMenuIslandh.Child as Shell.Interface.StartMenu11.StartMenu;
                 startPlaceholder.AccentWasEnabled();
             }
             else if (themeValue == 0)
             {
-                var startPlaceholder = StartMenuIslandh.Child as ShellApp.Shell.Start.StartPlaceholder;
+                var startPlaceholder = StartMenuIslandh.Child as Shell.Interface.StartMenu11.StartMenu;
                 startPlaceholder.AccentWasDisabled();
             }
         }
@@ -429,7 +433,7 @@ namespace WPF.Views
                 // Use the Dispatcher to run the UI-related code on the UI thread
                 Dispatcher.Invoke(() =>
                 {
-                    var startPlaceholder = StartMenuIslandh.Child as ShellApp.Shell.Start.StartPlaceholder;
+                    var startPlaceholder = StartMenuIslandh.Child as Shell.Interface.StartMenu11.StartMenu;
 
                     if (themeValue2 == 1)
                     {
@@ -449,31 +453,46 @@ namespace WPF.Views
 
         async void OnStartTriggered(object sender, EventArgs e)
         {
-            var newVisibility = Visibility == Visibility.Visible ? Visibility.Hidden : Visibility.Visible;
-
-            if (newVisibility == Visibility.Hidden)
+            try
             {
-                var startPlaceholder = StartMenuIslandh.Child as ShellApp.Shell.Start.StartPlaceholder;
-                Task animationTask = startPlaceholder.StartCloseStartAnimation();
-                await animationTask; // Wait for the animation task to finish
-                Hide(); // Hide the window
+                // Toggle visibility
+                var newVisibility = Visibility == Visibility.Visible ? Visibility.Hidden : Visibility.Visible;
+
+                // Handle hiding animation
+                if (newVisibility == Visibility.Hidden)
+                {
+                    var startPlaceholder = StartMenuIslandh.Child as Shell.Interface.StartMenu11.StartMenu;
+                    if (startPlaceholder != null)
+                    {
+                        await startPlaceholder.StartCloseStartAnimation(); // Wait for the animation
+                        Hide(); // Hide the window
+                    }
+                }
+
+                // Update visibility
+                Visibility = newVisibility;
+
+                // Handle showing
+                if (Visibility == Visibility.Visible)
+                {
+                    Show(); // Show the window
+                    WindowActivator.ActivateWindow(new System.Windows.Interop.WindowInteropHelper(StartMenu11Host).Handle); // Activate window
+                    RefreshAppList(); // Refresh the app list
+                    this.Focus(); // Focus on the window
+                }
             }
-
-            Visibility = newVisibility;
-
-            if (Visibility == Visibility.Visible)
+            catch (Exception ex)
             {
-                Show();               
-                WindowActivator.ActivateWindow(new System.Windows.Interop.WindowInteropHelper(startmenubasewindow).Handle);
-                RefreshAppList();
-                this.Focus();
+                // Handle any exceptions
+                Console.WriteLine($"Error in OnStartTriggered: {ex.Message}");
             }
         }
+
 
         private async void StartMenuActivated(object sender, EventArgs e)
         {
             Show();
-            var startPlaceholder = StartMenuIslandh.Child as ShellApp.Shell.Start.StartPlaceholder;
+            var startPlaceholder = StartMenuIslandh.Child as Shell.Interface.StartMenu11.StartMenu;
             Task animationTask = startPlaceholder.StartOpenStartAnimation();
             await animationTask; // wait for the animation task to finish
             this.Focus();
@@ -481,7 +500,15 @@ namespace WPF.Views
 
         private async void StartMenuDeactivated(object sender, EventArgs e)
         {
-            var startPlaceholder = StartMenuIslandh.Child as ShellApp.Shell.Start.StartPlaceholder;
+            var startPlaceholder = StartMenuIslandh.Child as Shell.Interface.StartMenu11.StartMenu;
+            Task animationTask = startPlaceholder.StartCloseStartAnimation();
+            await animationTask; // wait for the animation task to finish
+            Hide();
+        }
+
+        private async void startmenubasewindow_LostFocus(object sender, RoutedEventArgs e)
+        {
+            var startPlaceholder = StartMenuIslandh.Child as Shell.Interface.StartMenu11.StartMenu;
             Task animationTask = startPlaceholder.StartCloseStartAnimation();
             await animationTask; // wait for the animation task to finish
             Hide();
@@ -491,14 +518,6 @@ namespace WPF.Views
         {
             await Engine.ShowByeNotification();
             System.Windows.Application.Current.Shutdown();
-        }
-
-        private async void startmenubasewindow_LostFocus(object sender, RoutedEventArgs e)
-        {
-            var startPlaceholder = StartMenuIslandh.Child as ShellApp.Shell.Start.StartPlaceholder;
-            Task animationTask = startPlaceholder.StartCloseStartAnimation();
-            await animationTask; // wait for the animation task to finish
-            Hide();
         }
     }
 }

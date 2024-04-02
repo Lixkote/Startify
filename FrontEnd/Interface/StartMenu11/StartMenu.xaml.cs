@@ -23,13 +23,13 @@ using static Shell.Shell.ShellUtils.StartMenuSelector;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
-namespace ShellApp.Shell.Start
+namespace Shell.Interface.StartMenu11
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
     /// 
-    public partial class StartPlaceholder : UserControl
+    public partial class StartMenu : UserControl
     {
         // Declare the event
         public event EventHandler<ItemClickEventArgs> DirectoryChildClicked;
@@ -46,12 +46,11 @@ namespace ShellApp.Shell.Start
 
 
         public event EventHandler AnimationStarted;
-        public StartPlaceholder()
+        public StartMenu()
         {
             this.InitializeComponent();
             this.Loaded += Start_Loaded;
             this.ErrorHappened += errornotif;
-
         }
 
         private void errornotif(object sender, ItemClickEventArgs e)
@@ -128,6 +127,7 @@ namespace ShellApp.Shell.Start
 
             // user may have picture
             var picture = await current.GetPictureAsync(UserPictureSize.Size64x64);
+            string username = current.ToString();
             if (picture != null)
             {
                 var imageStream = await picture.OpenReadAsync();
@@ -137,10 +137,9 @@ namespace ShellApp.Shell.Start
                 // Set the source of the BitmapImage from the stream
                 await bitmapImage.SetSourceAsync(imageStream);
                 UserAV.Source = bitmapImage;
+                UserAVB.Source = bitmapImage;
+                UsernameTextBlock.Text = username;
             }
-
-            // Cool acrylic demo
-            // startbackground.Background = (AcrylicBrush)Resources["CustomAcrylicInAppLuminosity"];
         }
 
         private async void SettingsButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
@@ -165,29 +164,6 @@ namespace ShellApp.Shell.Start
             // Launch the folder in the default file explorer app
             await Launcher.LaunchFolderAsync(docsFolder);
 
-        }
-
-        private void DirectoryChildContainer_ItemClick(object sender, Windows.UI.Xaml.Controls.ItemClickEventArgs e)
-        {
-            // Call the OnDirectoryChildClicked method to raise the event
-            DirectoryChildClicked?.Invoke(sender, e);
-        }
-        private void UninstallAppMenuItem_Click_1(object sender, RoutedEventArgs e)
-        {
-            // Call the OnDirectoryChildClicked method to raise the event
-            UninstallSettingsShouldOpen?.Invoke(sender, e);
-        }
-
-        private void OpenFileLocation_Click(object sender, RoutedEventArgs e)
-        {
-            // Call the OnDirectoryChildClicked method to raise the event
-            OpenFileLocationClicked?.Invoke(sender, e);
-        }
-
-        private void RunAsAdminItem_Click(object sender, RoutedEventArgs e)
-        {
-            // Call the OnDirectoryChildClicked method to raise the event
-            RunAsAdminClicked?.Invoke(sender, e);
         }
 
         private void PinToTaskbar_Click(object sender, RoutedEventArgs e)
@@ -278,11 +254,6 @@ namespace ShellApp.Shell.Start
         {
 
             TileUnpinnedMain?.Invoke(sender, e);
-        }
-
-        private void StartMenuEntryApp_TilePinned(object sender, RoutedEventArgs e)
-        {
-            TilePinnedMain?.Invoke(sender, e);
         }
     }
 }

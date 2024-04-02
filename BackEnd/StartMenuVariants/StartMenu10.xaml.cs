@@ -39,10 +39,8 @@ using Window = System.Windows.Window;
 
 namespace WPF.Views
 {
-    /// <summary>
-    /// Logika interakcji dla klasy StartMenuCompact.xaml
-    /// </summary>
-    public partial class StartMenuCompact : Window
+
+    public partial class StartMenu10 : Window
     {
         Helpers.WinButtonHook StartListener;
         Helpers.RegistryMonitor AccentListener;
@@ -118,7 +116,7 @@ namespace WPF.Views
                 ModernWpf.MessageBox.Show("Startify has issues reading the taskbar alignment registry key. The default(left) alignment will be used. Error code: " + ex.ToString(), "Startify Backend Error", MessageBoxButton.OK, SymbolGlyph.Error, MessageBoxResult.OK);
             }
         }
-        public StartMenuCompact()
+        public StartMenu10()
         {
             // Initialize Startify
             InitializeComponent();
@@ -176,7 +174,7 @@ namespace WPF.Views
                 if (Visibility == Visibility.Visible)
                 {
                     Show();
-                    WindowActivator.ActivateWindow(new System.Windows.Interop.WindowInteropHelper(startmenucompactbasewindow).Handle);
+                    WindowActivator.ActivateWindow(new System.Windows.Interop.WindowInteropHelper(StartMenu10Host).Handle);
                     this.Focus();
                 }
             }

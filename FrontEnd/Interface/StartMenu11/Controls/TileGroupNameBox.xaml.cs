@@ -16,7 +16,7 @@ using Windows.UI.Xaml.Navigation;
 
 // Szablon elementu Kontrolka użytkownika jest udokumentowany na stronie https://go.microsoft.com/fwlink/?LinkId=234236
 
-namespace Shell.Interface.StartMenu
+namespace Shell.Interface.StartMenu11.Controls
 {
     public sealed partial class TileGroupNameBox : UserControl
     {

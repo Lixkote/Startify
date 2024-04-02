@@ -121,27 +121,42 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Interface\InterfaceUtils\Reveal.cs" />
-    <Compile Include="Interface\StartMenuCompact\StartMenuCompact.xaml.cs">
-      <DependentUpon>StartMenuCompact.xaml</DependentUpon>
+    <Compile Include="Interface\StartMenu10\Pages\AppList.xaml.cs">
+      <DependentUpon>AppList.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Interface\StartMenuTiled\StartMenuEntryApp.xaml.cs">
+    <Compile Include="Interface\StartMenu10\Pages\Tiles.xaml.cs">
+      <DependentUpon>Tiles.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interface\StartMenu10\Pages\TilesAppList.xaml.cs">
+      <DependentUpon>TilesAppList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interface\StartMenu11\Controls\AllAppsPaneControl.xaml.cs">
+      <DependentUpon>AllAppsPaneControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interface\StartMenu11\Controls\UninstallFlyoutControl.xaml.cs">
+      <DependentUpon>UninstallFlyoutControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interface\Utilities\Reveal.cs" />
+    <Compile Include="Interface\StartMenu10\StartMenu.xaml.cs">
+      <DependentUpon>StartMenu.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interface\StartMenu11\Controls\StartMenuEntryApp.xaml.cs">
       <DependentUpon>StartMenuEntryApp.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Interface\StartMenuTiled\Tile.xaml.cs">
+    <Compile Include="Interface\StartMenu11\Controls\Tile.xaml.cs">
       <DependentUpon>Tile.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Interface\StartMenuTiled\TileGroupNameBox.xaml.cs">
+    <Compile Include="Interface\StartMenu11\Controls\TileGroupNameBox.xaml.cs">
       <DependentUpon>TileGroupNameBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Interface\StartMenuTiled\VisibilityConverter.cs" />
+    <Compile Include="Interface\Utilities\VisibilityConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Interface\InterfaceUtils\IWindowPrivate.cs" />
-    <Compile Include="Interface\InterfaceUtils\StartEntrySelector.cs" />
-    <Compile Include="Interface\StartMenuTiled\StartMenuDefault.xaml.cs">
-      <DependentUpon>StartMenuDefault.xaml</DependentUpon>
+    <Compile Include="Interface\Utilities\IWindowPrivate.cs" />
+    <Compile Include="Interface\Utilities\StartEntrySelector.cs" />
+    <Compile Include="Interface\StartMenu11\StartMenu.xaml.cs">
+      <DependentUpon>StartMenu.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Interface\StartMenuTiled\TileGroupControl.xaml.cs">
+    <Compile Include="Interface\StartMenu11\Controls\TileGroupControl.xaml.cs">
       <DependentUpon>TileGroupControl.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
@@ -222,6 +237,9 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Uwp.Controls.Primitives">
+      <Version>8.0.240109</Version>
+    </PackageReference>
     <PackageReference Include="CommunityToolkit.Uwp.Controls.Segmented">
       <Version>8.0.240109</Version>
     </PackageReference>
@@ -252,37 +270,56 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Interface\StartMenuCompact\StartMenuCompact.xaml">
+    <Page Include="Interface\StartMenu10\Pages\AppList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Interface\StartMenuTiled\SegmentedItem\SegmentedItem.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Interface\StartMenuTiled\StartMenuDefault.xaml">
+    <Page Include="Interface\StartMenu10\Pages\Tiles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Interface\StartMenuTiled\StartMenuEntryApp.xaml">
+    <Page Include="Interface\StartMenu10\Pages\TilesAppList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Interface\StartMenuTiled\Tile.xaml">
+    <Page Include="Interface\StartMenu10\StartMenu.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Interface\StartMenuTiled\TileGroupControl.xaml">
+    <Page Include="Interface\StartMenu11\Controls\AllAppsPaneControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Interface\StartMenuTiled\TileGroupNameBox.xaml">
+    <Page Include="Interface\StartMenu11\Controls\UninstallFlyoutControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interface\StartMenu11\StartMenu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interface\StartMenu11\Controls\StartMenuEntryApp.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interface\StartMenu11\Controls\Tile.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interface\StartMenu11\Controls\TileGroupControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interface\StartMenu11\Controls\TileGroupNameBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shell_TemporaryKey.pfx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Interface\StartMenu10\Controls\" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

@@ -203,8 +203,8 @@ namespace WPF
             TileAppHelper.CouldNotLoadTiles += FailedToLoadTiles;
 
             // Create the startup window
-            StartMenu StartMena = new StartMenu();
-            StartMena.Show();
+            StartMenu11 menuwindow = new StartMenu11();
+            menuwindow.Show();
         }
 
         public void OnStartTriggered(object sender, EventArgs e)
