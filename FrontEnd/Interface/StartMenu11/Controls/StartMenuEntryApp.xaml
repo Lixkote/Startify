@@ -79,7 +79,6 @@
             </Border>
             <Rectangle x:Name="LogoBorder" Grid.RowSpan="4" VerticalAlignment="Top" Stroke="{ThemeResource TransparentButtonTextBrush}" StrokeThickness="2" />
             <TextBlock x:Name="AppDisplayName" Text="{Binding Title}" Grid.Column="1" Grid.Row="1" Style="{StaticResource TextStyle_AppListItemName}" Margin="10,0,0,0" Width="180" />
-            <TextBlock x:Name="CollapsedPathInformator" Text="{Binding Path}" Grid.Column="1" Grid.Row="1" Style="{StaticResource TextStyle_AppListItemName}" Margin="10,0,0,0" Width="180" Visibility="Collapsed"/>
             <TextBlock x:Name="FolderGlyph"
                 Grid.Column="3"
                 Grid.Row="1"

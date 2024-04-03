@@ -7,9 +7,34 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:my="using:Microsoft.UI.Xaml.Controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d" Height="96" Width="96" CanDrag="True" Loaded="TileMain_Loaded">
+    mc:Ignorable="d" Height="96" Width="96" Loaded="TileMain_Loaded">
 
-    <Button x:Name="TileButton" Click="TileButton_Click" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="0,0,0,0" CornerRadius="5" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" BorderThickness="1">
+    <Button CornerRadius="5" BorderThickness="1" Click="TileButton_Click" x:Name="TileButton" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="0,0,0,0" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="CommonStates">
+                <VisualState x:Name="Normal">
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ButtonContent" Storyboard.TargetProperty="IsHitTestVisible">
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="True"/>
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
+                <VisualState x:Name="Pressed">
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ButtonContent" Storyboard.TargetProperty="IsHitTestVisible">
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="False"/>
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
+                <VisualState x:Name="PointerOver">
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ButtonContent" Storyboard.TargetProperty="IsHitTestVisible">
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="True"/>
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
         <Button.ContextFlyout>
             <MenuFlyout>
                 <MenuFlyoutItem Text="Unpin from Start" Click="MenuFlyoutItem_Click">
@@ -67,22 +92,22 @@
                 </MenuFlyoutItem>
             </MenuFlyout>
         </Button.ContextFlyout>
-        <Grid FocusVisualSecondaryBrush="{x:Null}" FocusVisualPrimaryBrush="{x:Null}">
+        <Grid>
             <Image x:Name="TileIcon" Source="{Binding Icon}"
-           Width="32"
-           Height="32" />
+Width="32"
+Height="32" />
             <TextBlock x:Name="TileDisplayName"
-                       VerticalAlignment="Bottom"
-                       FontSize="12" Margin="6,0,0,6" Text="{Binding DisplayName}" />
+            VerticalAlignment="Bottom"
+            FontSize="12" Margin="6,0,0,6" Text="{Binding DisplayName}"/>
             <TextBlock x:Name="TileSizeInternal"
-                       VerticalAlignment="Bottom"
-                       FontSize="12" Margin="6,0,0,6" Text="{Binding Size}" Visibility="Collapsed" />
+            VerticalAlignment="Bottom"
+            FontSize="12" Margin="6,0,0,6" Text="{Binding Size}" Visibility="Collapsed" />
             <TextBlock x:Name="TileColorInternal"
-                       VerticalAlignment="Bottom"
-                       FontSize="12" Margin="6,0,0,6" Text="{Binding CustomTileBackground}" Visibility="Collapsed"/>
+            VerticalAlignment="Bottom"
+            FontSize="12" Margin="6,0,0,6" Text="{Binding CustomTileBackground}" Visibility="Collapsed"/>
             <TextBlock x:Name="PathClassic"
-                       VerticalAlignment="Bottom"
-                       FontSize="12" Margin="6,0,0,6" Text="{Binding AppPath}" Visibility="Collapsed"/>
+            VerticalAlignment="Bottom"
+            FontSize="12" Margin="6,0,0,6" Text="{Binding AppPath}" Visibility="Collapsed"/>
         </Grid>
     </Button>
 

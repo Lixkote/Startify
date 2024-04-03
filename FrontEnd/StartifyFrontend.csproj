@@ -133,6 +133,7 @@
     <Compile Include="Interface\StartMenu11\Controls\AllAppsPaneControl.xaml.cs">
       <DependentUpon>AllAppsPaneControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Interface\StartMenu11\Controls\CustomButton.cs" />
     <Compile Include="Interface\StartMenu11\Controls\UninstallFlyoutControl.xaml.cs">
       <DependentUpon>UninstallFlyoutControl.xaml</DependentUpon>
     </Compile>

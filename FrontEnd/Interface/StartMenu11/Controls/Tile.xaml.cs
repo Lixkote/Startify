@@ -32,6 +32,8 @@ namespace Shell.Interface.StartMenu11.Controls
         public static readonly DependencyProperty GradientStopsProperty =
         DependencyProperty.Register("GradientStops", typeof(GradientStopCollection), typeof(Reveal), null);
         Windows.UI.Xaml.Media.Brush GradientBrush;
+        private DispatcherTimer timer;
+
 
         public GradientStopCollection GradientStops
         {
@@ -53,7 +55,6 @@ namespace Shell.Interface.StartMenu11.Controls
         public Tile()
         {
             this.InitializeComponent();
-            
         }
         // Enum for Tile Sizes
         public enum TileSize
@@ -63,8 +64,6 @@ namespace Shell.Interface.StartMenu11.Controls
             Wide,
             Large
         }
-
-
         private void TileMain_Loaded(object sender, RoutedEventArgs e)
         {
             // CustomBacking
@@ -211,14 +210,12 @@ namespace Shell.Interface.StartMenu11.Controls
 
         private void TileButton_Click(object sender, RoutedEventArgs e)
         {
-            string PathUniversal = "Classic Path:" + PathClassic.Text + "Immersive Path:" + "";
-            Click?.Invoke(PathUniversal, e);
+            Click?.Invoke(sender, e);
         }
 
         private void TileMain_PointerPressed(object sender, PointerRoutedEventArgs e)
         {
-            string PathUniversal = "Classic Path:" + PathClassic.Text + "Immersive Path:" + "";
-            Click?.Invoke(PathUniversal, e);
+            Click?.Invoke(sender, e);
         }
 
         private void TileButton_Holding(object sender, HoldingRoutedEventArgs e)

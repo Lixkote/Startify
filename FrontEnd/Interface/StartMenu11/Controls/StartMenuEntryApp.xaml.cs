@@ -42,8 +42,7 @@ namespace Shell.Interface.StartMenu11.Controls
 
         private void PinToStartifyMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            string halal = CollapsedPathInformator.Text;
-            TilePinned?.Invoke(halal, e);
+            TilePinned?.Invoke(sender, e);
         }
 
         private void UninstallAppMenuItem_Click(object sender, RoutedEventArgs e)

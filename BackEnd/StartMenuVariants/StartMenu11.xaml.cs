@@ -80,21 +80,21 @@ namespace WPF.Views
 
         }
 
-        public void LoadTiles()
+        public async void LoadTiles()
         {
             TileGroups = new ObservableCollection<TileGroup>();
             var startPlaceholder = StartMenuIslandh.Child as Shell.Interface.StartMenu11.StartMenu;
-            TileAppHelper.LoadTileGroups(TileGroups);
+            await TileAppHelper.LoadTileGroups(TileGroups);
 
             var tilegridview = startPlaceholder.FindName("TileGroupGridView") as Windows.UI.Xaml.Controls.GridView;
             tilegridview.ItemsSource = TileGroups;
         }
 
-        public void ReloadTiles()
+        public async void ReloadTiles()
         {
             TileGroups = new ObservableCollection<TileGroup>();
             var startPlaceholder = StartMenuIslandh.Child as Shell.Interface.StartMenu11.StartMenu;
-            TileAppHelper.LoadTileGroups(TileGroups);
+            await TileAppHelper.LoadTileGroups(TileGroups);
 
             var tilegridview = startPlaceholder.FindName("TileGroupGridView") as Windows.UI.Xaml.Controls.GridView;
             tilegridview.ItemsSource = null;
@@ -414,15 +414,22 @@ namespace WPF.Views
 
         public async void ShowStartMenu(object sender, EventArgs e)
         {
+            RefreshAppList();
             Show();
             WindowActivator.ActivateWindow(new System.Windows.Interop.WindowInteropHelper(StartMenu11Host).Handle); // Activate window
             var startPlaceholder = StartMenuIslandh.Child as Shell.Interface.StartMenu11.StartMenu;
             await startPlaceholder.StartOpenStartAnimation(); // Wait for the animation
-            RefreshAppList();
             this.Focus();
         }
 
         public async void HideStartMenu(object sender, EventArgs e)
+        {
+            var startPlaceholder = StartMenuIslandh.Child as Shell.Interface.StartMenu11.StartMenu;
+            await startPlaceholder.StartCloseStartAnimation(); // Wait for the animation
+            Hide();
+        }
+
+        public async void HideStartMenuNoEvent()
         {
             var startPlaceholder = StartMenuIslandh.Child as Shell.Interface.StartMenu11.StartMenu;
             await startPlaceholder.StartCloseStartAnimation(); // Wait for the animation

@@ -343,13 +343,7 @@
                    
                     >
 
-            <GridView x:Name="TileGroupGridView" SelectionMode="None" CanDragItems="True" IsItemClickEnabled="True" CanReorderItems="True" AllowDrop="True" ItemTemplate="{StaticResource TileGroupTemplate}" Margin="0,0,18,0" >
-                <GridView.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <controls:StaggeredPanel  RowSpacing="0" ColumnSpacing="0" x:Name="MaxItemsWrapGrid" CanDrag="True" AllowDrop="True" 
-               />
-                    </ItemsPanelTemplate>
-                </GridView.ItemsPanel>
+            <GridView x:Name="TileGroupGridView" SelectionMode="None" CanDragItems="True" IsItemClickEnabled="True" CanReorderItems="True" AllowDrop="True" ItemTemplate="{StaticResource TileGroupTemplate}" Margin="0,0,18,0" Height="618" >
                 <GridView.ItemContainerStyle>
                     <Style TargetType="GridViewItem">
                         <Setter Property="Template">
