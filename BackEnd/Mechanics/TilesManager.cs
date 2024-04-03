@@ -145,11 +145,29 @@ namespace WPF.Helpers
 
         private void CreateDefaultConfiguration(string configFile)
         {
-            XDocument doc = new XDocument(
-                new XElement("XmlRoot")
-            );
+            try
+            {
+                // Attempt to load the existing configuration file
+                XDocument doc = XDocument.Load(configFile);
+            }
+            catch (Exception ex)
+            {
+                // If the file is not found, create a new one with default content
+                string directoryPath = Path.GetDirectoryName(configFile);
+                if (!Directory.Exists(directoryPath))
+                {
+                    // Create directory if it doesn't exist
+                    Directory.CreateDirectory(directoryPath);
+                }
 
-            doc.Save(configFile);
+                // Create default configuration
+                XDocument doc = new XDocument(
+                    new XElement("XmlRoot")
+                );
+
+                // Save the default configuration to the specified path
+                doc.Save(configFile);
+            }
         }
 
         public void AddTileToXml(object path, ObservableCollection<TileGroup> tileGroups)
