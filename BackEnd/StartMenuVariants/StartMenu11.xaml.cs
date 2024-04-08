@@ -295,35 +295,55 @@ namespace WPF.Views
                 //Align the start menu with taskbar alignment (center or left)
                 RegistryKey alignkey = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced");
 
-                int alignvalue = (int)alignkey.GetValue("TaskbarAl");
-
-                if (alignvalue.ToString() == "0")
+                if (alignkey != null)
                 {
-                    var desktopWorkingArea = SystemParameters.WorkArea;
-                    window.Left = 0;
-                    window.Top = desktopWorkingArea.Bottom - window.Height;
+                    object alignValueObj = alignkey.GetValue("TaskbarAl");
+                    if (alignValueObj != null && int.TryParse(alignValueObj.ToString(), out int alignvalue))
+                    {
+                        if (alignvalue == 0)
+                        {
+                            var desktopWorkingArea = SystemParameters.WorkArea;
+                            window.Left = 0;
+                            window.Top = desktopWorkingArea.Bottom - window.Height;
+                        }
+                        else if (alignvalue == 1)
+                        {
+                            // Calculate the screen center coordinates
+                            double screenWidth = SystemParameters.PrimaryScreenWidth;
+                            double screenHeight = SystemParameters.PrimaryScreenHeight;
+                            var desktopWorkingArea = SystemParameters.WorkArea;
+                            double windowWidth = window.Width;
+                            double windowHeight = window.Height;
+
+                            double left = (screenWidth - windowWidth) / 2;
+
+                            // Set the window position to the center of the screen
+                            window.Left = left;
+                            window.Top = desktopWorkingArea.Bottom - window.Height;
+                        }
+                    }
+                    else
+                    {
+                        var desktopWorkingArea = SystemParameters.WorkArea;
+                        window.Left = 0;
+                        window.Top = desktopWorkingArea.Bottom - window.Height;
+                    }
                 }
-                else if (alignvalue.ToString() == "1")
+                else
                 {
-                    // Calculate the screen center coordinates
-                    double screenWidth = SystemParameters.PrimaryScreenWidth;
-                    double screenHeight = SystemParameters.PrimaryScreenHeight;
-                    var desktopWorkingArea = SystemParameters.WorkArea;
-                    double windowWidth = window.Width;
-                    double windowHeight = window.Height;
-
-                    double left = (screenWidth - windowWidth) / 2;
-
-                    // Set the window position to the center of the screen
-                    window.Left = left;
-                    window.Top = desktopWorkingArea.Bottom - window.Height;
+                    // Handle the case where the registry key doesn't exist
+                    ModernWpf.MessageBox.Show("Startify has issues reading the taskbar alignment registry key. The default (left) alignment will be used.", "Startify Backend Error", MessageBoxButton.OK, SymbolGlyph.Error, MessageBoxResult.OK);
                 }
             }
             catch (Exception ex)
             {
-                ModernWpf.MessageBox.Show("Startify has issues reading the taskbar alignment registry key. The default(left) alignment will be used. Error code: " + ex.ToString(), "Startify Backend Error", MessageBoxButton.OK, SymbolGlyph.Error, MessageBoxResult.OK);
+                // Handle any other exceptions
+                ModernWpf.MessageBox.Show("An error occurred while aligning Startify with the taskbar: " + ex.Message, "Startify Backend Error", MessageBoxButton.OK, SymbolGlyph.Error, MessageBoxResult.OK);
             }
         }
+
+
+
 
         private void ThemingSetup()
         {

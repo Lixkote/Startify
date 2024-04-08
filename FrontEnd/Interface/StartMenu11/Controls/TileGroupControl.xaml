@@ -15,6 +15,30 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Interface/InterfaceResources.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <Style x:Key="GridViewItemContainerStyle" TargetType="GridViewItem">
+                <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}"/>
+                <Setter Property="FontSize" Value="{ThemeResource ControlContentThemeFontSize}"/>
+                <Setter Property="Background" Value="{ThemeResource GridViewItemBackground}"/>
+                <Setter Property="Foreground" Value="{ThemeResource GridViewItemForeground}"/>
+                <Setter Property="TabNavigation" Value="Local"/>
+                <Setter Property="IsHoldingEnabled" Value="True"/>
+                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                <Setter Property="Margin" Value="0,0,4,4"/>
+                <Setter Property="MinWidth" Value="{ThemeResource GridViewItemMinWidth}"/>
+                <Setter Property="MinHeight" Value="{ThemeResource GridViewItemMinHeight}"/>
+                <Setter Property="AllowDrop" Value="False"/>
+                <Setter Property="UseSystemFocusVisuals" Value="{StaticResource UseSystemFocusVisuals}"/>
+                <Setter Property="FocusVisualMargin" Value="-2"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="GridViewItem">
+                            <ListViewItemPresenter x:Name="Root" CheckMode="{ThemeResource GridViewItemCheckMode}" CheckBoxBrush="{ThemeResource GridViewItemCheckBoxBrush}" CheckBrush="{ThemeResource GridViewItemCheckBrush}" ContentMargin="{TemplateBinding Padding}" ContentTransitions="{TemplateBinding ContentTransitions}" DragOpacity="{ThemeResource ListViewItemDragThemeOpacity}" DragBackground="{ThemeResource GridViewItemDragBackground}" DisabledOpacity="{ThemeResource ListViewItemDisabledThemeOpacity}" DragForeground="{ThemeResource GridViewItemDragForeground}" FocusVisualMargin="{TemplateBinding FocusVisualMargin}" FocusBorderBrush="{ThemeResource GridViewItemFocusBorderBrush}" FocusSecondaryBorderBrush="{ThemeResource GridViewItemFocusSecondaryBorderBrush}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" Control.IsTemplateFocusTarget="True" PlaceholderBackground="{ThemeResource GridViewItemPlaceholderBackground}" PointerOverBackground="{ThemeResource GridViewItemBackgroundPointerOver}" PointerOverForeground="{ThemeResource GridViewItemForegroundPointerOver}" PressedBackground="{ThemeResource GridViewItemBackgroundPressed}" RevealBorderThickness="{ThemeResource GridViewItemRevealBorderThemeThickness}" RevealBackground="{ThemeResource GridViewItemRevealBackground}" RevealBorderBrush="{ThemeResource GridViewItemRevealBorderBrush}" ReorderHintOffset="{ThemeResource GridViewItemReorderHintThemeOffset}" SelectedForeground="{ThemeResource GridViewItemForegroundSelected}" SelectedPointerOverBackground="{ThemeResource GridViewItemBackgroundSelectedPointerOver}" SelectionCheckMarkVisualEnabled="{ThemeResource GridViewItemSelectionCheckMarkVisualEnabled}" SelectedBackground="{ThemeResource GridViewItemBackgroundSelected}" SelectedPressedBackground="{ThemeResource GridViewItemBackgroundSelectedPressed}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}">
+                            </ListViewItemPresenter>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -24,7 +48,7 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <local:TileGroupNameBox x:Name="TileGridViewGroupName" Grid.Row="0" LostFocus="TileGridViewGroupName_LostFocus" HorizontalContentAlignment="Left" Height="36" Width="293" HorizontalAlignment="Left" Margin="0,5,0,5" VerticalAlignment="Center" />
-        <GridView x:Name="TileGridView" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" CanDragItems="True" IsItemClickEnabled="False" AllowDrop="True" CanReorderItems="True" Grid.Row="1" ItemsSource="{Binding Tiles}"
+        <GridView ItemContainerStyle="{StaticResource GridViewItemContainerStyle}" x:Name="TileGridView" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" CanDragItems="True" IsItemClickEnabled="False" AllowDrop="True" CanReorderItems="True" Grid.Row="1" ItemsSource="{Binding Tiles}"
                     SelectionMode="None">
             <GridView.ItemTemplate>
                 <DataTemplate>
