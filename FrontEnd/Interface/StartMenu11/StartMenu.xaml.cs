@@ -149,10 +149,10 @@ namespace Shell.Interface.StartMenu11
                 BitmapImage bitmapImage = new BitmapImage();
 
                 // Set the source of the BitmapImage from the stream
-                await bitmapImage.SetSourceAsync(imageStream);
-                UserAV.Source = bitmapImage;
-                UserAVB.Source = bitmapImage;
-                UsernameTextBlock.Text = username;
+                // await bitmapImage.SetSourceAsync(imageStream);
+                // UserAV.Source = bitmapImage;
+                // UserAVB.Source = bitmapImage;
+                // UsernameTextBlock.Text = username;
             }
         }
 
