@@ -146,41 +146,23 @@ namespace WPF.Helpers
                         // Create a PngBitmapEncoder and add the BitmapSource to its frames
                         PngBitmapEncoder encoder = new PngBitmapEncoder();
                         encoder.Frames.Add(BitmapFrame.Create(bitmapSource));
-                        // Fix for icons 22.09.2023
-                        string folderPath = Environment.GetEnvironmentVariable("programdata") + @"\Startify\IconTemp";
 
-                        if (!Directory.Exists(folderPath))
+                        // Convert the encoded image to a byte array
+                        byte[] imageBytes;
+                        using (MemoryStream memoryStream = new MemoryStream())
                         {
-                            try
-                            {
-                                Directory.CreateDirectory(folderPath);
-                                Console.WriteLine("Folder created successfully.");
-                            }
-                            catch (Exception ex)
-                            {
-                                Console.WriteLine($"Error creating folder: {ex.Message}");
-                            }
-                        }
-                        else
-                        {
-                            Console.WriteLine("Folder already exists.");
+                            encoder.Save(memoryStream);
+                            imageBytes = memoryStream.ToArray();
                         }
 
+                        // Convert the byte array to a base64 string
+                        string base64String = Convert.ToBase64String(imageBytes);
 
-                        // Generate a unique file name for the icon file based on the .lnk file name
-                        string fileName = Path.GetFileNameWithoutExtension(file) + ".png";
-                        string filePath = Path.Combine(folderPath, fileName);
+                        // Construct the data URI
+                        string dataUri = "data:image/png;base64," + base64String;
 
-                        // Save the icon file to the destination folder using a FileStream
-                        using (FileStream stream = new FileStream(filePath, FileMode.Create))
-                        {
-                            encoder.Save(stream);
-                        }
-
-                        string escapedFilePath = Uri.EscapeDataString(filePath);
-
-                        // Return the URI of the icon file as a string
-                        return "file:///" + escapedFilePath;
+                        // Return the data URI of the icon image
+                        return dataUri;
                     }
                     else
                     {
@@ -195,6 +177,7 @@ namespace WPF.Helpers
                 }
             }
         }
+
 
         [DllImport("shell32.dll", EntryPoint = "#261",
                CharSet = CharSet.Unicode, PreserveSig = false)]

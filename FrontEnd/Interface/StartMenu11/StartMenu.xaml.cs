@@ -144,15 +144,22 @@ namespace Shell.Interface.StartMenu11
             string username = current.ToString();
             if (picture != null)
             {
-                var imageStream = await picture.OpenReadAsync();
-                // Create a BitmapImage object
-                BitmapImage bitmapImage = new BitmapImage();
+                try
+                {
+                    var imageStream = await picture.OpenReadAsync();
+                    // Create a BitmapImage object
+                    BitmapImage bitmapImage = new BitmapImage();
 
-                // Set the source of the BitmapImage from the stream
-                // await bitmapImage.SetSourceAsync(imageStream);
-                // UserAV.Source = bitmapImage;
-                // UserAVB.Source = bitmapImage;
-                // UsernameTextBlock.Text = username;
+                    // Set the source of the BitmapImage from the stream
+                    await bitmapImage.SetSourceAsync(imageStream);
+                    UserAV.Source = bitmapImage;
+                    UserAVB.Source = bitmapImage;
+                }
+                catch
+                {
+
+                }
+                UsernameTextBlock.Text = username;
             }
         }
 

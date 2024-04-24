@@ -172,8 +172,9 @@ namespace WPF
                             break;
 
                         default:
-                            ModernWpf.MessageBox.Show("Invalid Start Button hooking method specified. Default(Standard) type will be used.", "Startify Misconfiguration Detected", MessageBoxButton.OK, SymbolGlyph.Warning, MessageBoxResult.OK);
-
+                            StartListener = new WinButtonHook();
+                            StartListener.StartTriggered += OnStartTriggered;
+                            StartListener.FindAndActivateWindow();
                             break;
                     }
                 }
