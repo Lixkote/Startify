@@ -63,6 +63,14 @@ namespace Shell.Interface.StartMenu11
 
         private Storyboard currentAnimation;
 
+        public void EnableDockedDesign()
+        {
+            StartMenuAcrylicOverlay.Visibility = Visibility.Collapsed;
+            startbackground.Margin = new Windows.UI.Xaml.Thickness(0);
+            startbackground.CornerRadius = new CornerRadius(0,10,0,0);
+            startbackground.BorderThickness = new Thickness(0,1,1,0);
+        }
+
         public Task ToggleStartAnimation()
         {
             if (currentAnimation != null)
@@ -153,13 +161,11 @@ namespace Shell.Interface.StartMenu11
                     // Set the source of the BitmapImage from the stream
                     await bitmapImage.SetSourceAsync(imageStream);
                     UserAV.Source = bitmapImage;
-                    UserAVB.Source = bitmapImage;
                 }
                 catch
                 {
 
                 }
-                UsernameTextBlock.Text = username;
             }
         }
 

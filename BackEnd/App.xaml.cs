@@ -59,23 +59,6 @@ namespace WPF
         ObservableCollection<StartMenuEntry> PinnedForCompactMenu = new ObservableCollection<StartMenuEntry>();
         ObservableCollection<TileGroup> TileGroups = new ObservableCollection<TileGroup>();
 
-        private static string GetHookingMethod(string filePath)
-        {
-            /////////////////////////////////////////////
-            /// Config file helper.
-            /////////////////////////////////////////////
-            foreach (string line in System.IO.File.ReadLines(filePath))
-            {
-                string[] keyValue = line.Split('=');
-                if (keyValue.Length == 2 && keyValue[0].Trim() == "HookingMethod")
-                {
-                    return keyValue[1].Trim();
-                }
-            }
-
-            return string.Empty;
-        }
-
         public static bool IsHibernateEnabled()
         {
             /////////////////////////////////////////////
@@ -152,39 +135,12 @@ namespace WPF
             /////////////////////////////////////////////
             /// Here we load the main configuration file and set the hooking method from it.
             /////////////////////////////////////////////
-            string configFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Startify", "settings.cfg");
 
             try
             {
-                if (File.Exists(configFilePath))
-                {
-                    string hookingMethod = GetHookingMethod(configFilePath);
-                    switch (hookingMethod.ToUpperInvariant())
-                    {
-                        case "AHK":
-                            ModernWpf.MessageBox.Show("AutoHotKey Start Button Hooking Method Selected.                                 Note: This mode is prototype and might misbehave or not work at all. Check Startify Documentation before using this.", "Startify Prototype Features", MessageBoxButton.OK, SymbolGlyph.Construction, MessageBoxResult.OK);
-                            break;
-
-                        case "STANDARD":
-                            StartListener = new WinButtonHook();
-                            StartListener.StartTriggered += OnStartTriggered;
-                            StartListener.FindAndActivateWindow();
-                            break;
-
-                        default:
-                            StartListener = new WinButtonHook();
-                            StartListener.StartTriggered += OnStartTriggered;
-                            StartListener.FindAndActivateWindow();
-                            break;
-                    }
-                }
-                else
-                {
-                    // ModernWpf.MessageBox.Show("Configuration file missing. Default(Standard) hooking type will be used.", "Startify Misconfiguration Detected", MessageBoxButton.OK, SymbolGlyph.Warning, MessageBoxResult.OK);
-                    StartListener = new WinButtonHook();
-                    StartListener.StartTriggered += OnStartTriggered;
-                    StartListener.FindAndActivateWindow();
-                }
+                StartListener = new WinButtonHook();
+                StartListener.StartTriggered += OnStartTriggered;
+                StartListener.FindAndActivateWindow();
             }
             catch (Exception ex)
             {

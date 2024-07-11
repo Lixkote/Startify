@@ -154,9 +154,7 @@
     <UserControl.RenderTransform>
         <TranslateTransform x:Name="translateTransform" />
     </UserControl.RenderTransform>
-
-
-
+    
     <Grid x:Name="startbackground" Background="{ThemeResource ShellAcrylicBrush}"
           BorderBrush="{ThemeResource SurfaceStrokeColorDefaultBrush}"
           BorderThickness="1,1,1,1"
@@ -191,67 +189,44 @@
                 <RowDefinition Height="80" />
                 <RowDefinition Height="575*"/>
             </Grid.RowDefinitions>
-
-            
-            
-            
-            
-            <Button x:Name="UserAV_Button" HorizontalAlignment="Stretch"
-        Height="34"
-        Padding="0"
-        Style="{StaticResource leftmenubuttonstyle}"
-        CornerRadius="5"
-        Background="Transparent"
-        BorderBrush="Transparent" Margin="5,5,5,5" Width="34">
-                <Grid CornerRadius="1000">
-                    <Image x:Name="UserAV" Height="25" Source="/Assets/user-32.png" Width="25" />
-                </Grid>
-                <Button.Flyout>
-                    <Flyout>
-                        <Grid RowSpacing="3">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="17*"/>
-                                <RowDefinition Height="8*"/>
-                                <RowDefinition Height="8*"/>
-                                <RowDefinition Height="8*"/>
-                            </Grid.RowDefinitions>
-                            <Grid CornerRadius="100" Width="48" Height="48" HorizontalAlignment="Left" Margin="10,0,0,0">
-                                <Image x:Name="UserAVB" Height="48" Source="/Assets/user-32.png" Width="48" />
-                            </Grid>
-                            <TextBlock x:Name="UsernameTextBlock" Text="username" VerticalAlignment="Center" Margin="70,0,0,0"></TextBlock>
-                            <Button x:Name="accsetting" Grid.Row="1" Style="{ThemeResource leftmenubuttonstyle}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch">
-                                <Grid>
-                                    <TextBlock Margin="25,0,0,0" VerticalAlignment="Center">Change account settings</TextBlock>
-                                    <TextBlock FontFamily="Segoe Fluent Icons" VerticalAlignment="Center"></TextBlock>
-                                </Grid>
-                            </Button>
-                            <Button x:Name="lockout" Grid.Row="2" Style="{ThemeResource leftmenubuttonstyle}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch">
-                                <Grid>
-                                    <TextBlock Margin="25,0,0,0" VerticalAlignment="Center">Lock</TextBlock>
-                                    <TextBlock FontFamily="Segoe Fluent Icons" VerticalAlignment="Center"></TextBlock>
-                                </Grid>
-                            </Button>
-                            <Button x:Name="signout" Grid.Row="3" Style="{ThemeResource leftmenubuttonstyle}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch">
-                                <Grid>
-                                    <TextBlock Margin="25,0,0,0" VerticalAlignment="Center">Sign out</TextBlock>
-                                    <TextBlock FontFamily="Segoe Fluent Icons" VerticalAlignment="Center"></TextBlock>
-                                </Grid>
-                            </Button>
-                        </Grid>
-                    </Flyout>
-                </Button.Flyout>
-            </Button>
-
+            <Button x:Name="LinesButton" HorizontalAlignment="Stretch"
+Height="34"
+FontFamily="Segoe Fluent Icons"
+Visibility="Visible"
+Style="{StaticResource leftmenubuttonstyle}"
+FontSize="16"
+Content=""
+Padding="0"
+CornerRadius="5"
+Background="Transparent"
+BorderBrush="Transparent" Width="34" Margin="5,5,5,5" Click="DocumentsButton_Click" />
+           
             <StackPanel Grid.Row="2"
                         Orientation="Vertical"
-                        VerticalAlignment="Bottom" Margin="0,345,0,0">
+                        VerticalAlignment="Bottom">
 
                 
 
+                <Button x:Name="UserAV_Button" HorizontalAlignment="Stretch"
+                    Height="32"
+                    Padding="0"
+                    Style="{StaticResource leftmenubuttonstyle}"
+                    CornerRadius="5"
+                    Background="Transparent"
+                    BorderBrush="Transparent" Margin="5,5,5,5" Width="34">
+                    <Grid CornerRadius="1000">
+                        <Image x:Name="UserAV" Height="20" Source="/Assets/user-32.png" Width="20" />
+                    </Grid>
+                    <Button.Flyout>
+                        <MenuFlyout>
+                            <MenuFlyoutItem></MenuFlyoutItem>
+                        </MenuFlyout>
+                    </Button.Flyout>
+                </Button>
                 <Button x:Name="DocumentsButton" HorizontalAlignment="Stretch"
                         Height="34"
                         FontFamily="Segoe Fluent Icons"
-                        Visibility="Visible"
+                        Visibility="Collapsed"
                         Style="{StaticResource leftmenubuttonstyle}"
                         FontSize="16"
                         Content="&#xE8A5;"
@@ -260,31 +235,91 @@
                         Background="Transparent"
                         BorderBrush="Transparent" Width="34" Margin="5,5,5,5" Click="DocumentsButton_Click" />
 
-                <Button x:Name="ImagesButton" HorizontalAlignment="
-                            Stretch"
-                        Height="34"
-                        Visibility="Visible"
-                        Style="{StaticResource leftmenubuttonstyle}"
-                        FontFamily="Segoe Fluent Icons"
-                        FontSize="16"
-                        Content="&#xE91B;"
-                        
-                        Padding="0"
-                        CornerRadius="5"
-                        Background="Transparent"
-                        BorderBrush="Transparent" Margin="5,5,5,0" Click="ImagesButton_Click" />
 
-                <Button Style="{StaticResource leftmenubuttonstyle}" x:Name="SettingsButton" HorizontalAlignment="
+
+                <Button Style="{StaticResource leftmenubuttonstyle}" x:Name="MusicButton" HorizontalAlignment="
                             Stretch"
                         Height="34"
                         FontFamily="Segoe Fluent Icons"
                         FontSize="16"
-                        Content="&#xE713;"
+                        Content=""
                         Padding="0"
                         CornerRadius="5"
-                        Visibility="Visible"
+                        Visibility="Collapsed"
                         Background="Transparent"
                         BorderBrush="Transparent" Margin="5,5,5,5" Click="SettingsButton_Click" />
+
+                <Button Style="{StaticResource leftmenubuttonstyle}" x:Name="PicturesButton" HorizontalAlignment="
+                            Stretch"
+                        Height="34"
+                        FontFamily="Segoe Fluent Icons"
+                        FontSize="16"
+                        Content=""
+                        Padding="0"
+                        CornerRadius="5"
+                        Visibility="Collapsed"
+                        Background="Transparent"
+                        BorderBrush="Transparent" Margin="5,5,5,5" Click="SettingsButton_Click" />
+
+                <Button Style="{StaticResource leftmenubuttonstyle}" x:Name="MoviesButton" HorizontalAlignment="
+                            Stretch"
+                        Height="34"
+                        FontFamily="Segoe Fluent Icons"
+                        FontSize="16"
+                        Content=""
+                        Padding="0"
+                        CornerRadius="5"
+                        Visibility="Collapsed"
+                        Background="Transparent"
+                        BorderBrush="Transparent" Margin="5,5,5,5" Click="SettingsButton_Click" />
+
+                <Button Style="{StaticResource leftmenubuttonstyle}" x:Name="NetworkButton" HorizontalAlignment="
+                            Stretch"
+                        Height="34"
+                        FontFamily="Segoe Fluent Icons"
+                        FontSize="16"
+                        Content=""
+                        Padding="0"
+                        CornerRadius="5"
+                        Visibility="Collapsed"
+                        Background="Transparent"
+                        BorderBrush="Transparent" Margin="5,5,5,5" Click="SettingsButton_Click" />
+
+                <Button Style="{StaticResource leftmenubuttonstyle}" x:Name="PersonalFolderButton" HorizontalAlignment="
+            Stretch"
+        Height="34"
+        FontFamily="Segoe Fluent Icons"
+        FontSize="16"
+        Content=""
+        Padding="0"
+        CornerRadius="5"
+        Visibility="Collapsed"
+        Background="Transparent"
+        BorderBrush="Transparent" Margin="5,5,5,5" Click="SettingsButton_Click" />
+
+                <Button Style="{StaticResource leftmenubuttonstyle}" x:Name="FileExplorerButton" HorizontalAlignment="
+            Stretch"
+        Height="34"
+        FontFamily="Segoe Fluent Icons"
+        FontSize="16"
+        Content=""
+        Padding="0"
+        CornerRadius="5"
+        Visibility="Collapsed"
+        Background="Transparent"
+        BorderBrush="Transparent" Margin="5,5,5,5" Click="SettingsButton_Click" />
+
+                <Button Style="{StaticResource leftmenubuttonstyle}" x:Name="SettingsAppButton" HorizontalAlignment="
+            Stretch"
+        Height="34"
+        FontFamily="Segoe Fluent Icons"
+        FontSize="16"
+        Content="&#xE713;"
+        Padding="0"
+        CornerRadius="5"
+        Visibility="Collapsed"
+        Background="Transparent"
+        BorderBrush="Transparent" Margin="5,5,5,5" Click="SettingsButton_Click" />
 
                 <Button x:Name="PowerButton" HorizontalAlignment="Stretch"
                         Height="34"
@@ -298,16 +333,16 @@
                         BorderBrush="Transparent" Margin="5,5,5,5">
                     <Button.ContextFlyout>
                         <MenuFlyout>
-                            <MenuFlyoutItem x:Name="ExitStartify" Text="Exit Startify" Click="ExitStartify_Click">
+                            <MenuFlyoutItem x:Name="ExitStartify" Text="Return to the Windows 11 Start Menu" Click="ExitStartify_Click">
                                 <MenuFlyoutItem.Icon>
-                                    <FontIcon Glyph=""/>
+                                    <FontIcon Glyph=""/>
                                 </MenuFlyoutItem.Icon>
                             </MenuFlyoutItem>
                         </MenuFlyout>
                     </Button.ContextFlyout>
                     <Button.Flyout>
                         <MenuFlyout>
-                            <MenuFlyoutItem x:Name="HibernateMenuButton" Text="Hibernate">
+                            <MenuFlyoutItem x:Name="HibernateMenuButton" Text="Hibernate" Visibility="Collapsed">
                                 <MenuFlyoutItem.Icon>
                                     <FontIcon Glyph=""/>
                                 </MenuFlyoutItem.Icon>
