@@ -253,161 +253,49 @@ namespace WPF.Views
             LoadTiles();
             ThemingSetup();
             Engine.ShowNotification();
-            string configFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Startify", "Settings.cfg");
+            ApplySettings(startPlaceholder);
+        }
+
+        private static void SetButtonVisibility(string configFilePath, string settingName, string buttonName, Shell.Interface.StartMenu11.StartMenu startPlaceholder)
+        {
+            string settingValue = GetConfigFileEntry(configFilePath, settingName);
+            var button = startPlaceholder.FindName(buttonName) as Windows.UI.Xaml.Controls.Button;
+
+            if (button != null)
             {
-                string settingenabled1 = GetConfigFileEntry(configFilePath, "DockedDesign");
-                switch (settingenabled1.ToUpperInvariant())
-                {
-                    case "true":
-                        startPlaceholder.EnableDockedDesign();
-                        break;
+                button.Visibility = (Windows.UI.Xaml.Visibility)(settingValue.Equals("true", StringComparison.InvariantCultureIgnoreCase) ? Visibility.Visible : Visibility.Collapsed);
+            }hone
+        }
 
-                    case "false":
-                        break;
 
-                    default:
-                        break;
-                }
-                string settingenabled2 = GetConfigFileEntry(configFilePath, "DisplayTiles");
-                switch (settingenabled2.ToUpperInvariant())
-                {
-                    case "true":
-                        break;
+        public void ApplySettings(Shell.Interface.StartMenu11.StartMenu startPlaceholder)
+        {
+            string configFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Startify", "Settings.cfg");
 
-                    case "false":
-                        DisableTilesSilent();
-                        break;
-
-                    default:
-                        break;
-                }
-                string settingenabled3 = GetConfigFileEntry(configFilePath, "ShowSettingsButton");
-                switch (settingenabled3.ToUpperInvariant())
-                {
-                    case "true":
-                        var SettingsButton = startPlaceholder.FindName("SettingsButton") as Windows.UI.Xaml.Controls.Button;
-                        SettingsButton.Visibility = Windows.UI.Xaml.Visibility.Visible;
-                        break;
-
-                    case "false":
-                        break;
-
-                    default:
-                        break;
-                }
-                string settingenabled4 = GetConfigFileEntry(configFilePath, "ShowExplorerButton");
-                switch (settingenabled4.ToUpperInvariant())
-                {
-                    case "true":
-                        var FileExplorerButton = startPlaceholder.FindName("FileExplorerButton") as Windows.UI.Xaml.Controls.Button;
-                        FileExplorerButton.Visibility = Windows.UI.Xaml.Visibility.Visible;
-                        break;
-
-                    case "false":
-                        break;
-
-                    default:
-                        break;
-                }
-                string settingenabled5 = GetConfigFileEntry(configFilePath, "ShowDocumentsButton");
-                switch (settingenabled5.ToUpperInvariant())
-                {
-                    case "true":
-                        var DocumentsButton = startPlaceholder.FindName("DocumentsButton") as Windows.UI.Xaml.Controls.Button;
-                        DocumentsButton.Visibility = Windows.UI.Xaml.Visibility.Visible;
-                        break;
-
-                    case "false":
-                        break;
-
-                    default:
-                        break;
-                }
-                string settingenabled6 = GetConfigFileEntry(configFilePath, "ShowDownloadsButton");
-                switch (settingenabled6.ToUpperInvariant())
-                {
-                    case "true":
-                        var DownloadsButton = startPlaceholder.FindName("DownloadsButton") as Windows.UI.Xaml.Controls.Button;
-                        DownloadsButton.Visibility = Windows.UI.Xaml.Visibility.Visible;
-                        break;
-
-                    case "false":
-                        break;
-
-                    default:
-                        break;
-                }
-                string settingenabled7 = GetConfigFileEntry(configFilePath, "ShowMusicButton");
-                switch (settingenabled7.ToUpperInvariant())
-                {
-                    case "true":
-                        var MusicButton = startPlaceholder.FindName("MusicButton") as Windows.UI.Xaml.Controls.Button;
-                        MusicButton.Visibility = Windows.UI.Xaml.Visibility.Visible;
-                        break;
-
-                    case "false":
-                        break;
-
-                    default:
-                        break;
-                }
-                string settingenabled8 = GetConfigFileEntry(configFilePath, "ShowPicturesButton");
-                switch (settingenabled8.ToUpperInvariant())
-                {
-                    case "true":
-                        var PicturesButton = startPlaceholder.FindName("PicturesButton") as Windows.UI.Xaml.Controls.Button;
-                        PicturesButton.Visibility = Windows.UI.Xaml.Visibility.Visible;
-                        break;
-
-                    case "false":
-                        break;
-
-                    default:
-                        break;
-                }
-                string settingenabled9 = GetConfigFileEntry(configFilePath, "ShowMoviesButton");
-                switch (settingenabled9.ToUpperInvariant())
-                {
-                    case "true":
-                        var MoviesButton = startPlaceholder.FindName("MoviesButton") as Windows.UI.Xaml.Controls.Button;
-                        MoviesButton.Visibility = Windows.UI.Xaml.Visibility.Visible;
-                        break;
-
-                    case "false":
-                        break;
-
-                    default:
-                        break;
-                }
-                string settingenabled10 = GetConfigFileEntry(configFilePath, "ShowNetworkButton");
-                switch (settingenabled10.ToUpperInvariant())
-                {
-                    case "true":
-                        var NetworkButton = startPlaceholder.FindName("NetworkButton") as Windows.UI.Xaml.Controls.Button;
-                        NetworkButton.Visibility = Windows.UI.Xaml.Visibility.Visible;
-                        break;
-
-                    case "false":
-                        break;
-
-                    default:
-                        break;
-                }
-                string settingenabled11 = GetConfigFileEntry(configFilePath, "ShowPersonalFolderButton");
-                switch (settingenabled11.ToUpperInvariant())
-                {
-                    case "true":
-                        var ShowPersonalFolderButton = startPlaceholder.FindName("PersonalFolderButton") as Windows.UI.Xaml.Controls.Button;
-                        ShowPersonalFolderButton.Visibility = Windows.UI.Xaml.Visibility.Visible;
-                        break;
-
-                    case "false":
-                        break;
-
-                    default:
-                        break;
-                }
+            // Handle DockedDesign separately as it has a unique action
+            string dockedDesignSetting = GetConfigFileEntry(configFilePath, "DockedDesign");
+            if (dockedDesignSetting.Equals("true", StringComparison.InvariantCultureIgnoreCase))
+            {
+                startPlaceholder.EnableDockedDesign();
             }
+
+            // Handle DisplayTiles separately as it has a unique action
+            string displayTilesSetting = GetConfigFileEntry(configFilePath, "DisplayTiles");
+            if (displayTilesSetting.Equals("false", StringComparison.InvariantCultureIgnoreCase))
+            {
+                DisableTilesSilent();
+            }
+
+            // Handle visibility settings for buttons
+            SetButtonVisibility(configFilePath, "ShowSettingsButton", "SettingsButton", startPlaceholder);
+            SetButtonVisibility(configFilePath, "ShowExplorerButton", "FileExplorerButton", startPlaceholder);
+            SetButtonVisibility(configFilePath, "ShowDocumentsButton", "DocumentsButton", startPlaceholder);
+            SetButtonVisibility(configFilePath, "ShowDownloadsButton", "DownloadsButton", startPlaceholder);
+            SetButtonVisibility(configFilePath, "ShowMusicButton", "MusicButton", startPlaceholder);
+            SetButtonVisibility(configFilePath, "ShowPicturesButton", "PicturesButton", startPlaceholder);
+            SetButtonVisibility(configFilePath, "ShowMoviesButton", "MoviesButton", startPlaceholder);
+            SetButtonVisibility(configFilePath, "ShowNetworkButton", "NetworkButton", startPlaceholder);
+            SetButtonVisibility(configFilePath, "ShowPersonalFolderButton", "PersonalFolderButton", startPlaceholder);
         }
 
         private async Task OpenUninstall()
