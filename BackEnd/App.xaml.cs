@@ -227,7 +227,7 @@ namespace WPF
             // Show the "everything is ok" toast
             new ToastContentBuilder()
                 .AddInlineImage(new Uri(uriString))
-                .AddText("Welcome to Startify(Preview)!")
+                .AddText("Welcome to Startify")
                 .AddText("Check it out by clicking the Windows Start button!")
                 .Show();
         }

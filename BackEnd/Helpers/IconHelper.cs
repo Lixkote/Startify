@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Drawing;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Drawing;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Interop;
@@ -14,6 +14,7 @@ using System.Text;
 using System.Drawing.Drawing2D;
 using WPF.Helpers;
 using ShellLink;
+using System.Windows.Media.Animation;
 namespace WPF.Helpers
 {
     internal static class IconHelper
@@ -146,23 +147,41 @@ namespace WPF.Helpers
                         // Create a PngBitmapEncoder and add the BitmapSource to its frames
                         PngBitmapEncoder encoder = new PngBitmapEncoder();
                         encoder.Frames.Add(BitmapFrame.Create(bitmapSource));
+                        // Fix for icons 22.09.2023
+                        string folderPath = Environment.GetEnvironmentVariable("programdata") + @"\Startify\IconTemp";
 
-                        // Convert the encoded image to a byte array
-                        byte[] imageBytes;
-                        using (MemoryStream memoryStream = new MemoryStream())
+                        if (!Directory.Exists(folderPath))
                         {
-                            encoder.Save(memoryStream);
-                            imageBytes = memoryStream.ToArray();
+                            try
+                            {
+                                Directory.CreateDirectory(folderPath);
+                                Console.WriteLine("Folder created successfully.");
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine($"Error creating folder: {ex.Message}");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Folder already exists.");
                         }
 
-                        // Convert the byte array to a base64 string
-                        string base64String = Convert.ToBase64String(imageBytes);
 
-                        // Construct the data URI
-                        string dataUri = "data:image/png;base64," + base64String;
+                        // Generate a unique file name for the icon file based on the .lnk file name
+                        string fileName = Path.GetFileNameWithoutExtension(file) + ".png";
+                        string filePath = Path.Combine(folderPath, fileName);
 
-                        // Return the data URI of the icon image
-                        return dataUri;
+                        // Save the icon file to the destination folder using a FileStream
+                        using (FileStream stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            encoder.Save(stream);
+                        }
+
+                        string escapedFilePath = Uri.EscapeDataString(filePath);
+
+                        // Return the URI of the icon file as a string
+                        return "file:///" + escapedFilePath;
                     }
                     else
                     {

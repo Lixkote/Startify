@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XmlRoot>
+  <TileGroup Name="Tools">
+    <Tile>
+      <AppPath />
+      <UWPID>9390SimonKnuth.ScannerforWindows10_69n05hp4v3s90</UWPID>
+      <Size>Normal</Size>
+      <LiveTileEnabled>false</LiveTileEnabled>
+      <CustomTileBackground></CustomTileBackground>
+    </Tile>
+    <Tile>
+      <AppPath />
+      <UWPID>windows.immersivecontrolpanel_cw5n1h2txyewy</UWPID>
+      <Size>Normal</Size>
+      <LiveTileEnabled>false</LiveTileEnabled>
+      <CustomTileBackground></CustomTileBackground>
+    </Tile>
+    <Tile>
+      <AppPath />
+      <UWPID>11413PtruceanBogdan.Wintoys_ankwhmsh70gj6</UWPID>
+      <Size>Normal</Size>
+      <LiveTileEnabled>false</LiveTileEnabled>
+      <CustomTileBackground></CustomTileBackground>
+    </Tile>
+  </TileGroup>
+</XmlRoot>

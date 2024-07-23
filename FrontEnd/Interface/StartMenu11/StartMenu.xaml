@@ -199,7 +199,7 @@ Content=""
 Padding="0"
 CornerRadius="5"
 Background="Transparent"
-BorderBrush="Transparent" Width="34" Margin="5,5,5,5" Click="DocumentsButton_Click" />
+BorderBrush="Transparent" Width="34" Margin="5,5,5,5" />
            
             <StackPanel Grid.Row="2"
                         Orientation="Vertical"
@@ -219,7 +219,21 @@ BorderBrush="Transparent" Width="34" Margin="5,5,5,5" Click="DocumentsButton_Cli
                     </Grid>
                     <Button.Flyout>
                         <MenuFlyout>
-                            <MenuFlyoutItem></MenuFlyoutItem>
+                            <MenuFlyoutItem x:Name="AccountSettingsMenuItem" Text="Change account settings">
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon Glyph=""/>
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                            <MenuFlyoutItem x:Name="LockMenuItem"  Text="Lock">
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon Glyph=""/>
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                            <MenuFlyoutItem x:Name="SignOutMenuItem"  Text="Sign out">
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon Glyph=""/>
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
                         </MenuFlyout>
                     </Button.Flyout>
                 </Button>
@@ -342,11 +356,6 @@ BorderBrush="Transparent" Width="34" Margin="5,5,5,5" Click="DocumentsButton_Cli
                     </Button.ContextFlyout>
                     <Button.Flyout>
                         <MenuFlyout>
-                            <MenuFlyoutItem x:Name="HibernateMenuButton" Text="Hibernate" Visibility="Collapsed">
-                                <MenuFlyoutItem.Icon>
-                                    <FontIcon Glyph=""/>
-                                </MenuFlyoutItem.Icon>
-                            </MenuFlyoutItem>
                             <MenuFlyoutItem x:Name="SleepMenuButton" Text="Sleep">
                                 <MenuFlyoutItem.Icon>
                                     <FontIcon Glyph=""/>

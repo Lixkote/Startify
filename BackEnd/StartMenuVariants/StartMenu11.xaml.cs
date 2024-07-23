@@ -228,22 +228,19 @@ namespace WPF.Views
             var power = startPlaceholder.FindName("PowerMenuButton") as Windows.UI.Xaml.Controls.MenuFlyoutItem;
             var exitmenuitem = startPlaceholder.FindName("ExitStartify") as Windows.UI.Xaml.Controls.MenuFlyoutItem;
 
-            var signout = startPlaceholder.FindName("signout") as Windows.UI.Xaml.Controls.Button;
-            var lockout = startPlaceholder.FindName("lockout") as Windows.UI.Xaml.Controls.Button;
-            var accsetting = startPlaceholder.FindName("accsetting") as Windows.UI.Xaml.Controls.Button;
+            var signout = startPlaceholder.FindName("SignOutMenuItem") as Windows.UI.Xaml.Controls.MenuFlyoutItem;
+            var lockout = startPlaceholder.FindName("LockMenuItem") as Windows.UI.Xaml.Controls.MenuFlyoutItem;
+            var accsetting = startPlaceholder.FindName("AccountSettingsMenuItem") as Windows.UI.Xaml.Controls.MenuFlyoutItem;
 
             var powerKey = Registry.LocalMachine.OpenSubKey("SYSTEM\\CurrentControlSet\\Control\\Power");
-            int hibernateValue = (int)powerKey.GetValue("HibernateEnabledDefault");
-            hibernate.Visibility = (hibernateValue == 1) ? Windows.UI.Xaml.Visibility.Visible : Windows.UI.Xaml.Visibility.Collapsed;
 
-            hibernate.Click += async (sender, e) => await Engine.HibernateAsync();
             sleep.Click += async (sender, e) => await Engine.SleepAsync();
             power.Click += async (sender, e) => await Engine.ShutdownAsync();
             restart.Click += async (sender, e) => await Engine.RestartAsync();
 
-            // signout.Click += async (sender, e) => await Engine.SignoutAsync();
-            // lockout.Click += async (sender, e) => await Engine.LockAsync();
-            // accsetting.Click += async (sender, e) => await Engine.AccountSettingsAsync();
+            signout.Click += async (sender, e) => await Engine.SignoutAsync();
+            lockout.Click += async (sender, e) => await Engine.LockAsync();
+            accsetting.Click += async (sender, e) => await Engine.AccountSettingsAsync();
 
             exitmenuitem.Click += async (sender, e) => await CloseStartify();
 
@@ -264,7 +261,7 @@ namespace WPF.Views
             if (button != null)
             {
                 button.Visibility = (Windows.UI.Xaml.Visibility)(settingValue.Equals("true", StringComparison.InvariantCultureIgnoreCase) ? Visibility.Visible : Visibility.Collapsed);
-            }hone
+            }
         }
 
 
