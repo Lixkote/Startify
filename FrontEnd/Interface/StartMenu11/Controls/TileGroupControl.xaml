@@ -50,6 +50,13 @@
         <local:TileGroupNameBox x:Name="TileGridViewGroupName" Grid.Row="0" LostFocus="TileGridViewGroupName_LostFocus" HorizontalContentAlignment="Left" Height="36" Width="293" HorizontalAlignment="Left" Margin="0,5,0,5" VerticalAlignment="Center" />
         <GridView ItemContainerStyle="{StaticResource GridViewItemContainerStyle}" x:Name="TileGridView" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" CanDragItems="True" IsItemClickEnabled="False" AllowDrop="True" CanReorderItems="True" Grid.Row="1" ItemsSource="{Binding Tiles}"
                     SelectionMode="None">
+            <GridView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <controls:WrapPanel x:Name="MaxItemsWrapGrid"
+                CanDrag="True" AllowDrop="True" 
+               Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </GridView.ItemsPanel>
             <GridView.ItemTemplate>
                 <DataTemplate>
                     <local:Tile AllowDrop="True" Click="Tile_Click" CanDrag="True" UnpinTile="Tile_UnpinTile" FocusVisualPrimaryBrush="{x:Null}" FocusVisualSecondaryBrush="{x:Null}" Foreground="{x:Null}"></local:Tile>

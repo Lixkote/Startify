@@ -17,7 +17,7 @@ using Windows.UI.Xaml.Navigation;
 
 namespace Shell.Interface.StartMenu11.Controls
 {
-    public sealed partial class UninstallFlyoutControl : UserControl
+    public sealed partial class UninstallFlyoutControl : ContentDialog
     {
         public UninstallFlyoutControl()
         {

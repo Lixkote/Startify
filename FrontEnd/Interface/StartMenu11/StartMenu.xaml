@@ -247,7 +247,7 @@ BorderBrush="Transparent" Width="34" Margin="5,5,5,5" />
                         Padding="0"
                         CornerRadius="5"
                         Background="Transparent"
-                        BorderBrush="Transparent" Width="34" Margin="5,5,5,5" Click="DocumentsButton_Click" />
+                        BorderBrush="Transparent" Width="34" Margin="5,5,5,5" Click="DocumentsButton_Click_1" />
 
 
 
@@ -261,7 +261,7 @@ BorderBrush="Transparent" Width="34" Margin="5,5,5,5" />
                         CornerRadius="5"
                         Visibility="Collapsed"
                         Background="Transparent"
-                        BorderBrush="Transparent" Margin="5,5,5,5" Click="SettingsButton_Click" />
+                        BorderBrush="Transparent" Margin="5,5,5,5" Click="MusicButton_Click" />
 
                 <Button Style="{StaticResource leftmenubuttonstyle}" x:Name="PicturesButton" HorizontalAlignment="
                             Stretch"
@@ -273,7 +273,7 @@ BorderBrush="Transparent" Width="34" Margin="5,5,5,5" />
                         CornerRadius="5"
                         Visibility="Collapsed"
                         Background="Transparent"
-                        BorderBrush="Transparent" Margin="5,5,5,5" Click="SettingsButton_Click" />
+                        BorderBrush="Transparent" Margin="5,5,5,5" Click="PicturesButton_Click" />
 
                 <Button Style="{StaticResource leftmenubuttonstyle}" x:Name="MoviesButton" HorizontalAlignment="
                             Stretch"
@@ -285,7 +285,7 @@ BorderBrush="Transparent" Width="34" Margin="5,5,5,5" />
                         CornerRadius="5"
                         Visibility="Collapsed"
                         Background="Transparent"
-                        BorderBrush="Transparent" Margin="5,5,5,5" Click="SettingsButton_Click" />
+                        BorderBrush="Transparent" Margin="5,5,5,5" Click="MoviesButton_Click" />
 
                 <Button Style="{StaticResource leftmenubuttonstyle}" x:Name="NetworkButton" HorizontalAlignment="
                             Stretch"
@@ -297,7 +297,7 @@ BorderBrush="Transparent" Width="34" Margin="5,5,5,5" />
                         CornerRadius="5"
                         Visibility="Collapsed"
                         Background="Transparent"
-                        BorderBrush="Transparent" Margin="5,5,5,5" Click="SettingsButton_Click" />
+                        BorderBrush="Transparent" Margin="5,5,5,5" Click="NetworkButton_Click" />
 
                 <Button Style="{StaticResource leftmenubuttonstyle}" x:Name="PersonalFolderButton" HorizontalAlignment="
             Stretch"
@@ -309,7 +309,7 @@ BorderBrush="Transparent" Width="34" Margin="5,5,5,5" />
         CornerRadius="5"
         Visibility="Collapsed"
         Background="Transparent"
-        BorderBrush="Transparent" Margin="5,5,5,5" Click="SettingsButton_Click" />
+        BorderBrush="Transparent" Margin="5,5,5,5" Click="PersonalFolderButton_Click" />
 
                 <Button Style="{StaticResource leftmenubuttonstyle}" x:Name="FileExplorerButton" HorizontalAlignment="
             Stretch"
@@ -321,7 +321,7 @@ BorderBrush="Transparent" Width="34" Margin="5,5,5,5" />
         CornerRadius="5"
         Visibility="Collapsed"
         Background="Transparent"
-        BorderBrush="Transparent" Margin="5,5,5,5" Click="SettingsButton_Click" />
+        BorderBrush="Transparent" Margin="5,5,5,5" Click="FileExplorerButton_Click" />
 
                 <Button Style="{StaticResource leftmenubuttonstyle}" x:Name="SettingsAppButton" HorizontalAlignment="
             Stretch"
@@ -347,6 +347,12 @@ BorderBrush="Transparent" Width="34" Margin="5,5,5,5" />
                         BorderBrush="Transparent" Margin="5,5,5,5">
                     <Button.ContextFlyout>
                         <MenuFlyout>
+                            <MenuFlyoutItem x:Name="OpenConfigDir" Text="Configure Startify" IsEnabled="False" Click="OpenConfigDir_Click">
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon Glyph=""/>
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                            <MenuFlyoutSeparator></MenuFlyoutSeparator>
                             <MenuFlyoutItem x:Name="ExitStartify" Text="Return to the Windows 11 Start Menu" Click="ExitStartify_Click">
                                 <MenuFlyoutItem.Icon>
                                     <FontIcon Glyph=""/>

@@ -41,10 +41,31 @@ namespace Shell.Interface.StartMenu11.Controls
         {
             TilePinnedMain?.Invoke(sender, e);
         }
-        private void UninstallAppMenuItem_Click_1(object sender, RoutedEventArgs e)
+        private async void UninstallAppMenuItem_Click_1(object sender, RoutedEventArgs e)
         {
-            // Call the OnDirectoryChildClicked method to raise the event
-            UninstallSettingsShouldOpen?.Invoke(sender, e);
+            UninstallFlyoutControl uninstallDialog = new UninstallFlyoutControl();
+
+            // Dynamic string to be included in the title
+            string appname = "app";
+
+            // Construct the title string with quotes around hstring
+            string title = $"Uninstall \"{appname}\"?";
+
+            uninstallDialog.Title = title;
+
+            // Show the dialog and wait for the user's input
+            ContentDialogResult result = await uninstallDialog.ShowAsync();
+
+            // If the user clicked the OK button, adjust the properties of the RichEditBox
+            if (result == ContentDialogResult.Secondary)
+            {
+
+            }
+        }
+
+        private void PinToStartifyMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            TilePinnedMain?.Invoke(sender, e);
         }
 
         private void OpenFileLocation_Click(object sender, RoutedEventArgs e)

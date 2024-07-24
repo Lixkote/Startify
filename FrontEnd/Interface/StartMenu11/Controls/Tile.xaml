@@ -42,7 +42,7 @@
                         <FontIcon Glyph=""/>
                     </MenuFlyoutItem.Icon>
                 </MenuFlyoutItem>
-                <MenuFlyoutSubItem Text="Resize" IsEnabled="False">
+                <MenuFlyoutSubItem Text="Resize" IsEnabled="True">
                     <ToggleMenuFlyoutItem x:Name="TileSizeSmallContextMenuItem" Text="Small" IsChecked="False" Click="TileSizeSmallContextMenuItem_Click">
                         <MenuFlyoutItem.Icon>
                             <FontIcon Glyph=""/>
@@ -64,28 +64,28 @@
                         </MenuFlyoutItem.Icon>
                     </ToggleMenuFlyoutItem>
                 </MenuFlyoutSubItem>
-                <MenuFlyoutSeparator/>
-                <MenuFlyoutItem Text="Pin to taskbar">
+                <MenuFlyoutSeparator Visibility="Collapsed"/>
+                <MenuFlyoutItem Visibility="Collapsed" Text="Pin to taskbar">
                     <MenuFlyoutItem.Icon>
                         <FontIcon Glyph=""/>
                     </MenuFlyoutItem.Icon>
                 </MenuFlyoutItem>
-                <MenuFlyoutItem Text="Run as administrator">
+                <MenuFlyoutItem Visibility="Collapsed" Text="Run as administrator">
                     <MenuFlyoutItem.Icon>
                         <FontIcon Glyph=""/>
                     </MenuFlyoutItem.Icon>
                 </MenuFlyoutItem>
-                <MenuFlyoutItem Text="Open file location">
+                <MenuFlyoutItem Visibility="Collapsed" Text="Open file location">
                     <MenuFlyoutItem.Icon>
                         <FontIcon Glyph=""/>
                     </MenuFlyoutItem.Icon>
                 </MenuFlyoutItem>
-                <MenuFlyoutItem Text="Application Settings">
+                <MenuFlyoutItem Visibility="Collapsed" Text="Application Settings">
                     <MenuFlyoutItem.Icon>
                         <FontIcon Glyph=""/>
                     </MenuFlyoutItem.Icon>
                 </MenuFlyoutItem>
-                <MenuFlyoutItem Text="Uninstall">
+                <MenuFlyoutItem Visibility="Collapsed" Text="Uninstall">
                     <MenuFlyoutItem.Icon>
                         <FontIcon Glyph=""/>
                     </MenuFlyoutItem.Icon>

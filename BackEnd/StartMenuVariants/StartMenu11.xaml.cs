@@ -75,14 +75,14 @@ namespace WPF.Views
         {
             var startPlaceholder = StartMenuIslandh.Child as Shell.Interface.StartMenu11.StartMenu;
             var StartBackground = startPlaceholder.FindName("startbackground") as Windows.UI.Xaml.Controls.Grid;
-            StartBackground.Width = 300;
+            StartBackground.Width = 310;
             Engine.ShowStolenTiles();
         }
         private void DisableTilesSilent()
         {
             var startPlaceholder = StartMenuIslandh.Child as Shell.Interface.StartMenu11.StartMenu;
             var StartBackground = startPlaceholder.FindName("startbackground") as Windows.UI.Xaml.Controls.Grid;
-            StartBackground.Width = 300;
+            StartBackground.Width = 310;
         }
 
         public async void LoadTiles()
@@ -260,7 +260,14 @@ namespace WPF.Views
 
             if (button != null)
             {
-                button.Visibility = (Windows.UI.Xaml.Visibility)(settingValue.Equals("true", StringComparison.InvariantCultureIgnoreCase) ? Visibility.Visible : Visibility.Collapsed);
+                if (settingValue == "true")
+                {
+                    button.Visibility = Windows.UI.Xaml.Visibility.Visible;
+                }
+                else 
+                {
+                    button.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+                }
             }
         }
 
@@ -284,7 +291,7 @@ namespace WPF.Views
             }
 
             // Handle visibility settings for buttons
-            SetButtonVisibility(configFilePath, "ShowSettingsButton", "SettingsButton", startPlaceholder);
+            SetButtonVisibility(configFilePath, "ShowSettingsButton", "SettingsAppButton", startPlaceholder);
             SetButtonVisibility(configFilePath, "ShowExplorerButton", "FileExplorerButton", startPlaceholder);
             SetButtonVisibility(configFilePath, "ShowDocumentsButton", "DocumentsButton", startPlaceholder);
             SetButtonVisibility(configFilePath, "ShowDownloadsButton", "DownloadsButton", startPlaceholder);

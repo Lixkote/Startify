@@ -51,12 +51,6 @@ namespace Shell.Interface.StartMenu11
         {
             this.InitializeComponent();
             this.Loaded += Start_Loaded;
-            this.ErrorHappened += errornotif;
-        }
-
-        private void errornotif(object sender, ItemClickEventArgs e)
-        {
-
         }
 
         private bool IsFolderOpened = false;
@@ -193,11 +187,6 @@ namespace Shell.Interface.StartMenu11
 
         }
 
-        private void PinToTaskbar_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void ExitStartify_Click(object sender, RoutedEventArgs e)
         {
             // Call the OnDirectoryChildClicked method to raise the event
@@ -242,16 +231,6 @@ namespace Shell.Interface.StartMenu11
             }
         }
 
-        private void MenuFlyoutItem_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void MenuFlyoutItem_Click_1(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void LargeSizeMenuItem2_Click(object sender, RoutedEventArgs e)
         {
             GridViewItem targetitem = sender as GridViewItem;
@@ -286,6 +265,88 @@ namespace Shell.Interface.StartMenu11
         private void TileGroupCTRL_TileGroupNameChanged(object sender, RoutedEventArgs e)
         {
             TileGroupRenamedMain?.Invoke(sender, e);
+        }
+
+        private async void FileExplorerButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Get the user's home folder path
+            string userHomePath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+
+            // Ensure the path is a valid Uri
+            Uri homeFolderUri = new Uri(userHomePath);
+
+            // Create a launcher options object to ensure a new window is opened
+            var launcherOptions = new LauncherOptions
+            {
+                DisplayApplicationPicker = false,
+                TreatAsUntrusted = false,
+                DesiredRemainingView = Windows.UI.ViewManagement.ViewSizePreference.UseMore
+            };
+
+            // Launch the folder with options
+            await Launcher.LaunchUriAsync(homeFolderUri, launcherOptions);
+        }
+
+        private async void PersonalFolderButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Get the user's home folder path
+            string userHomePath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+
+            // Ensure the path is a valid Uri
+            Uri homeFolderUri = new Uri(userHomePath);
+
+            // Launch the folder
+            await Launcher.LaunchUriAsync(homeFolderUri);
+        }
+
+        private async void NetworkButton_Click(object sender, RoutedEventArgs e)
+        {
+            // The URI for the Network Devices folder
+            var uri = new Uri("shell:::{F02C1A0D-BE21-4350-88B0-7367FC96EF3C}");
+
+            // Launch the folder
+            await Launcher.LaunchUriAsync(uri);
+        }
+
+        private async void MoviesButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Get the user's pictures folder
+            StorageFolder docsFolder = KnownFolders.VideosLibrary;
+
+            // Launch the folder in the default file explorer app
+            await Launcher.LaunchFolderAsync(docsFolder);
+        }
+
+        private async void PicturesButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Get the user's pictures folder
+            StorageFolder docsFolder = KnownFolders.PicturesLibrary;
+
+            // Launch the folder in the default file explorer app
+            await Launcher.LaunchFolderAsync(docsFolder);
+        }
+
+        private async void MusicButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Get the user's pictures folder
+            StorageFolder docsFolder = KnownFolders.MusicLibrary;
+
+            // Launch the folder in the default file explorer app
+            await Launcher.LaunchFolderAsync(docsFolder);
+        }
+
+        private async void DocumentsButton_Click_1(object sender, RoutedEventArgs e)
+        {
+            // Get the user's pictures folder
+            StorageFolder docsFolder = KnownFolders.DocumentsLibrary;
+
+            // Launch the folder in the default file explorer app
+            await Launcher.LaunchFolderAsync(docsFolder);
+        }
+
+        private void OpenConfigDir_Click(object sender, RoutedEventArgs e)
+        {
+            // this will be opening startify configuration app later on
         }
     }
 }

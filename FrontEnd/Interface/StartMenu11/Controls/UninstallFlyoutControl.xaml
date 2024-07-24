@@ -1,4 +1,4 @@
-﻿<UserControl
+﻿<ContentDialog
     x:Class="Shell.Interface.StartMenu11.Controls.UninstallFlyoutControl"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -6,28 +6,14 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    d:DesignHeight="165"
-    d:DesignWidth="300" RequestedTheme="Dark">
-    <UserControl.Content>
-        <StackPanel>
-            <StackPanel.Children>
-                <Grid>
-                    <Grid.Children>
-                        <Border Background="{ThemeResource ContentDialogTopOverlay}" BorderThickness="{StaticResource ContentDialogSeparatorThickness}" BorderBrush="{ThemeResource ContentDialogSeparatorBorderBrush}" CornerRadius="8,8,0,0" />
-                        <TextBlock Text="This app and its related information will be removed." TextWrapping="Wrap" Margin="{StaticResource ContentDialogPadding}" Style="{StaticResource BodyTextBlockStyle}" />
-                    </Grid.Children>
-                </Grid>
-                <Grid Padding="{StaticResource ContentDialogPadding}">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="{StaticResource ContentDialogButtonSpacing}" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <Grid.Children>
-                        <Button Content="Uninstall" Grid.Column="2" HorizontalAlignment="Stretch" Style="{StaticResource AccentButtonStyle}" />
-                    </Grid.Children>
-                </Grid>
-            </StackPanel.Children>
-        </StackPanel>
-    </UserControl.Content>
-</UserControl>
+    d:DesignHeight="650"
+    Style="{StaticResource DefaultContentDialogStyle}"
+    d:DesignWidth="650"
+    Title="Uninstall APP"
+    SecondaryButtonText="Cancel"
+    PrimaryButtonText="Uninstall"
+    SecondaryButtonStyle="{StaticResource AccentButtonStyle}">
+    <Grid>
+        <TextBlock Text="This app and its related information will be removed." VerticalAlignment="Center" TextWrapping="Wrap" Style="{StaticResource BodyTextBlockStyle}" />
+    </Grid>
+</ContentDialog>

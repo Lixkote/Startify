@@ -28,37 +28,6 @@
     </UserControl.Resources>
 
     <Grid Background="#00FFFFFF">
-        <Grid.ContextFlyout>
-            <MenuFlyout>
-                <MenuFlyoutItem x:Name="PinToStartifyMenuItem" Text="Pin to Start" Click="PinToStartifyMenuItem_Click">
-                    <MenuFlyoutItem.Icon>
-                        <FontIcon Glyph=""/>
-                    </MenuFlyoutItem.Icon>
-                </MenuFlyoutItem>
-                <MenuFlyoutSubItem Text="More">
-                    <MenuFlyoutItem x:Name="PinToTaskbar" Text="Pin to taskbar" Click="PinToTaskbar_Click">
-                        <MenuFlyoutItem.Icon>
-                            <FontIcon Glyph=""/>
-                        </MenuFlyoutItem.Icon>
-                    </MenuFlyoutItem>
-                    <MenuFlyoutItem x:Name="RunAsAdminItem" Text="Run as an Administrator" Click="RunAsAdminItem_Click">
-                        <MenuFlyoutItem.Icon>
-                            <FontIcon Glyph=""/>
-                        </MenuFlyoutItem.Icon>
-                    </MenuFlyoutItem>
-                    <MenuFlyoutItem x:Name="OpenFileLocation" Text="Open file location" Click="OpenFileLocation_Click">
-                        <MenuFlyoutItem.Icon>
-                            <FontIcon Glyph=""/>
-                        </MenuFlyoutItem.Icon>
-                    </MenuFlyoutItem>
-                </MenuFlyoutSubItem>
-                <MenuFlyoutItem x:Name="UninstallAppMenuItem" Text="Uninstall" Click="UninstallAppMenuItem_Click">
-                    <MenuFlyoutItem.Icon>
-                        <FontIcon Glyph=""/>
-                    </MenuFlyoutItem.Icon>
-                </MenuFlyoutItem>
-            </MenuFlyout>
-        </Grid.ContextFlyout>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />

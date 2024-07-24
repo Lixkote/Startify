@@ -107,14 +107,46 @@
             </ControlTemplate>
             <SolidColorBrush x:Key="TransparentButtonTextBrush" Color="#00FFFFFF" />
             <DataTemplate x:Key="AppD">
-                <local:StartMenuEntryApp TilePinned="StartMenuEntryApp_TilePinned"></local:StartMenuEntryApp>
+                <local:StartMenuEntryApp TilePinned="StartMenuEntryApp_TilePinned">
+                    <local:StartMenuEntryApp.ContextFlyout>
+                        <MenuFlyout>
+                            <MenuFlyoutItem x:Name="PinToStartifyMenuItem" Text="Pin to Startify" Click="PinToStartifyMenuItem_Click">
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon Glyph=""/>
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                            <MenuFlyoutSubItem Text="More">
+                                <MenuFlyoutItem x:Name="PinToTaskbar" Text="Pin to taskbar" >
+                                    <MenuFlyoutItem.Icon>
+                                        <FontIcon Glyph=""/>
+                                    </MenuFlyoutItem.Icon>
+                                </MenuFlyoutItem>
+                                <MenuFlyoutItem x:Name="RunAsAdminItem" Text="Run as an Administrator" Click="RunAsAdminItem_Click">
+                                    <MenuFlyoutItem.Icon>
+                                        <FontIcon Glyph=""/>
+                                    </MenuFlyoutItem.Icon>
+                                </MenuFlyoutItem>
+                                <MenuFlyoutItem x:Name="OpenFileLocation" Text="Open file location" Click="OpenFileLocation_Click">
+                                    <MenuFlyoutItem.Icon>
+                                        <FontIcon Glyph=""/>
+                                    </MenuFlyoutItem.Icon>
+                                </MenuFlyoutItem>
+                            </MenuFlyoutSubItem>
+                            <MenuFlyoutItem x:Name="UninstallAppMenuItem" Text="Uninstall" Click="UninstallAppMenuItem_Click_1">
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon Glyph=""/>
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                        </MenuFlyout>
+                    </local:StartMenuEntryApp.ContextFlyout>
+                </local:StartMenuEntryApp>
             </DataTemplate>
             <DataTemplate x:Key="Folder">
                 <StackPanel HorizontalAlignment="Stretch" Orientation="Vertical" FocusVisualSecondaryBrush="{x:Null}">
                     <muxc:Expander Width="230" Template="{StaticResource ExpanderTemplate1}" Padding="0,0,0,0" x:Name="Expander2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
                         <muxc:Expander.ContextFlyout>
                             <MenuFlyout>
-                                <MenuFlyoutItem Text="Startify menu settings">
+                                <MenuFlyoutItem Text="Configure Startify">
                                     <MenuFlyoutItem.Icon>
                                         <FontIcon Glyph="" FontFamily="Segoe Fluent Icons"/>
                                     </MenuFlyoutItem.Icon>
