@@ -1,23 +1,30 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <XmlRoot>
-  <TileGroup Name="Tools">
+  <TileGroup Name="Random things">
     <Tile>
       <AppPath />
-      <UWPID>9390SimonKnuth.ScannerforWindows10_69n05hp4v3s90</UWPID>
+      <UWPID>NVIDIACorp.NVIDIAControlPanel_56jybvy8sckqj</UWPID>
+      <Size>Normal</Size>
+      <LiveTileEnabled>false</LiveTileEnabled>
+      <CustomTileBackground>C:\Users\User\Pictures\nvidia.gif</CustomTileBackground>
+    </Tile>
+    <Tile>
+      <AppPath>C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Firefox.lnk</AppPath>
+      <UWPID />
+      <Size>Normal</Size>
+      <LiveTileEnabled>false</LiveTileEnabled>
+      <CustomTileBackground>C:\Users\User\Pictures\firefod.gif</CustomTileBackground>
+    </Tile>
+    <Tile>
+      <AppPath>C:\ProgramData\Microsoft\Windows\Start Menu\Programs\CDBurnerXP.lnk</AppPath>
+      <UWPID />
       <Size>Normal</Size>
       <LiveTileEnabled>false</LiveTileEnabled>
       <CustomTileBackground></CustomTileBackground>
     </Tile>
     <Tile>
-      <AppPath />
-      <UWPID>windows.immersivecontrolpanel_cw5n1h2txyewy</UWPID>
-      <Size>Normal</Size>
-      <LiveTileEnabled>false</LiveTileEnabled>
-      <CustomTileBackground></CustomTileBackground>
-    </Tile>
-    <Tile>
-      <AppPath />
-      <UWPID>11413PtruceanBogdan.Wintoys_ankwhmsh70gj6</UWPID>
+      <AppPath>C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Audacity.lnk</AppPath>
+      <UWPID />
       <Size>Normal</Size>
       <LiveTileEnabled>false</LiveTileEnabled>
       <CustomTileBackground></CustomTileBackground>
