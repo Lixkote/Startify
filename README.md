@@ -17,8 +17,8 @@ Might be supported in the future:
 
 Screenshots / Previews:
 
-![Startify Screenshot](https://github.com/Lixkote/Startify/blob/main/Previews/tiles.png)
-![Startify Screenshot](https://github.com/Lixkote/Startify/blob/main/Previews/notiles.png)
+![Startify Screenshot](https://github.com/Lixkote/Startify/blob/main/Previews/tiles2.png)
+![Startify Screenshot](https://github.com/Lixkote/Startify/blob/main/Previews/notiles2.png)
 
 Credits to:
 
