@@ -43,24 +43,7 @@ namespace Shell.Interface.StartMenu11.Controls
         }
         private async void UninstallAppMenuItem_Click_1(object sender, RoutedEventArgs e)
         {
-            UninstallFlyoutControl uninstallDialog = new UninstallFlyoutControl();
-
-            // Dynamic string to be included in the title
-            string appname = "app";
-
-            // Construct the title string with quotes around hstring
-            string title = $"Uninstall \"{appname}\"?";
-
-            uninstallDialog.Title = title;
-
-            // Show the dialog and wait for the user's input
-            ContentDialogResult result = await uninstallDialog.ShowAsync();
-
-            // If the user clicked the OK button, adjust the properties of the RichEditBox
-            if (result == ContentDialogResult.Secondary)
-            {
-
-            }
+            await Windows.System.Launcher.LaunchUriAsync(new Uri("ms-settings:appsfeatures"));
         }
 
         private void PinToStartifyMenuItem_Click(object sender, RoutedEventArgs e)
