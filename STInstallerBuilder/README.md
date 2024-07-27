@@ -15,6 +15,6 @@ The startify control panel app, changes these settings from a gui, and then when
 	- This is a xml layout tree of pinned tiles on the start menu. 
 	Properties: 
 	  - Size (Normal, Small, Wide, Large) - the size of tile to display
-	  - CustomTileBackground - Background png image path or hex value of color to use as tile background
+	  - CustomTileBackground - Background png (or an animated gif) image path or hex value of color to use as tile background
 	  - LiveTileEnabled - placeholder for now
 	  - UWPID & AppPath - Specifies the app path or uwp identification if of pinned application.
