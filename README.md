@@ -4,8 +4,22 @@
 
 **Recreation of the Windows 10's start menu for all Windows 11 builds.**
 
-Startify Requires the following runtime to start:
+## How to launch
+
+1. Startify Requires the following runtime to start:
 [.NET Core 3.1 Runtime for Windows 11 64 bit](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-3.1.32-windows-x64-installer)
+
+2. Paste this file into %HOMEPATH%\Startify\
+https://github.com/Lixkote/Startify/releases/download/0.1/Settings.cfg
+
+3. Go to Settings> Time & Language,install English language pckage,change Windows Display Language to English 
+![image](https://github.com/user-attachments/assets/e77c1a40-c672-4cfd-9256-8f62016308c6)
+
+4. If you installed Mica for everyone
+https://github.com/MicaForEveryone/MicaForEveryone
+Add rule follow the image
+![image](https://github.com/user-attachments/assets/baed28f2-12fb-49bf-9f2b-7741c41b7943)
+
 
 Supported operating systems and configurations:
 - All Windows 11 builds
