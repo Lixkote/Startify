@@ -17,7 +17,7 @@ https://github.com/Lixkote/Startify/releases/download/0.1/Settings.cfg
 
 4. If you installed Mica for everyone
 https://github.com/MicaForEveryone/MicaForEveryone
-Add rule as image
+Add rule follow the image
 ![image](https://github.com/user-attachments/assets/baed28f2-12fb-49bf-9f2b-7741c41b7943)
 
 
