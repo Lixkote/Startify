@@ -12,8 +12,13 @@
 2. Paste this file into %HOMEPATH%\Startify\
 https://github.com/Lixkote/Startify/releases/download/0.1/Settings.cfg
 
-3.Go to Settings> Time & Language,install English language pckage,change Windows Display Language to English 
+3. Go to Settings> Time & Language,install English language pckage,change Windows Display Language to English 
 ![image](https://github.com/user-attachments/assets/e77c1a40-c672-4cfd-9256-8f62016308c6)
+
+4. If you installed Mica for everyone
+https://github.com/MicaForEveryone/MicaForEveryone
+Add rule as image
+![image](https://github.com/user-attachments/assets/baed28f2-12fb-49bf-9f2b-7741c41b7943)
 
 
 Supported operating systems and configurations:
