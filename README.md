@@ -9,7 +9,7 @@
 1. Remember that Startify Requires the following runtime to start:
 [.NET Core 3.1 Runtime x64](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-3.1.32-windows-x64-installer)
 
-2. ![fix](https://github.com/Lixkote/Startify/blob/main/Previews/tempfix.png)
+2. ![fix](https://github.com/Lixkote/Startify/blob/main/tempfix.png)
 
 3. If you are using MicaForEveryone, please configure it as you see on the image below
 ![image](https://github.com/user-attachments/assets/baed28f2-12fb-49bf-9f2b-7741c41b7943)
