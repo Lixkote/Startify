@@ -121,15 +121,6 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Interface\StartMenu10\Pages\AppList.xaml.cs">
-      <DependentUpon>AppList.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Interface\StartMenu10\Pages\Tiles.xaml.cs">
-      <DependentUpon>Tiles.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Interface\StartMenu10\Pages\TilesAppList.xaml.cs">
-      <DependentUpon>TilesAppList.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Interface\StartMenu11\Controls\AllAppsPaneControl.xaml.cs">
       <DependentUpon>AllAppsPaneControl.xaml</DependentUpon>
     </Compile>
@@ -138,9 +129,6 @@
       <DependentUpon>UninstallFlyoutControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Interface\Utilities\Reveal.cs" />
-    <Compile Include="Interface\StartMenu10\StartMenu.xaml.cs">
-      <DependentUpon>StartMenu.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Interface\StartMenu11\Controls\StartMenuEntryApp.xaml.cs">
       <DependentUpon>StartMenuEntryApp.xaml</DependentUpon>
     </Compile>
@@ -271,22 +259,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Interface\StartMenu10\Pages\AppList.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Interface\StartMenu10\Pages\Tiles.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Interface\StartMenu10\Pages\TilesAppList.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Interface\StartMenu10\StartMenu.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Interface\StartMenu11\Controls\AllAppsPaneControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -319,9 +291,7 @@
   <ItemGroup>
     <None Include="Shell_TemporaryKey.pfx" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Interface\StartMenu10\Controls\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

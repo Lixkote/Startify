@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Startify"
-#define MyAppVersion "1.0"
+#define MyAppVersion "0.2"
 #define MyAppPublisher "Lixkote"
 #define MyAppURL "https://github.com/Lixkote/Startify"
 #define MyAppExeName "StartifyBackend.exe"
@@ -49,7 +49,6 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 [Files]
 Source: "C:\STInstallerBuilder\Startify\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\STInstallerBuilder\Startify\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\STInstallerBuilder\Configuration\*"; DestDir: "%HOMEPATH%\Startify\"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]

@@ -14,6 +14,8 @@ using Microsoft.Toolkit.Uwp.Notifications;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using WPF.Views;
+using System.Windows.Media;
+using System.Drawing;
 
 namespace WPF
 {
@@ -128,24 +130,30 @@ namespace WPF
         }
 
 
-
+        private bool IsFontInstalled(string fontName)
+        {
+            using (var testFont = new Font(fontName, 8))
+            {
+                return 0 == string.Compare(
+                  fontName,
+                  testFont.Name,
+                  StringComparison.InvariantCultureIgnoreCase);
+            }
+        }
 
         public void Application_Startup(object sender, StartupEventArgs e)
         {
+            if (!IsFontInstalled("Segoe Fluent Icons"))
+            {
+                ModernWpf.MessageBox.Show("We detected that you are missing the Segoe Fluent Icons font. Please download and install it to make icons display correctly.", "Warning", MessageBoxButton.OK, SymbolGlyph.Font, MessageBoxResult.OK);
+            }
+
+            // Create the startup window
+            StartMenu11 menuwindow = new StartMenu11();
+            menuwindow.Show();
             /////////////////////////////////////////////
             /// Here we load the main configuration file and set the hooking method from it.
             /////////////////////////////////////////////
-
-            try
-            {
-                StartListener = new WinButtonHook();
-                StartListener.StartTriggered += OnStartTriggered;
-                StartListener.FindAndActivateWindow();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error reading configuration file: " + ex.Message);
-            }
             StartListener = new WinButtonHook();
             StartListener.StartTriggered += OnStartTriggered;
             StartListener.FindAndActivateWindow();
@@ -161,10 +169,6 @@ namespace WPF
             ThemeListener.Start();
 
             TileAppHelper.CouldNotLoadTiles += FailedToLoadTiles;
-
-            // Create the startup window
-            StartMenu11 menuwindow = new StartMenu11();
-            menuwindow.Show();
         }
 
         public void OnStartTriggered(object sender, EventArgs e)
@@ -198,7 +202,7 @@ namespace WPF
             new ToastContentBuilder()
                 .AddInlineImage(new Uri(uriString))
                 .AddText("Tiles disabled.")
-                .AddText("We could not find or load the tiles layout file.")
+                .AddText("Tiles were disabled, could not find or load the tiles layout file.")
                 .Show();
         }
 
@@ -228,7 +232,7 @@ namespace WPF
             new ToastContentBuilder()
                 .AddInlineImage(new Uri(uriString))
                 .AddText("Welcome to Startify")
-                .AddText("Check it out by clicking the Windows Start button!")
+                .AddText("Open it by clicking the Windows Start button!")
                 .Show();
         }
 

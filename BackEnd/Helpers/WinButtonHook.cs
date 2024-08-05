@@ -74,10 +74,29 @@ namespace WPF.Helpers
             return IntPtr.Zero; // Window not found
         }
 
+        private static string GetConfigFileEntry(string filePath, string entry)
+        {
+            /////////////////////////////////////////////
+            /// Config file helper.
+            /////////////////////////////////////////////
+            foreach (string line in System.IO.File.ReadLines(filePath))
+            {
+                string[] keyValue = line.Split('=');
+                if (keyValue.Length == 2 && keyValue[0].Trim() == entry)
+                {
+                    return keyValue[1].Trim();
+                }
+            }
+
+            return string.Empty;
+        }
+
+        public string configFilePath = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Startify", "Settings.cfg");
+
         public void FindAndActivateWindow()
         {
-            string caption = "Start";
-            string className = "Start";
+            string caption = GetConfigFileEntry(configFilePath, "TooltipCaption");
+            string className = GetConfigFileEntry(configFilePath, "TooltipName");
 
             IntPtr windowHandle = FindWindowByCaptionAndClass(caption, className);
 
@@ -91,7 +110,7 @@ namespace WPF.Helpers
             }
             else
             {
-                ModernWpf.MessageBox.Show("Startify had an issue hooking the windows start button, and might not work properly.", "Startify Standard Hooking Error", MessageBoxButton.OK, SymbolGlyph.Error, MessageBoxResult.OK);
+                ModernWpf.MessageBox.Show("Startify could not find the start button tooltip to hook into. Verify you have set the tooltip name correctly in the Settings.cfg file.", "Warning", MessageBoxButton.OK, SymbolGlyph.Warning, MessageBoxResult.OK);
             }
         }
 
@@ -114,7 +133,7 @@ namespace WPF.Helpers
             {
                 if (shownerrorbefore == false)
                 {
-                    ModernWpf.MessageBox.Show("Startify had an issue closing the windows start menu, and might not work properly. This might also mean that user is using another Windows 11 Shell replacement app like StartAllBack or ExplorerPatcher.", "Startify Standard Hooking Warning", MessageBoxButton.OK, SymbolGlyph.Warning, MessageBoxResult.OK);
+                    ModernWpf.MessageBox.Show("Startify could not find the Windows 11 Start menu host window. This might be caused by using another shell replacement app like StartAllBack or ExplorerPatcher. If you are using StartAllBack, change the start menu type to default in its settings. If you are using ExplorerPatcher, please change the start menu type to Windows 11 in its settings.", "Warning", MessageBoxButton.OK, SymbolGlyph.Warning, MessageBoxResult.OK);
                 }
             }
         }
@@ -142,7 +161,7 @@ namespace WPF.Helpers
                     GetClassName(win, className, className.Capacity);
                     string win32ClassName = className.ToString();
 
-                    if (win32ClassName == "Start")
+                    if (win32ClassName == GetConfigFileEntry(configFilePath, "TooltipName"))
                     {
                         StartTriggered(this, null);
                         return 1;

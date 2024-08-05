@@ -65,12 +65,13 @@ namespace WPF.Views
         [DllImport("user32.dll")]
         static extern byte MapVirtualKey(byte wCode, int wMap);
         App Engine = App.Current as App;
+        string configFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Startify", "Settings.cfg");
 
         ////////////////////////////////////////////////////////////////////////////
         // Custom Items under this comment, specific for this start menu type
         // So like, this start menu uses tiles, so here will be the tile specific stuff
         ////////////////////////////////////////////////////////////////////////////
-        
+
         private void DisableTiles(object sender, EventArgs e)
         {
             var startPlaceholder = StartMenuIslandh.Child as Shell.Interface.StartMenu11.StartMenu;
@@ -250,8 +251,52 @@ namespace WPF.Views
             LoadTiles();
             ThemingSetup();
             Engine.ShowNotification();
-            ApplySettings(startPlaceholder);
+            if (!File.Exists(configFilePath))
+            {
+                try
+                {
+                    // Ensure the directory exists
+                    string directoryPath = Path.GetDirectoryName(configFilePath);
+                    if (!Directory.Exists(directoryPath))
+                    {
+                        Directory.CreateDirectory(directoryPath);
+                    }
+
+                    // Template content
+                    string templateContent = "DockedDesign=false\n" +
+                                             "DisplayTiles=true\n" +
+                                             "ShowSettingsButton=true\n" +
+                                             "ShowExplorerButton=true\n" +
+                                             "ShowDocumentsButton=true\n" +
+                                             "ShowDownloadsButton=true\n" +
+                                             "ShowMusicButton=false\n" +
+                                             "ShowPicturesButton=false\n" +
+                                             "ShowMoviesButton=false\n" +
+                                             "ShowNetworkButton=false\n" +
+                                             "ShowPersonalFolderButton=false\n" +
+                                             "TooltipCaption=Start\n" +
+                                             "TooltipName=Start";
+
+                    // Write the template content to the file
+                    File.WriteAllText(configFilePath, templateContent);
+
+                    // Update the status
+                    ModernWpf.MessageBox.Show("Config file created successfully. Press OK to continue.", "Startify first run completed", MessageBoxButton.OK, SymbolGlyph.Info, MessageBoxResult.OK);
+                    ApplySettings(startPlaceholder);
+                }
+                catch (Exception ex)
+                {
+                    ModernWpf.MessageBox.Show("More information: \n" + ex.ToString(), "Startify first run failed", MessageBoxButton.OK, SymbolGlyph.Info, MessageBoxResult.OK);
+                }
+            }
+            else
+            {
+                // Config file already exists
+                ApplySettings(startPlaceholder);
+            }
         }
+
+
 
         private static void SetButtonVisibility(string configFilePath, string settingName, string buttonName, Shell.Interface.StartMenu11.StartMenu startPlaceholder)
         {
@@ -274,7 +319,6 @@ namespace WPF.Views
 
         public void ApplySettings(Shell.Interface.StartMenu11.StartMenu startPlaceholder)
         {
-            string configFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Startify", "Settings.cfg");
 
             // Handle DockedDesign separately as it has a unique action
             string dockedDesignSetting = GetConfigFileEntry(configFilePath, "DockedDesign");

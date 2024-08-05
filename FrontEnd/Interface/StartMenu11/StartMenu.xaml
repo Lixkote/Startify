@@ -165,7 +165,7 @@
           VerticalAlignment="Bottom" Margin="10,0,0,10">
         <Grid.ContextFlyout>
             <MenuFlyout>
-                <MenuFlyoutItem Text="Startify menu settings">
+                <MenuFlyoutItem IsEnabled="False" Text="Startify menu settings">
                     <MenuFlyoutItem.Icon>
                         <FontIcon Glyph="" FontFamily="Segoe Fluent Icons"/>
                     </MenuFlyoutItem.Icon>
@@ -347,12 +347,12 @@ BorderBrush="Transparent" Width="34" Margin="5,5,5,5" />
                         BorderBrush="Transparent" Margin="5,5,5,5">
                     <Button.ContextFlyout>
                         <MenuFlyout>
-                            <MenuFlyoutItem x:Name="OpenConfigDir" Text="Configure Startify" IsEnabled="False" Click="OpenConfigDir_Click">
+                            <MenuFlyoutItem x:Name="OpenConfigDir" Text="Configure Startify" Visibility="Collapsed" Click="OpenConfigDir_Click">
                                 <MenuFlyoutItem.Icon>
                                     <FontIcon Glyph=""/>
                                 </MenuFlyoutItem.Icon>
                             </MenuFlyoutItem>
-                            <MenuFlyoutSeparator></MenuFlyoutSeparator>
+                            <MenuFlyoutSeparator Visibility="Collapsed"></MenuFlyoutSeparator>
                             <MenuFlyoutItem x:Name="ExitStartify" Text="Return to the Windows 11 Start Menu" Click="ExitStartify_Click">
                                 <MenuFlyoutItem.Icon>
                                     <FontIcon Glyph=""/>
