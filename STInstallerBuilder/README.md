@@ -10,6 +10,10 @@ The startify control panel app, changes these settings from a gui, and then when
     -   DockedDesign (bool) - This toggles between floating and docked start menu style. 
     - DisplayTiles (bool) - Display or hide tiles part of the start menu
     - Show*Button (bool) - Displays or hides the respective button in left bar of the start menu.
+    - TooltipCaption (string) - Tooltip caption to search for when hooking the Start Button
+    - TooltipName (string) - Tooltip Window name to search for when hooking the Start Button
+ 
+      Be careful about the two last ones if you are using any other language than English or Polish
 
 - Tiles\Layout.xml
 	- This is a xml layout tree of pinned tiles on the start menu. 
