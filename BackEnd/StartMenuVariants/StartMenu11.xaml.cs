@@ -151,7 +151,7 @@ namespace WPF.Views
                 var cvs = allAppsListViewBase.FindName("cvs") as Windows.UI.Xaml.Data.CollectionViewSource;
                 cvs.Source = from p in Programs
                              orderby p.Alph
-                             group p by char.IsDigit(p.Alph[0]) ? "#" : p.Alph into g
+                             group p by AppAlphHelper.GetAppAlpha(p.Alph) into g
                              select g;
             }
         }
