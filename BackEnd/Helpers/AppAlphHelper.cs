@@ -6,7 +6,7 @@ namespace StartifyBackend.Helpers
     {
         private static readonly List<AppAlphMatcher> AppAlphaMatchers = new List<AppAlphMatcher>() { new ChineseAppAlphMatcher() };
 
-        public static string GetAppAlpha(string AppNameAlph)
+        public static string GetAppAlph(string AppNameAlph)
         {
             bool isDigit = char.IsDigit(AppNameAlph[0]);
 

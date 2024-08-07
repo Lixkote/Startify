@@ -6,7 +6,6 @@ namespace StartifyBackend.Helpers
     {
         string Match(string AppNameAlph, byte[] EncodedChar);
 
-
         static string NO_MATCH = "NO_MATCH";
     }
 
@@ -16,7 +15,9 @@ namespace StartifyBackend.Helpers
         public string Match(string AppNameAlph, byte[] EncodedChar)
         {
             var chineseChar = new ChineseChar(AppNameAlph[0]);
-            if (chineseChar.PinyinCount <= 0) return AppAlphMatcher.NO_MATCH;
+
+            if (chineseChar.PinyinCount <= 0) { return AppAlphMatcher.NO_MATCH; }
+
             return chineseChar.Pinyins[0][0..1];
         }
     }
