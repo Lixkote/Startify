@@ -24,6 +24,7 @@ namespace Shell.Interface.StartMenu11.Controls
         public event EventHandler<RoutedEventArgs> TileClicked;
         public event EventHandler<RoutedEventArgs> TileUnpinned;
         public event EventHandler<RoutedEventArgs> TileGroupNameChanged;
+        public event EventHandler<RoutedEventArgs> TileSizeChanged;
         public TileGroupControl()
         {
             this.InitializeComponent();
@@ -43,6 +44,11 @@ namespace Shell.Interface.StartMenu11.Controls
         private void TileGridViewGroupName_LostFocus(object sender, RoutedEventArgs e)
         {
             TileGroupNameChanged?.Invoke(sender, e);
+        }
+
+        private void Tile_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            TileSizeChanged?.Invoke(sender, e);
         }
     }
 }

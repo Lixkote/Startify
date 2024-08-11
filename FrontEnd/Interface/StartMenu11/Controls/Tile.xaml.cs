@@ -28,6 +28,7 @@ namespace Shell.Interface.StartMenu11.Controls
     {
         public event EventHandler<RoutedEventArgs> Click;
         public event EventHandler<RoutedEventArgs> UnpinTile;
+        public event EventHandler<RoutedEventArgs> ChangeTileSize;
         int TileAnimSize = 28;
         public static readonly DependencyProperty GradientStopsProperty =
         DependencyProperty.Register("GradientStops", typeof(GradientStopCollection), typeof(Reveal), null);
@@ -172,6 +173,8 @@ namespace Shell.Interface.StartMenu11.Controls
             TileSizeMediumContextMenuItem.IsChecked = false;
             TileSizeWideContextMenuItem.IsChecked = false;
             TileSizeLargeContextMenuItem.IsChecked = false;
+            string tilesizetodefine = "Small" + sender;
+            ChangeTileSize?.Invoke(tilesizetodefine, e);
         }
 
         private void TileSizeMediumContextMenuItem_Click(object sender, RoutedEventArgs e)
@@ -183,6 +186,8 @@ namespace Shell.Interface.StartMenu11.Controls
             TileSizeMediumContextMenuItem.IsChecked = true;
             TileSizeWideContextMenuItem.IsChecked = false;
             TileSizeLargeContextMenuItem.IsChecked = false;
+            string tilesizetodefine = "Medium";
+            ChangeTileSize?.Invoke(tilesizetodefine, e);
         }
 
         private void TileSizeWideContextMenuItem_Click(object sender, RoutedEventArgs e)
@@ -194,6 +199,8 @@ namespace Shell.Interface.StartMenu11.Controls
             TileSizeMediumContextMenuItem.IsChecked = false;
             TileSizeWideContextMenuItem.IsChecked = true;
             TileSizeLargeContextMenuItem.IsChecked = false;
+            string tilesizetodefine = "Wide";
+            ChangeTileSize?.Invoke(tilesizetodefine, e);
         }
 
         private void TileSizeLargeContextMenuItem_Click(object sender, RoutedEventArgs e)
@@ -205,6 +212,8 @@ namespace Shell.Interface.StartMenu11.Controls
             TileSizeMediumContextMenuItem.IsChecked = false;
             TileSizeWideContextMenuItem.IsChecked = false;
             TileSizeLargeContextMenuItem.IsChecked = true;
+            string tilesizetodefine = "Large";
+            ChangeTileSize?.Invoke(tilesizetodefine, e);
         }
         private bool isDragging = false;
 

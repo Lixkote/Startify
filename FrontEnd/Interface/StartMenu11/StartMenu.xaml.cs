@@ -35,6 +35,7 @@ namespace Shell.Interface.StartMenu11
         public event EventHandler<ItemClickEventArgs> DirectoryChildClicked;
         public event EventHandler<RoutedEventArgs> TileClickedMain;
         public event EventHandler<RoutedEventArgs> TilePinnedMain;
+        public event EventHandler<RoutedEventArgs> TileSizeChangedMain;
         public event EventHandler<RoutedEventArgs> TileGroupRenamedMain;
         public event EventHandler<RoutedEventArgs> TileUnpinnedMain;
         public event EventHandler<ItemClickEventArgs> ErrorHappened;
@@ -347,6 +348,11 @@ namespace Shell.Interface.StartMenu11
         private void OpenConfigDir_Click(object sender, RoutedEventArgs e)
         {
             // this will be opening startify configuration app later on
+        }
+
+        private void TileGroupCTRL_TileSizeChanged(object sender, RoutedEventArgs e)
+        {
+            TileSizeChangedMain?.Invoke(sender, e);
         }
     }
 }

@@ -98,7 +98,7 @@ Width="32"
 Height="32" />
             <TextBlock x:Name="TileDisplayName"
             VerticalAlignment="Bottom"
-            FontSize="12" Margin="6,0,0,6" Text="{Binding DisplayName}"/>
+            FontSize="12" Margin="6,0,6,6" Text="{Binding DisplayName}"/>
             <TextBlock x:Name="TileSizeInternal"
             VerticalAlignment="Bottom"
             FontSize="12" Margin="6,0,0,6" Text="{Binding Size}" Visibility="Collapsed" />

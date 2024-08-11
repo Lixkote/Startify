@@ -16,7 +16,7 @@
 
     <UserControl.Resources>
         <DataTemplate x:Key="TileGroupTemplate">
-            <econtrols:TileGroupControl Name="TileGroupCTRL" TileClicked="TileGroupCTRL_TileClicked" TileUnpinned="TileGroupCTRL_TileUnpinned" TileGroupNameChanged="TileGroupCTRL_TileGroupNameChanged"/>
+            <econtrols:TileGroupControl Name="TileGroupCTRL" TileSizeChanged="TileGroupCTRL_TileSizeChanged" TileClicked="TileGroupCTRL_TileClicked" TileUnpinned="TileGroupCTRL_TileUnpinned" TileGroupNameChanged="TileGroupCTRL_TileGroupNameChanged"/>
         </DataTemplate>
         <ControlTemplate x:Key="ExpanderTemplate1" TargetType="muxc:Expander">
             <Grid MaxWidth="{TemplateBinding MaxWidth}" MinWidth="{TemplateBinding MinWidth}">

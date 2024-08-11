@@ -313,7 +313,54 @@ namespace WPF.Helpers
             }
         }
 
+        public void ChangeTileSizeInXML(object sender, RoutedEventArgs e)
+        {
+            string input = sender.ToString();
 
+            string pattern = @"TilePathClassic:(.*?)TileGroupName:(.*?)$";
+            Match match = Regex.Match(input, pattern);
+
+            if (match.Success)
+            {
+                string targetGroupName = match.Groups[2].Value.Trim();
+                string targetTilePathClassic = match.Groups[1].Value.Trim();
+
+                string configFile = GetConfigFilePath();
+                XDocument doc = XDocument.Load(configFile);
+
+                XElement rootElement = doc.Root;
+
+                try
+                {
+                    XElement tileGroupElement = rootElement.Elements("TileGroup")
+                                                           .FirstOrDefault(e => e.Attribute("Name")?.Value == targetGroupName);
+
+                    if (tileGroupElement == null)
+                    {
+                        Debug.WriteLine($"TileGroup '{targetGroupName}' not found in XML.");
+                        return;
+                    }
+
+                    var tileElement = tileGroupElement.Elements("Tile")
+                                                       .FirstOrDefault(t => String.Equals(t.Element("AppPath")?.Value, targetTilePathClassic, StringComparison.OrdinalIgnoreCase));
+
+                    if (tileElement != null)
+                    {
+                        tileElement.Attribute("Size").Value = newGroupName;
+                        doc.Save(configFile);
+                        Debug.WriteLine("Tile size changed from XML successfully.");
+                    }
+                    else
+                    {
+                        Debug.WriteLine($"Tile '{targetTilePathClassic}' not found in XML.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine($"Error changing size in tile from XML: {ex.Message}");
+                }
+            }
+        }
 
 
 

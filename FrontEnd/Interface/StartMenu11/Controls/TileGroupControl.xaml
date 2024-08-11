@@ -59,7 +59,7 @@
             </GridView.ItemsPanel>
             <GridView.ItemTemplate>
                 <DataTemplate>
-                    <local:Tile AllowDrop="True" Click="Tile_Click" CanDrag="True" UnpinTile="Tile_UnpinTile" FocusVisualPrimaryBrush="{x:Null}" FocusVisualSecondaryBrush="{x:Null}" Foreground="{x:Null}"></local:Tile>
+                    <local:Tile SizeChanged="Tile_SizeChanged" AllowDrop="True" Click="Tile_Click" CanDrag="True" UnpinTile="Tile_UnpinTile" FocusVisualPrimaryBrush="{x:Null}" FocusVisualSecondaryBrush="{x:Null}" Foreground="{x:Null}"></local:Tile>
                 </DataTemplate>
             </GridView.ItemTemplate>
         </GridView>
