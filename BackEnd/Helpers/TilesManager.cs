@@ -346,7 +346,7 @@ namespace WPF.Helpers
 
                     if (tileElement != null)
                     {
-                        tileElement.Attribute("Size").Value = newGroupName;
+                        // tileElement.Attribute("Size").Value = newGroupName;
                         doc.Save(configFile);
                         Debug.WriteLine("Tile size changed from XML successfully.");
                     }
