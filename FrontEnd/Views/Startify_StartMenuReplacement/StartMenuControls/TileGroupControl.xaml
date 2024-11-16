@@ -13,7 +13,7 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Interface/InterfaceResources.xaml" />
+                <ResourceDictionary Source="/Views/Startify_StartMenuResources.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <Style x:Key="GridViewItemContainerStyle" TargetType="GridViewItem">
                 <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}"/>

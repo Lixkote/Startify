@@ -313,7 +313,7 @@ namespace WPF.Helpers
             }
         }
 
-        public void ChangeTileSizeInXML(object sender, RoutedEventArgs e)
+        public void ChangeTileSizeInXML(object sender, ObservableCollection<TileGroup> tileGroups)
         {
             string input = sender.ToString();
 

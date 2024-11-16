@@ -121,31 +121,31 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Interface\StartMenu11\Controls\AllAppsPaneControl.xaml.cs">
+    <Compile Include="Views\Startify_StartMenuReplacement\StartMenuControls\AllAppsPaneControl.xaml.cs">
       <DependentUpon>AllAppsPaneControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Interface\StartMenu11\Controls\CustomButton.cs" />
-    <Compile Include="Interface\StartMenu11\Controls\UninstallFlyoutControl.xaml.cs">
+    <Compile Include="Views\Startify_StartMenuReplacement\StartMenuControls\CustomButton.cs" />
+    <Compile Include="Views\Startify_StartMenuReplacement\StartMenuControls\UninstallFlyoutControl.xaml.cs">
       <DependentUpon>UninstallFlyoutControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Interface\Utilities\Reveal.cs" />
-    <Compile Include="Interface\StartMenu11\Controls\StartMenuEntryApp.xaml.cs">
+    <Compile Include="Views\Startify_StartMenuUtilities\Reveal.cs" />
+    <Compile Include="Views\Startify_StartMenuReplacement\StartMenuControls\StartMenuEntryApp.xaml.cs">
       <DependentUpon>StartMenuEntryApp.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Interface\StartMenu11\Controls\Tile.xaml.cs">
+    <Compile Include="Views\Startify_StartMenuReplacement\StartMenuControls\Tile.xaml.cs">
       <DependentUpon>Tile.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Interface\StartMenu11\Controls\TileGroupNameBox.xaml.cs">
+    <Compile Include="Views\Startify_StartMenuReplacement\StartMenuControls\TileGroupNameBox.xaml.cs">
       <DependentUpon>TileGroupNameBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Interface\Utilities\VisibilityConverter.cs" />
+    <Compile Include="Views\Startify_StartMenuUtilities\VisibilityConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Interface\Utilities\IWindowPrivate.cs" />
-    <Compile Include="Interface\Utilities\StartEntrySelector.cs" />
-    <Compile Include="Interface\StartMenu11\StartMenu.xaml.cs">
+    <Compile Include="Views\Startify_StartMenuUtilities\IWindowPrivate.cs" />
+    <Compile Include="Views\Startify_StartMenuUtilities\StartEntrySelector.cs" />
+    <Compile Include="Views\Startify_StartMenuReplacement\StartMenu.xaml.cs">
       <DependentUpon>StartMenu.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Interface\StartMenu11\Controls\TileGroupControl.xaml.cs">
+    <Compile Include="Views\Startify_StartMenuReplacement\StartMenuControls\TileGroupControl.xaml.cs">
       <DependentUpon>TileGroupControl.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
@@ -217,7 +217,6 @@
     <Content Include="Assets\Square44x44Logo.scale-200.png" />
     <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
-    <Content Include="startify.ico" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -255,35 +254,35 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Interface\InterfaceResources.xaml">
+    <Page Include="Views\Startify_StartMenuResources.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Interface\StartMenu11\Controls\AllAppsPaneControl.xaml">
+    <Page Include="Views\Startify_StartMenuReplacement\StartMenuControls\AllAppsPaneControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Interface\StartMenu11\Controls\UninstallFlyoutControl.xaml">
+    <Page Include="Views\Startify_StartMenuReplacement\StartMenuControls\UninstallFlyoutControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Interface\StartMenu11\StartMenu.xaml">
+    <Page Include="Views\Startify_StartMenuReplacement\StartMenu.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Interface\StartMenu11\Controls\StartMenuEntryApp.xaml">
+    <Page Include="Views\Startify_StartMenuReplacement\StartMenuControls\StartMenuEntryApp.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Interface\StartMenu11\Controls\Tile.xaml">
+    <Page Include="Views\Startify_StartMenuReplacement\StartMenuControls\Tile.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Interface\StartMenu11\Controls\TileGroupControl.xaml">
+    <Page Include="Views\Startify_StartMenuReplacement\StartMenuControls\TileGroupControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Interface\StartMenu11\Controls\TileGroupNameBox.xaml">
+    <Page Include="Views\Startify_StartMenuReplacement\StartMenuControls\TileGroupNameBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

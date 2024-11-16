@@ -9,7 +9,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d" Height="96" Width="96" Loaded="TileMain_Loaded">
 
-    <Button CornerRadius="5" BorderThickness="1" Click="TileButton_Click" x:Name="TileButton" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="0,0,0,0" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch">
+    <Button PointerMoved="TileButton_PointerEntered" PointerEntered="TileButton_PointerEntered" BorderBrush="{x:Null}" PointerExited="TileButton_PointerExited"  CornerRadius="5" BorderThickness="2" Click="TileButton_Click" x:Name="TileButton" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="0,0,0,0" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch">
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="CommonStates">
                 <VisualState x:Name="Normal">

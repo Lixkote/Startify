@@ -10,7 +10,7 @@
     <StartupObject>WPF.Program</StartupObject>
     <UseWindowsForms>True</UseWindowsForms>
     <ApplicationIcon>startify.ico</ApplicationIcon>
-    <AssemblyName>StartifyBackend</AssemblyName>
+    <AssemblyName>Startify</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
@@ -50,7 +50,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FrontEnd\StartifyFrontend.csproj" />
+    <ProjectReference Include="..\FrontEnd\FrontendUWP.csproj" />
   </ItemGroup>
 
   <ItemGroup>

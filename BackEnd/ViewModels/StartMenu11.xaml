@@ -7,7 +7,7 @@
         xmlns:xamlhost="clr-namespace:Microsoft.Toolkit.Wpf.UI.XamlHost;assembly=Microsoft.Toolkit.Wpf.UI.XamlHost"
         xmlns:local="clr-namespace:WPF.Views"
         mc:Ignorable="d"
-        Title="StartMenu11"
+        Title="StartifyStartMenuReplacement"
         WindowStyle="None"
         AllowsTransparency="True"
         Background="Transparent"

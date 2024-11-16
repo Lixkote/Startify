@@ -312,10 +312,5 @@ namespace Shell.Interface.StartMenu11.Controls
                 TileButton.BorderBrush = null;
             }
         }
-
-        private void TileButton_PointerEntered_1(object sender, PointerRoutedEventArgs e)
-        {
-
-        }
     }
 }

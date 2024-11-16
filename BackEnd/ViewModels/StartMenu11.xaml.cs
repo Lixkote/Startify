@@ -117,13 +117,13 @@ namespace WPF.Views
             startPlaceholder.TileUnpinnedMain += (sender, e) => UnpinTile(sender, e);
             allAppsListViewBase.TilePinnedMain += (sender, e) => PinTile(sender, e);
             startPlaceholder.TileGroupRenamedMain += (sender, e) => ChangeGroupName(sender, e);
-            startPlaceholder.TileSizeChangedMain += (sender, e) => ChangeTileSize(sender, e);
+            // startPlaceholder.TileSizeChangedMain += (sender, e) => ChangeTileSize(sender, e);
         }
 
         public void ChangeTileSize(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             Debug.WriteLine("Tile size change method called.");
-            // TileAppHelper.ChangeTileSizeInXML(sender, TileGroups);
+            TileAppHelper.ChangeTileSizeInXML(sender, TileGroups);
             var startPlaceholder = StartMenuIslandh.Child as Shell.Interface.StartMenu11.StartMenu;
             var tileGroupGridView = startPlaceholder.FindName("TileGroupGridView") as Windows.UI.Xaml.Controls.GridView;
             LoadTiles();

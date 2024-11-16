@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StartifyBackend", "BackEnd\StartifyBackend.csproj", "{B61EDA3E-EB36-4ED1-9EB5-2D2B4874D526}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BackendWPF", "BackEnd\BackendWPF.csproj", "{B61EDA3E-EB36-4ED1-9EB5-2D2B4874D526}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StartifyFrontend", "FrontEnd\StartifyFrontend.csproj", "{1068AF1E-512A-41E7-A440-0AA781199A4A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FrontendUWP", "FrontEnd\FrontendUWP.csproj", "{1068AF1E-512A-41E7-A440-0AA781199A4A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
