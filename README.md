@@ -16,12 +16,11 @@
 
 
 Supported operating systems and configurations:
-- All Windows 11 builds (stock xaml taskbar)
-- All Windows 11 builds (ExplorerPatcher Windows 10 taskbar, and the reimplemented one, ep_taskbar)
+- Windows 11 without any enchancement apps aside ExplorerPatcher
 
-Unsupported, but might "work":
-- All Windows 11 builds (with StartAllBack) (Start button glitches)
-- Windows 10 > 1903 (Works ok, you need to download and install Segoe Fluent Icons)
+**Unsupported, do not report bugs**:
+- Windows 11 with StartAllBack
+- Windows 10 any build
 
 Screenshots / Previews:
 
