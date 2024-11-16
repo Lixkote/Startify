@@ -1,5 +1,5 @@
 <p align="left">
-    <img src="https://raw.githubusercontent.com/Lixkote/Startify/master/logo.png">
+    <img src="https://raw.githubusercontent.com/Lixkote/Startify/master/logonew.png">
 </p>
 
 **Work in progress recreation of the Windows 10's start menu for all Windows 11 builds.**
