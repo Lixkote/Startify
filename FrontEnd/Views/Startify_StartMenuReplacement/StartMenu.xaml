@@ -124,7 +124,7 @@
         <ResourceDictionary x:Key="h">
 
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Interface/InterfaceResources.xaml" />
+                <ResourceDictionary Source="/Views/Startify_StartMenuResources.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <Storyboard x:Name="openstartanimation">
                 <DoubleAnimation Storyboard.TargetName="translateTransform"

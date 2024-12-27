@@ -10,7 +10,7 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Interface/InterfaceResources.xaml" />
+                <ResourceDictionary Source="/Views/Startify_StartMenuResources.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <Style x:Key="TextBaseStyle" TargetType="TextBlock" />
             <Style x:Key="TextStyle_AppListItemName" TargetType="TextBlock" BasedOn="{StaticResource TextBaseStyle}">
